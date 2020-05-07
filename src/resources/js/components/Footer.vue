@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <h1>Footer</h1>
-  </div>
+  <v-footer padless absolute dark color="indigo">
+    <v-col
+      class="text-center"
+      cols="12"
+    >
+      {{ new Date().getFullYear() }} — <strong>Copy right -Takuto-</strong>
+    </v-col>
+  </v-footer>
 </template>
-
 <script>
   export default {
     
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

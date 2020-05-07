@@ -1,8 +1,9 @@
 <template>
-  <v-content>
-    <h1>Welcome to my app</h1>
-  </v-content>
-  
+  <div>
+    <v-content>
+      <h1>Welcome to Snippet</h1>
+    </v-content>
+  </div>
 </template>
 
 <script>
@@ -11,7 +12,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h1{
   text-align: center;
   margin-top: 300px;
