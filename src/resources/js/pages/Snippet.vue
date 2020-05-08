@@ -7,13 +7,15 @@
 </template>
 
 <script>
-  export default {
-    
+export default {
+  metaInfo: {
+    title: 'Label'
   }
+}
 </script>
 
 <style lang="scss" scoped>
-h1{
+h1 {
   text-align: center;
   margin-top: 300px;
 }

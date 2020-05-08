@@ -3,11 +3,13 @@
     <div class="back">
       <v-layout wrap pt-5>
         <v-flex xs3 class="folder" pt-5>
-          <v-card dark height="550" width="256" class="mx-auto">
+          <v-card height="550" width="256" class="mx-auto">
             <v-navigation-drawer permanent>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="title">Application</v-list-item-title>
+                  <v-list-item-title class="text-center">
+                    My folders
+                  </v-list-item-title>
                   <v-list-item-subtitle>subtext</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -32,7 +34,7 @@
           <v-container>
             <v-row>
               <v-col cols="4">
-                <v-card raised color="indigo" dark>
+                <v-card raised color="black" dark>
                   <v-card-title>Laravel 認証1</v-card-title>
                   <v-card-subtitle class="subtitle">
                     <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
@@ -139,6 +141,9 @@
 
 <script>
 export default {
+  metaInfo: {
+    title: 'Label'
+  },
   data() {
     return {
       hover: false,
@@ -172,7 +177,7 @@ export default {
 
 <style scoped>
 .back {
-  background-color: rgb(246, 247, 248);
+  background-color: rgb(240, 240, 240);
   min-height: 700px;
 }
 li {

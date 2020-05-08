@@ -2,61 +2,114 @@
   <v-content>
     <div class="back">
       <v-container>
-         <!-- タブ -->
+        <!-- tab start -->
         <v-tabs NOT dark background-color="transparent" class="tabs">
           <v-tab @click="tab = 1">LOGIN</v-tab>
           <v-tab @click="tab = 2">REGISTER</v-tab>
         </v-tabs>
+        <!-- tab end -->
 
-        <!-- ログインフォーム -->
-        <v-card v-show="tab === 1" dark color="teal" class="form">
+        <!-- login start -->
+        <v-card v-show="tab === 1" class="form" shaped>
           <v-card-title>
             <h1 class="display-1">LOGIN</h1>
           </v-card-title>
           <v-card-text>
-            <v-form>
-              <v-text-field label="Username" prepend-icon="mdi-account-circle" clearable />
+            <div v-if="loginErrors">
+              <v-alert dense type="error">
+                <ul v-if="loginErrors.email">
+                  <li v-for="error in loginErrors.email" :key="error">{{ error }}</li>
+                </ul>
+                <ul v-if="loginErrors.password">
+                  <li v-for="error in loginErrors.password" :key="error">{{ error }}</li>
+                </ul>
+              </v-alert>
+            </div>
+            <v-form @submit.prevent="login">
               <v-text-field
-                :type="showPassword ? 'text' : 'password'"
-                label="Password"
+                label="E-mail"
+                prepend-icon="mdi-email"
                 clearable
+                v-model="loginForm.email"
+              />
+              <v-text-field
+                label="Password"
                 prepend-icon="mdi-lock"
+                clearable
+                :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
+                v-model="loginForm.password"
               />
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn type="submit" dark>Login</v-btn>
+              </v-card-actions>
             </v-form>
           </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="teal darken-4">Login</v-btn>
-          </v-card-actions>
         </v-card>
+        <!-- login end -->
 
-        <!-- レジスターフォーム -->
-        <v-card v-show="tab === 2" dark color="light-blue accent-4" class="form">
-          <v-card-title class="text-center">
+        <!-- register start -->
+        <v-card v-show="tab === 2" class="form" shaped>
+          <v-card-title>
             <h1 class="display-1">REGISTER</h1>
           </v-card-title>
           <v-card-text>
-            <v-form>
-              <v-text-field label="Username" prepend-icon="mdi-account-circle" clearable />
+            <v-form @submit.prevent="register">
+              <div v-if="registerErrors">
+              <v-alert dense type="error">
+                <ul v-if="registerErrors.name">
+                  <li v-for="error in registerErrors.name" :key="error">{{ error }}</li>
+                </ul>
+                <ul v-if="registerErrors.email">
+                  <li v-for="error in registerErrors.email" :key="error">{{ error }}</li>
+                </ul>
+                <ul v-if="registerErrors.password">
+                  <li v-for="error in registerErrors.password" :key="error">{{ error }}</li>
+                </ul>
+              </v-alert>
+            </div>
               <v-text-field
-                :type="showPassword ? 'text' : 'password'"
-                label="Password"
+                label="Username"
+                prepend-icon="mdi-account-circle"
                 clearable
+                v-model="registerForm.name"
+              />
+              <v-text-field
+                label="E-mail"
+                prepend-icon="mdi-email"
+                clearable
+                v-model="registerForm.email"
+              />
+              <v-text-field
+                label="Password"
                 prepend-icon="mdi-lock"
+                clearable
+                :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
+                v-model="registerForm.password"
               />
+              <v-text-field
+                label="Password (confirmation)"
+                prepend-icon="mdi-lock"
+                clearable
+                :type="showPasswordConfirmation ? 'text' : 'password'"
+                :append-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append="showPasswordConfirmation = !showPasswordConfirmation"
+                v-model="registerForm.password_confirmation"
+              />
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn type="submit" dark>REGISTER</v-btn>
+              </v-card-actions>
             </v-form>
           </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="indigo darken-4">REGISTER</v-btn>
-          </v-card-actions>
         </v-card>
+        <!-- register end -->
       </v-container>
     </div>
   </v-content>
@@ -64,11 +117,58 @@
 
 <script>
 export default {
-  name: 'LoginPage',
+  metaInfo: {
+    title: 'LOGIN / REGISTER'
+  },
   data() {
     return {
       showPassword: false,
-      tab: 1
+      showPasswordConfirmation: false,
+      tab: 1,
+      loginForm: {
+        email: '',
+        password: ''
+      },
+      registerForm: {
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      }
+    }
+  },
+  methods: {
+    async login() {
+      await this.$store.dispatch('auth/login', this.loginForm)
+
+      if (this.apiStatus) {
+        this.$router.push('/label')
+      }
+    },
+    async register() {
+      await this.$store.dispatch('auth/register', this.registerForm)
+
+      if (this.apiStatus) {
+        this.$router.push('/label')
+      }
+    },
+    clearError() {
+      this.$store.commit('auth/SET_LOGIN_ERROR_MESSAGES', null)
+      this.$store.commit('auth/SET_REGISTER_ERROR_MESSAGES', null)
+    }
+  },
+  created() {
+    this.clearError()
+  },
+  computed: {
+    apiStatus() {
+      return this.$store.state.auth.apiStatus
+    },
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages
+    },
+    registerErrors() {
+      return this.$store.state.auth.registerErrorMessages
     }
   }
 }
@@ -76,7 +176,7 @@ export default {
 
 <style scoped>
 .container {
-  padding-top: 60px;
+  padding-top: 25px;
 }
 .tabs {
   width: 500px;

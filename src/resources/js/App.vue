@@ -2,7 +2,7 @@
   <v-app>
     <header>
       <Navbar />
-    </header> 
+    </header>
     <main>
       <transition name="fade" appear mode="out-in">
         <router-view></router-view>
@@ -15,15 +15,34 @@
 </template>
 
 <script>
-  import Navbar from './components/Navbar.vue'
-  import Footer from './components/Footer.vue'
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
+import { INTERNAL_SERVER_ERROR } from './error_code'
 
-  export default {
-    components: {
-      Navbar,
-      Footer
+export default {
+  components: {
+    Navbar,
+    Footer
+  },
+  computed: {
+    errorCode() {
+      return this.$store.state.error.code
+    }
+  },
+  watch: {
+    errorCode: {
+      handler (val) {
+        if (val === INTERNAL_SERVER_ERROR) {
+          this.$router.push('/500')
+        }
+      },
+      immediate: true
+    },
+    $route () {
+      this.$store.commit('error/SET_CODE', null)
     }
   }
+}
 </script>
 
 <style scoped>
@@ -34,7 +53,7 @@
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .fade-leave-to {

@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 // 新規登録 api
 Route::post('/register', 'Auth\RegisterController@register')->name('register');
 // ログイン api
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 // ログアウト api
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+// ログインユーザー確認
+Route::get('/user', function() { 
+    return Auth::user();
+})->name('user');

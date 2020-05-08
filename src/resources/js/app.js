@@ -1,3 +1,13 @@
+import './bootstrap'
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store/store'
+import VueMeta from 'vue-meta'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import '@mdi/font/css/materialdesignicons.css'
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -24,28 +34,23 @@ window.Vue = require('vue')
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store/store'
-import VueMeta from 'vue-meta'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import '@mdi/font/css/materialdesignicons.css'
-
 Vue.use(VueMeta, { refreshOnceOnNavigation: true })
 Vue.use(Vuetify)
 
-new Vue({
-  el: '#app',
-  components: { App },
-  template: '<App />',
-  router,
-  store,
-  vuetify: new Vuetify({
+const createApp = async () => {
+  await store.dispatch('auth/loginUser')
+  new Vue({
+    el: '#app',
+    components: { App },
+    template: '<App />',
+    router,
+    store,
+    vuetify: new Vuetify({
       icons: {
-          iconfont: 'mdi'
+        iconfont: 'mdi'
       }
+    })
   })
-})
+}
+
+createApp()
