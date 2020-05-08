@@ -2126,7 +2126,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.$store.dispatch('auth/logout');
 
               case 2:
-                _this.$router.push('/login');
+                _this.$router.push('/');
 
               case 3:
               case "end":
@@ -2322,6 +2322,76 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   metaInfo: {
     title: 'Label'
@@ -2336,33 +2406,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         title: 'Photos',
         icon: 'mdi-image'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
-      }, {
-        title: 'About',
-        icon: 'mdi-help-box'
       }, {
         title: 'About',
         icon: 'mdi-help-box'
@@ -7293,7 +7336,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.back[data-v-7dabad3b] {\n  background-color: rgb(240, 240, 240);\n  min-height: 700px;\n}\nli[data-v-7dabad3b] {\n  color: white;\n}\nspan[data-v-7dabad3b] {\n  color: white;\n}\n.subtitle[data-v-7dabad3b] {\n  font-size: 14px;\n  padding-bottom: 0;\n}\n.copy-btn[data-v-7dabad3b] {\n  margin-right: 0;\n}\n", ""]);
+exports.push([module.i, "\n.back[data-v-7dabad3b] {\n  background-color: rgb(238, 235, 235);\n  min-height: 700px;\n}\nli[data-v-7dabad3b] {\n  color: rgb(68, 67, 67);\n}\nspan[data-v-7dabad3b] {\n  color: white;\n}\n.subtitle[data-v-7dabad3b] {\n  font-size: 14px;\n  padding-bottom: 0;\n}\n.copy-btn[data-v-7dabad3b] {\n  margin-right: 0;\n}\n", ""]);
 
 // exports
 
@@ -40268,10 +40311,10 @@ var render = function() {
                             _c(
                               "v-card",
                               {
-                                attrs: { raised: "", color: "black", dark: "" }
+                                attrs: { raised: "", color: "teal", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [_vm._v("Docker laladock")]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40288,7 +40331,7 @@ var render = function() {
                                     ),
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
+                                      _vm._v("docker-compose up -d")
                                     ])
                                   ],
                                   1
@@ -40329,65 +40372,9 @@ var render = function() {
                                 attrs: { raised: "", color: "teal", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
-                                _vm._v(" "),
-                                _c(
-                                  "v-card-subtitle",
-                                  { staticClass: "subtitle" },
-                                  [
-                                    _c(
-                                      "v-icon",
-                                      {
-                                        staticClass: "copy-btn",
-                                        attrs: { left: "", small: "" },
-                                        on: { click: _vm.witeToClipboard }
-                                      },
-                                      [_vm._v("mdi-email")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
-                                    ])
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "text-right" },
-                                  [
-                                    _c("v-icon", { attrs: { left: "" } }, [
-                                      _vm._v("mdi-delete")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("v-icon", { attrs: { left: "" } }, [
-                                      _vm._v("mdi-email")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("v-icon", { attrs: { left: "" } }, [
-                                      _vm._v("mdi-message-text")
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { attrs: { cols: "4" } },
-                          [
-                            _c(
-                              "v-card",
-                              {
-                                attrs: { raised: "", color: "pink", dark: "" }
-                              },
-                              [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [
+                                  _vm._v("Docker コンテナに入る")
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40405,7 +40392,7 @@ var render = function() {
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
                                       _vm._v(
-                                        "タクトタクトタクトタクトタクトタクトタク"
+                                        "docker-compose exec workspace bash"
                                       )
                                     ])
                                   ],
@@ -40444,10 +40431,12 @@ var render = function() {
                             _c(
                               "v-card",
                               {
-                                attrs: { raised: "", color: "purple", dark: "" }
+                                attrs: { raised: "", color: "teal", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [
+                                  _vm._v("パッケージアップデート")
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40464,7 +40453,7 @@ var render = function() {
                                     ),
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
+                                      _vm._v("yum update")
                                     ])
                                   ],
                                   1
@@ -40502,10 +40491,10 @@ var render = function() {
                             _c(
                               "v-card",
                               {
-                                attrs: { raised: "", color: "green", dark: "" }
+                                attrs: { raised: "", color: "indigo", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [_vm._v("Laravel seed")]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40522,7 +40511,7 @@ var render = function() {
                                     ),
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
+                                      _vm._v("php artisan db:seed")
                                     ])
                                   ],
                                   1
@@ -40560,14 +40549,10 @@ var render = function() {
                             _c(
                               "v-card",
                               {
-                                attrs: {
-                                  raised: "",
-                                  color: "deep-orange",
-                                  dark: ""
-                                }
+                                attrs: { raised: "", color: "indigo", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [_vm._v("laravel mix")]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40584,7 +40569,7 @@ var render = function() {
                                     ),
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
+                                      _vm._v("webpack")
                                     ])
                                   ],
                                   1
@@ -40622,10 +40607,12 @@ var render = function() {
                             _c(
                               "v-card",
                               {
-                                attrs: { raised: "", color: "blue", dark: "" }
+                                attrs: { raised: "", color: "indigo", dark: "" }
                               },
                               [
-                                _c("v-card-title", [_vm._v("Laravel 認証1")]),
+                                _c("v-card-title", [
+                                  _vm._v("Laravel migration")
+                                ]),
                                 _vm._v(" "),
                                 _c(
                                   "v-card-subtitle",
@@ -40642,7 +40629,367 @@ var render = function() {
                                     ),
                                     _vm._v(" "),
                                     _c("span", { attrs: { id: "target" } }, [
-                                      _vm._v("composer require laravel/ui")
+                                      _vm._v("php artisan migrate:fresh")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "teal", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "teal", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "teal", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "indigo", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "indigo", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "text-right" },
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-delete")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-email")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v("mdi-message-text")
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4" } },
+                          [
+                            _c(
+                              "v-card",
+                              {
+                                attrs: { raised: "", color: "indigo", dark: "" }
+                              },
+                              [
+                                _c("v-card-title", [
+                                  _vm._v("laravel controller作る")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "v-card-subtitle",
+                                  { staticClass: "subtitle" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "copy-btn",
+                                        attrs: { left: "", small: "" },
+                                        on: { click: _vm.witeToClipboard }
+                                      },
+                                      [_vm._v("mdi-email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("span", { attrs: { id: "target" } }, [
+                                      _vm._v("php artisan make:controller")
                                     ])
                                   ],
                                   1
