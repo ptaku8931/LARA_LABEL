@@ -4,8 +4,8 @@ import store from './store/store'
 
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
-import Label from './pages/Label.vue'
-import Snippet from './pages/Snippet.vue'
+import LabelPage from './pages/LabelPage.vue'
+import SnippetPage from './pages/SnippetPage.vue'
 import SystemError from './pages/errors/System.vue'
 
 Vue.use(VueRouter)
@@ -33,13 +33,13 @@ const routes = [
   },
   {
     path: '/label',
-    name: 'Label',
-    component: Label
+    name: 'LabelPage',
+    component: LabelPage
   },
   {
     path: '/snippet',
-    name: 'Snippet',
-    component: Snippet
+    name: 'SnippetPage',
+    component: SnippetPage
   },
   {
     path: '/500',

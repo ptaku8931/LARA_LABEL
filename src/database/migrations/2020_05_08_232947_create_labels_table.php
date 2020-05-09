@@ -17,9 +17,15 @@ class CreateLabelsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('folder_id');
             $table->string('title', 20);
+            $table->string('text', 30);
+            $table->text('url')->nullable();
+            $table->string('color', 20);
             $table->timestamps();
 
             $table->foreign('folder_id')->references('id')->on('label_folders')->onDelete('cascade');
+
+
+            
         });
     }
 

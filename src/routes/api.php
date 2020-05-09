@@ -24,3 +24,5 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/user', function() { 
     return Auth::user();
 })->name('user');
+// ラベルフォルダ api
+Route::resource('label_folder', 'LabelFolderController');

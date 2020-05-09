@@ -17,9 +17,6 @@ class CreateLabelFoldersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('title', 20);
-            $table->string('text', 30);
-            $table->text('url')->nullable();
-            $table->string('color', 20);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

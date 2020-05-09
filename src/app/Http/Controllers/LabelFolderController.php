@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\LabelFolder;
 
 class LabelFolderController extends Controller
 {
@@ -13,7 +15,8 @@ class LabelFolderController extends Controller
      */
     public function index()
     {
-        //
+        $folders = Auth::user()->label_folders()->get();
+        return $folders;
     }
 
     /**
@@ -34,7 +37,9 @@ class LabelFolderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form = $request->all();
+        $folder = Auth::user()->label_folders()->create($form);
+        return $folder;
     }
 
     /**
@@ -56,7 +61,7 @@ class LabelFolderController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -68,7 +73,10 @@ class LabelFolderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $folder = LabelFolder::find($id);
+        $form = $request->all();
+        $folder->fill($form)->save();
+        return response('', 200);
     }
 
     /**
@@ -79,6 +87,7 @@ class LabelFolderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        LabelFolder::find($id)->delete();
+        return response('', 200);
     }
 }

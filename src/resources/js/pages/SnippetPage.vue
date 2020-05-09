@@ -9,7 +9,7 @@
 <script>
 export default {
   metaInfo: {
-    title: 'Label'
+    title: 'Snippet Page'
   }
 }
 </script>

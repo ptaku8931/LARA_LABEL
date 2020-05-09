@@ -44,7 +44,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" dark>Login</v-btn>
+                <v-btn type="submit" color="primary">Login</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -59,18 +59,18 @@
           <v-card-text>
             <v-form @submit.prevent="register">
               <div v-if="registerErrors">
-              <v-alert dense type="error">
-                <ul v-if="registerErrors.name">
-                  <li v-for="error in registerErrors.name" :key="error">{{ error }}</li>
-                </ul>
-                <ul v-if="registerErrors.email">
-                  <li v-for="error in registerErrors.email" :key="error">{{ error }}</li>
-                </ul>
-                <ul v-if="registerErrors.password">
-                  <li v-for="error in registerErrors.password" :key="error">{{ error }}</li>
-                </ul>
-              </v-alert>
-            </div>
+                <v-alert dense type="error">
+                  <ul v-if="registerErrors.name">
+                    <li v-for="error in registerErrors.name" :key="error">{{ error }}</li>
+                  </ul>
+                  <ul v-if="registerErrors.email">
+                    <li v-for="error in registerErrors.email" :key="error">{{ error }}</li>
+                  </ul>
+                  <ul v-if="registerErrors.password">
+                    <li v-for="error in registerErrors.password" :key="error">{{ error }}</li>
+                  </ul>
+                </v-alert>
+              </div>
               <v-text-field
                 label="Username"
                 prepend-icon="mdi-account-circle"
@@ -104,7 +104,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" dark>REGISTER</v-btn>
+                <v-btn type="submit" color="primary">REGISTER</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
