@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>index</title>
+  <title>POST IT App</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
 
   <script src="{{ mix('js/app.js') }}" defer></script>
 
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app" v-colak></div>
 </body>
 </html>

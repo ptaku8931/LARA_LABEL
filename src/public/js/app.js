@@ -2086,148 +2086,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2262,11 +2128,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  methods: {
-    witeToClipboard: function witeToClipboard() {
-      var copyText = this.$el.querySelector('#target').textContent;
-      navigator.clipboard.writeText(copyText);
-    }
+  // 親コンポーネントから選択されたフォルダidをもらう
+  props: {
+    value: ''
+  },
+  data: function data() {
+    return {
+      // ラベルデータ格納
+      labels: '',
+      input: false
+    };
+  },
+  watch: {
+    value: function () {
+      var _value = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(folder_id) {
+        var selected_id, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                selected_id = folder_id;
+
+                if (!(selected_id !== null)) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _context.next = 4;
+                return axios.get('api/label/' + folder_id);
+
+              case 4:
+                response = _context.sent;
+                this.labels = response.data;
+                _context.next = 9;
+                break;
+
+              case 8:
+                this.labels = '';
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function value(_x) {
+        return _value.apply(this, arguments);
+      }
+
+      return value;
+    }()
+  },
+  methods: {// クリックしたテキストをクリップボードにコピー
+    // witeToClipboard(id) {
+    //   const copyText = this.$el.getElementById('#target').value
+    //   navigator.clipboard.writeText(copyText)
+    // },
   }
 });
 
@@ -2343,18 +2262,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      formTitle: 'Create Folder',
-      placeHolder: 'New Folder',
-      edit: false,
-      editID: '',
+      // データ格納用
       labelFolders: '',
-      valid: true,
       folderForm: {
         title: ''
       },
+      // darkテーマ切り替え
+      theme: false,
+      // 新規作成及び編集フォーム用
+      formTitle: 'Create Folder',
+      placeHolder: 'New Folder',
+      // editがtrueなら編集フォームに変更
+      edit: false,
+      editID: '',
+      // バリデーション
+      valid: true,
       folderRules: [function (v) {
         return !!v || 'Folder name is required';
       }, function (v) {
@@ -2362,6 +2309,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]
     };
   },
+  // フォルダ一覧 GET  created ライフサイクル
   created: function created() {
     var _this = this;
 
@@ -2387,10 +2335,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
+    // バリデーションクリア
     resetValidation: function resetValidation() {
       this.$refs.form.resetValidation();
       this.folderForm.title = '';
     },
+    // 新規作成フォームから編集フォームに切り替える
+    editFolder: function editFolder(id, title) {
+      this.edit = true;
+      this.editID = id;
+      this.placeHolder = title;
+      this.formTitle = 'Edit Folder';
+    },
+    // 編集フォームから新規作成フォームに戻す
+    cancelEdit: function cancelEdit() {
+      this.edit = false;
+      this.editID = '';
+      this.placeHolder = 'New Folder';
+      this.formTitle = 'Create Folder';
+    },
+    // クリックされたフォルダのidを親コンポーネントに渡す
+    selectedFolder: function selectedFolder(id) {
+      this.$emit('input', id);
+    },
+    // フォルダ新規作成 POST
     createFolder: function createFolder() {
       var _this2 = this;
 
@@ -2418,6 +2386,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    // フォルダ更新 PUT
     updateFolder: function updateFolder() {
       var _this3 = this;
 
@@ -2432,17 +2401,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 response = _context3.sent;
+                // editIDと一致するフォルダのindexをfoldersIndexに代入
                 foldersIndex = '';
 
                 _this3.labelFolders.map(function (folder, index) {
                   if (folder.id === _this3.editID) {
                     foldersIndex = index;
                   }
-                });
+                }); // editIDと一致したフォルダのタイトルに変更したタイトルを代入
 
-                _this3.labelFolders[foldersIndex].title = _this3.folderForm.title;
 
-                _this3.cancelEdit();
+                _this3.labelFolders[foldersIndex].title = _this3.folderForm.title; // 編集モードをリセットする
+
+                _this3.cancelEdit(); // バリデーションをクリアする
+
 
                 _this3.resetValidation();
 
@@ -2454,6 +2426,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
+    // フォルダ削除 DELETE
     deleteFolder: function deleteFolder(id, index) {
       var _this4 = this;
 
@@ -2464,7 +2437,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 if (!confirm('Are you sure?')) {
-                  _context4.next = 5;
+                  _context4.next = 6;
                   break;
                 }
 
@@ -2476,28 +2449,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this4.labelFolders.splice(index, 1);
 
-              case 5:
-                return _context4.abrupt("return", false);
+                _this4.selectedFolder(null);
 
               case 6:
+                return _context4.abrupt("return", false);
+
+              case 7:
               case "end":
                 return _context4.stop();
             }
           }
         }, _callee4);
       }))();
-    },
-    editFolder: function editFolder(id, title) {
-      this.edit = true;
-      this.editID = id;
-      this.placeHolder = title;
-      this.formTitle = 'Edit Folder';
-    },
-    cancelEdit: function cancelEdit() {
-      this.edit = false;
-      this.editID = '';
-      this.placeHolder = 'New Folder';
-      this.formTitle = 'Create Folder';
     }
   }
 });
@@ -2625,6 +2588,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2634,6 +2598,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   metaInfo: {
     title: 'Label Page'
+  },
+  data: function data() {
+    return {
+      // クリックされたフォルダid
+      selectedFolder: null
+    };
   }
 });
 
@@ -7422,25 +7392,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 10px;\n  transition: all 0.9s;\n  background-color: #d4d4d8;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/SnippetPage.vue?vue&type=style&index=0&id=6515f453&lang=scss&scoped=true&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/SnippetPage.vue?vue&type=style&index=0&id=6515f453&lang=scss&scoped=true& ***!
@@ -7530,7 +7481,26 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nspan[data-v-a3c544ce] {\n  color: white;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-bottom: 0;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\n", ""]);
+exports.push([module.i, "\nspan[data-v-a3c544ce] {\n  width: 90%;\n  color: white;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-bottom: 0;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 15px;\n  transition: all 0.9s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
 
 // exports
 
@@ -7587,7 +7557,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(238, 235, 235);\n  min-height: 700px;\n}\n", ""]);
+exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(233, 231, 231);\n  min-height: 700px;\n}\n", ""]);
 
 // exports
 
@@ -39490,36 +39460,6 @@ try {
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/SnippetPage.vue?vue&type=style&index=0&id=6515f453&lang=scss&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/SnippetPage.vue?vue&type=style&index=0&id=6515f453&lang=scss&scoped=true& ***!
@@ -39589,6 +39529,36 @@ if(false) {}
 
 
 var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./Label.vue?vue&type=style&index=0&id=a3c544ce&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Label.vue?vue&type=style&index=0&id=a3c544ce&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -40409,16 +40379,37 @@ var render = function() {
     [
       _c(
         "v-row",
-        [
-          _c(
+        _vm._l(_vm.labels, function(label) {
+          return _c(
             "v-col",
-            { attrs: { cols: "4" } },
+            { key: label.id, attrs: { cols: "4" } },
             [
               _c(
                 "v-card",
-                { attrs: { raised: "", color: "pink", dark: "" } },
+                { attrs: { raised: "", color: label.color, dark: "" } },
                 [
-                  _c("v-card-title", [_vm._v("Docker laladock")]),
+                  _c("v-card-title", [
+                    !_vm.input
+                      ? _c(
+                          "span",
+                          {
+                            on: {
+                              dblclick: function($event) {
+                                _vm.input = true
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(label.title))]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.input
+                      ? _c("input", {
+                          attrs: { type: "text" },
+                          domProps: { value: label.title }
+                        })
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c(
                     "v-card-subtitle",
@@ -40429,649 +40420,74 @@ var render = function() {
                         {
                           staticClass: "copy-btn",
                           attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
+                          on: {
+                            click: function($event) {
+                              return _vm.witeToClipboard(label.id)
+                            }
+                          }
                         },
-                        [_vm._v("mdi-email")]
+                        [_vm._v("mdi-file")]
                       ),
                       _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("docker-compose up -d")
-                      ])
+                      _c("input", {
+                        attrs: { type: "text" },
+                        domProps: { value: label.text }
+                      })
                     ],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "teal", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("Docker コンテナに入る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
+                    { staticClass: "d-flex" },
                     [
                       _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
+                        "div",
+                        { staticClass: "text-left ml-3" },
+                        [
+                          _vm.input
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: { "x-small": "", right: "", light: "" }
+                                },
+                                [_vm._v("save")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.input
+                            ? _c(
+                                "v-btn",
+                                {
+                                  attrs: { "x-small": "", right: "", light: "" }
+                                },
+                                [_vm._v("back")]
+                              )
+                            : _vm._e()
+                        ],
+                        1
                       ),
                       _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("docker-compose exec workspace bash")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
+                      _c("v-spacer"),
                       _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "teal", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("パッケージアップデート")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
                       _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("yum update")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("Laravel seed")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan db:seed")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel mix")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("webpack")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("Laravel migration")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan migrate:fresh")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "teal", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "teal", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "teal", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", color: "indigo", dark: "" } },
-                [
-                  _c("v-card-title", [_vm._v("laravel controller作る")]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
-                          on: { click: _vm.witeToClipboard }
-                        },
-                        [_vm._v("mdi-email")]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { attrs: { id: "target" } }, [
-                        _vm._v("php artisan make:controller")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-right" },
-                    [
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-delete")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-email")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-icon", { attrs: { left: "" } }, [
-                        _vm._v("mdi-message-text")
-                      ])
+                        "div",
+                        { staticClass: "text-right" },
+                        [
+                          _c("v-icon", { attrs: { left: "" } }, [
+                            _vm._v("mdi-delete")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-icon", { attrs: { left: "" } }, [
+                            _vm._v("mdi-email")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-icon", { attrs: { left: "" } }, [
+                            _vm._v("mdi-message-text")
+                          ])
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -41081,7 +40497,7 @@ var render = function() {
             ],
             1
           )
-        ],
+        }),
         1
       )
     ],
@@ -41112,7 +40528,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-card",
-    { staticClass: "mx-auto", attrs: { height: "550", width: "256" } },
+    {
+      staticClass: "mx-auto",
+      attrs: { height: "580", width: "256", dark: _vm.theme }
+    },
     [
       _c(
         "v-navigation-drawer",
@@ -41135,7 +40554,6 @@ var render = function() {
                       on: {
                         submit: function($event) {
                           $event.preventDefault()
-                          return _vm.createFolder()
                         }
                       },
                       model: {
@@ -41208,8 +40626,12 @@ var render = function() {
                                   attrs: {
                                     "x-small": "",
                                     color: "success",
-                                    type: "submit",
                                     disabled: !_vm.valid
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.createFolder()
+                                    }
                                   }
                                 },
                                 [_vm._v("add")]
@@ -41245,7 +40667,16 @@ var render = function() {
             _vm._l(_vm.labelFolders, function(folder, index) {
               return _c(
                 "v-list-item",
-                { key: folder.id, staticClass: "folder", attrs: { link: "" } },
+                {
+                  key: folder.id,
+                  staticClass: "folder",
+                  attrs: { link: "", disabled: _vm.edit },
+                  on: {
+                    mouseover: function($event) {
+                      return _vm.selectedFolder(folder.id)
+                    }
+                  }
+                },
                 [
                   _c(
                     "v-list-item-icon",
@@ -41276,7 +40707,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("mdi-message-text")]
+                        [_vm._v("mdi-pen")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -41302,7 +40733,18 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("v-switch", {
+        attrs: { label: "Folder Theme", light: "" },
+        model: {
+          value: _vm.theme,
+          callback: function($$v) {
+            _vm.theme = $$v
+          },
+          expression: "theme"
+        }
+      })
     ],
     1
   )
@@ -41452,15 +40894,41 @@ var render = function() {
           [
             _c(
               "v-flex",
-              { staticClass: "folder", attrs: { xs3: "", "pt-5": "" } },
-              [_c("LabelFolder")],
+              { staticClass: "folder", attrs: { xs3: "", "pt-4": "" } },
+              [
+                _c("LabelFolder", {
+                  model: {
+                    value: _vm.selectedFolder,
+                    callback: function($$v) {
+                      _vm.selectedFolder = $$v
+                    },
+                    expression: "selectedFolder"
+                  }
+                })
+              ],
               1
             ),
             _vm._v(" "),
             _c(
               "v-flex",
-              { attrs: { xs9: "", "mt-5": "", "pt-5": "" } },
-              [_c("Label")],
+              { attrs: { xs9: "" } },
+              [
+                _c("span", [
+                  _vm._v(
+                    "　　　　現在のフォルダ 検索 　　　　　　　　　ここにコンポーネント"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("Label", {
+                  model: {
+                    value: _vm.selectedFolder,
+                    callback: function($$v) {
+                      _vm.selectedFolder = $$v
+                    },
+                    expression: "selectedFolder"
+                  }
+                })
+              ],
               1
             )
           ],
@@ -102298,7 +101766,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _LabelFolder_vue_vue_type_template_id_55332b32_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LabelFolder.vue?vue&type=template&id=55332b32&scoped=true& */ "./resources/js/components/LabelFolder.vue?vue&type=template&id=55332b32&scoped=true&");
 /* harmony import */ var _LabelFolder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LabelFolder.vue?vue&type=script&lang=js& */ "./resources/js/components/LabelFolder.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& */ "./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&");
+/* empty/unused harmony star reexport *//* harmony import */ var _LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& */ "./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -102340,19 +101808,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&":
-/*!***********************************************************************************************************!*\
-  !*** ./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& ***!
-  \***********************************************************************************************************/
+/***/ "./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& ***!
+  \**********************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LabelFolder.vue?vue&type=style&index=0&id=55332b32&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LabelFolder_vue_vue_type_style_index_0_id_55332b32_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

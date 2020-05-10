@@ -34,71 +34,8 @@ class Label_FoldersTableSeeder extends Seeder
         LabelFolder::create($param);
 
         $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '1',
-            'title' => 'Vue.js',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
             'user_id' => '2',
-            'title' => 'Laravel',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '2',
-            'title' => 'Laravel',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '2',
-            'title' => 'Laravel',
-        ];
-
-        LabelFolder::create($param);
-
-        $param  = [
-            'user_id' => '2',
-            'title' => 'Laravel',
+            'title' => 'Vue.js',
         ];
 
         LabelFolder::create($param);

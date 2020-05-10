@@ -15,14 +15,14 @@ class CreateLabelsTable extends Migration
     {
         Schema::create('labels', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('folder_id');
+            $table->unsignedInteger('label_folder_id');
             $table->string('title', 20);
             $table->string('text', 30);
             $table->text('url')->nullable();
             $table->string('color', 20);
             $table->timestamps();
 
-            $table->foreign('folder_id')->references('id')->on('label_folders')->onDelete('cascade');
+            $table->foreign('label_folder_id')->references('id')->on('label_folders')->onDelete('cascade');
 
 
             

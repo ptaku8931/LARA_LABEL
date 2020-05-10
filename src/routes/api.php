@@ -26,3 +26,5 @@ Route::get('/user', function() {
 })->name('user');
 // ラベルフォルダ api
 Route::resource('label_folder', 'LabelFolderController');
+// ラベル api
+Route::resource('label', 'LabelController');

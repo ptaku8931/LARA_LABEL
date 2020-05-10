@@ -1,191 +1,76 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="4">
-        <v-card raised color="pink" dark>
-          <v-card-title>Docker laladock</v-card-title>
+      <!-- ラベル一覧 ここから-->
+      <v-col cols="4" v-for="label in labels" :key="label.id">
+        <v-card raised :color="label.color" dark>
+          <v-card-title>
+            <span v-if="!input" @dblclick="input = true">{{ label.title }}</span>
+            <input v-if="input" type="text" :value="label.title" />
+          </v-card-title>
           <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">docker-compose up -d</span>
+            <v-icon left small class="copy-btn" @click="witeToClipboard(label.id)">mdi-file</v-icon>
+            <input type="text" :value="label.text" />
           </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
+          <div class="d-flex">
+            <div class="text-left ml-3">
+              <v-btn v-if="input" x-small right light>save</v-btn>
+              <v-btn v-if="input" x-small right light>back</v-btn>
+            </div>
+            <v-spacer></v-spacer>
+            <div class="text-right">
+              <v-icon left>mdi-delete</v-icon>
+              <v-icon left>mdi-email</v-icon>
+              <v-icon left>mdi-message-text</v-icon>
+            </div>
           </div>
         </v-card>
       </v-col>
-      <v-col cols="4">
-        <v-card raised color="teal" dark>
-          <v-card-title>Docker コンテナに入る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">docker-compose exec workspace bash</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="teal" dark>
-          <v-card-title>パッケージアップデート</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">yum update</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>Laravel seed</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan db:seed</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>laravel mix</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">webpack</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>Laravel migration</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan migrate:fresh</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="teal" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="teal" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="teal" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card raised color="indigo" dark>
-          <v-card-title>laravel controller作る</v-card-title>
-          <v-card-subtitle class="subtitle">
-            <v-icon left small class="copy-btn" @click="witeToClipboard">mdi-email</v-icon>
-            <span id="target">php artisan make:controller</span>
-          </v-card-subtitle>
-          <div class="text-right">
-            <v-icon left>mdi-delete</v-icon>
-            <v-icon left>mdi-email</v-icon>
-            <v-icon left>mdi-message-text</v-icon>
-          </div>
-        </v-card>
-      </v-col>
+      <!-- ラベル一覧 ここまで -->
     </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
-  methods: {
-    witeToClipboard() {
-      const copyText = this.$el.querySelector('#target').textContent
-      navigator.clipboard.writeText(copyText)
+  // 親コンポーネントから選択されたフォルダidをもらう
+  props: {
+    value: ''
+  },
+  data() {
+    return {
+      // ラベルデータ格納
+      labels: '',
+      input: false
     }
+  },
+  // propsのvalue つまり selectedFolderを監視
+  watch: {
+    value: async function(folder_id) {
+      const selected_id = folder_id
+      // folder_idがnullでなければapiを叩いてデータをリクエスト
+      if(selected_id !== null) {
+        const response = await axios.get('api/label/' + folder_id)
+        this.labels = response.data
+        // folder_idがnullならばlabelsをリセット
+      } else {
+        this.labels = ''
+      }
+    }
+  },
+  methods: {
+    // クリックしたテキストをクリップボードにコピー
+    // witeToClipboard(id) {
+    //   const copyText = this.$el.getElementById('#target').value
+    //   navigator.clipboard.writeText(copyText)
+    // },
   }
 }
 </script>
 
 <style scoped>
 span {
+  width: 90%;
   color: white;
 }
 .subtitle {
@@ -194,5 +79,8 @@ span {
 }
 .copy-btn {
   margin-right: 0;
+}
+input {
+  width: 90%;
 }
 </style>

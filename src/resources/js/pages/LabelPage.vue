@@ -2,11 +2,12 @@
   <v-content>
     <div class="back">
       <v-layout wrap pt-5>
-        <v-flex xs3 class="folder" pt-5>
-          <LabelFolder />
+        <v-flex xs3 class="folder" pt-4>
+          <LabelFolder v-model="selectedFolder" />
         </v-flex>
-        <v-flex xs9 mt-5 pt-5>
-          <Label />
+        <v-flex xs9>
+          <span>　　　　現在のフォルダ 検索 　　　　　　　　　ここにコンポーネント</span>
+          <Label v-model="selectedFolder" />
         </v-flex>
       </v-layout>
     </div>
@@ -23,13 +24,19 @@ export default {
   },
   metaInfo: {
     title: 'Label Page'
+  },
+  data() {
+    return {
+      // クリックされたフォルダid　
+      selectedFolder: null
+    }
   }
 }
 </script>
 
 <style scoped>
 .back {
-  background-color: rgb(238, 235, 235);
+  background-color: rgb(233, 231, 231);
   min-height: 700px;
 }
 </style>
