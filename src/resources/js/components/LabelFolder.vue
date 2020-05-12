@@ -1,16 +1,18 @@
 <template>
-  <v-card height="580" width="256" class="mx-auto" :dark="theme">
+  <v-card class="foldercard" :dark="theme">
     <v-navigation-drawer permanent>
       <!-- フォルダ追加及び編集フォーム ここから -->
       <v-list-item>
         <v-list-item-content>
+          <!-- フォルダ検索 -->
+          <v-text-field outlined label="Search Folder" append-icon="mdi-folder-search" v-model="keyword"></v-text-field>
           <!-- 新規作成及び編集フォームタイトル -->
           <v-list-item-title class="text-center">{{ formTitle }}</v-list-item-title>
           <v-form v-model="valid" ref="form" @submit.prevent>
             <!-- 入力エリア-->
             <v-text-field
               :label="placeHolder"
-              prepend-icon="mdi-folder"
+              :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-plus'"
               clearable
               v-model="folderForm.title"
               :rules="folderRules"
@@ -45,7 +47,7 @@
       <!-- フォルダ一覧表示 ここから -->
       <v-list dense nav>
         <v-list-item
-          v-for="(folder, index) in labelFolders"
+          v-for="(folder, index) in filteredLabelFolders"
           :key="folder.id"
           link
           class="folder"
@@ -54,7 +56,8 @@
         >
           <v-list-item-icon>
             <!-- フォルダアイコン -->
-            <v-icon>mdi-folder</v-icon>
+            <v-icon v-if="folder.id === currentFolderId">mdi-folder-open</v-icon>
+            <v-icon v-else>mdi-folder</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <!-- フォルダタイトル -->
@@ -70,7 +73,7 @@
       </v-list>
       <!-- フォルダ一覧表示ここまで -->
     </v-navigation-drawer>
-    <v-switch v-model="theme" label="Folder Theme" light></v-switch>
+    <v-switch label="Folder Theme" light v-model="theme"></v-switch>
   </v-card>
 </template>
 
@@ -83,6 +86,9 @@ export default {
       folderForm: {
         title: ''
       },
+      currentFolderId: '',
+      // 検索ワード
+      keyword: '',
       // darkテーマ切り替え
       theme: false,
       // 新規作成及び編集フォーム用
@@ -90,7 +96,7 @@ export default {
       placeHolder: 'New Folder',
       // editがtrueなら編集フォームに変更
       edit: false,
-      editID: '',
+      editId: '',
       // バリデーション
       valid: true,
       folderRules: [
@@ -115,20 +121,22 @@ export default {
     // 新規作成フォームから編集フォームに切り替える
     editFolder(id, title) {
       this.edit = true
-      this.editID = id
+      this.editId = id
       this.placeHolder = title
       this.formTitle = 'Edit Folder'
     },
     // 編集フォームから新規作成フォームに戻す
     cancelEdit() {
       this.edit = false
-      this.editID = ''
+      this.editId = ''
       this.placeHolder = 'New Folder'
       this.formTitle = 'Create Folder'
     },
     // 選択されたフォルダのidを親コンポーネントに渡す
     selectedFolder(id) {
       this.$emit('input', id)
+      // 現在選択されたフォルダidをデータに格納
+      this.currentFolderId = id
     },
     // フォルダ新規作成 POST
     async createFolder() {
@@ -139,17 +147,17 @@ export default {
     // フォルダ更新 PUT
     async updateFolder() {
       const response = await axios.put(
-        'api/label_folder/' + this.editID,
+        'api/label_folder/' + this.editId,
         this.folderForm
       )
-      // editIDと一致するフォルダのindexをfoldersIndexに代入
+      // editIdと一致するフォルダのindexをfoldersIndexに代入
       let foldersIndex = ''
       this.labelFolders.map((folder, index) => {
-        if (folder.id === this.editID) {
+        if (folder.id === this.editId) {
           foldersIndex = index
         }
       })
-      // editIDと一致したフォルダのタイトルに変更したタイトルを代入
+      // editIdと一致したフォルダのタイトルに変更したタイトルを代入
       this.labelFolders[foldersIndex].title = this.folderForm.title
       // 編集モードをリセットする
       this.cancelEdit()
@@ -167,17 +175,40 @@ export default {
       }
       return false
     }
+  },
+  computed: {
+    // フォルダー検索
+    filteredLabelFolders() {
+      // 空配列をもつ変数をセット
+      var filteredLabelFolders = []
+      var searchWord = this.keyword && this.keyword.toLowerCase()
+      for (var i in this.labelFolders) {
+        // apiでgetしたlabelFoldersをfor文で一つずつ変数に代入していく
+        var labelFolder = this.labelFolders[i]
+        // titleの中でkeywordの文字列(大文字小文字の区別はなし)が存在すれば、filterdFoldersにpush
+        if (labelFolder.title.toLowerCase().indexOf(searchWord) !== -1) {
+          filteredLabelFolders.push(labelFolder)
+        }
+      }
+      // keyowordの文字列が存在したものだけ格納された配列を返す
+      return filteredLabelFolders
+    }
   }
 }
 </script>
 
 <style scoped>
+.foldercard {
+  height: 580px;
+  width: 256px;
+  margin-left: 60px;
+}
 .folder {
   margin-left: 0px;
 }
 .folder:hover {
   margin-left: 15px;
-  transition: all 0.9s;
+  transition: all .6s;
   background-color: rgb(212, 212, 216);
 }
 </style>

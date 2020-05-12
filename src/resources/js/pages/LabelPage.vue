@@ -2,11 +2,10 @@
   <v-content>
     <div class="back">
       <v-layout wrap pt-5>
-        <v-flex xs3 class="folder" pt-4>
+        <v-flex xs3 pt-4 class="folder" >
           <LabelFolder v-model="selectedFolder" />
         </v-flex>
-        <v-flex xs9>
-          <span>　　　　現在のフォルダ 検索 　　　　　　　　　ここにコンポーネント</span>
+        <v-flex xs9 pr-5>
           <Label v-model="selectedFolder" />
         </v-flex>
       </v-layout>
@@ -20,7 +19,7 @@ import Label from '../components/Label.vue'
 export default {
   components: {
     LabelFolder,
-    Label
+    Label,
   },
   metaInfo: {
     title: 'Label Page'
@@ -36,7 +35,7 @@ export default {
 
 <style scoped>
 .back {
-  background-color: rgb(233, 231, 231);
+  background-color: rgb(247, 247, 247);
   min-height: 700px;
 }
 </style>

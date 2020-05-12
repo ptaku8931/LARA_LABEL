@@ -2127,6 +2127,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // 親コンポーネントから選択されたフォルダidをもらう
   props: {
@@ -2136,9 +2164,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       // ラベルデータ格納
       labels: '',
-      input: false
+      // 検索ワード
+      keyword: '',
+      // darkテーマ切り替え
+      theme: false,
+      // colorドロップダウン
+      color: ['', 'red', 'indigo', 'black', 'grey', 'cyan', 'pink', 'teal'],
+      // カラー検索用
+      selectedColor: ''
     };
   },
+  // propsのvalue つまり selectedFolderを監視
   watch: {
     value: function () {
       var _value = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(folder_id) {
@@ -2147,7 +2183,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                selected_id = folder_id;
+                selected_id = folder_id; // folder_idがnullでなければapiを叩いてデータをリクエスト
 
                 if (!(selected_id !== null)) {
                   _context.next = 8;
@@ -2159,7 +2195,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
                 response = _context.sent;
-                this.labels = response.data;
+                this.labels = response.data; // folder_idがnullならばlabelsをリセット
+
                 _context.next = 9;
                 break;
 
@@ -2181,11 +2218,74 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return value;
     }()
   },
-  methods: {// クリックしたテキストをクリップボードにコピー
-    // witeToClipboard(id) {
-    //   const copyText = this.$el.getElementById('#target').value
-    //   navigator.clipboard.writeText(copyText)
-    // },
+  methods: {
+    // クリックしたテキストをクリップボードにコピー
+    copyToClipboard: function copyToClipboard(index) {
+      var copyText = this.$refs.copyMe[index].placeholder;
+      navigator.clipboard.writeText(copyText);
+    },
+    // ラベル削除 api
+    deleteLabel: function deleteLabel(id, index) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!confirm('are you sure?')) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _context2.next = 3;
+                return axios["delete"]('api/label/' + id);
+
+              case 3:
+                response = _context2.sent;
+
+                _this.labels.splice(index, 1);
+
+              case 5:
+                return _context2.abrupt("return", false);
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  },
+  computed: {
+    // ラベル検索
+    filteredLabels: function filteredLabels() {
+      // 空配列をもつ変数をセット
+      var filteredLabels = []; // キーワードとキーワードを小文字にしたものを変数に代入
+
+      var searchWord = this.keyword && this.keyword.toLowerCase();
+
+      for (var i in this.labels) {
+        // apiでgetしたlabelsをfor文で一つずつ変数に代入していく
+        var label = this.labels[i]; // titleもしくはtextの中でkeywordと一致する文字列(大文字小文字の区別はなし)があればfilteredLabelsにpush
+
+        if (label.title.toLowerCase().indexOf(searchWord) !== -1 || label.text.toLowerCase().indexOf(searchWord) !== -1) {
+          // electedColorがfalseならばfilteredLabelsにpush
+          if (!this.selectedColor) {
+            filteredLabels.push(label); // selectedColorがtrueならば一致した場合のみpush
+          } else {
+            if (label.color === this.selectedColor) {
+              filteredLabels.push(label);
+            }
+          }
+        }
+      } // keyowordの文字列が存在したものだけ格納された配列を返す
+
+
+      return filteredLabels;
+    }
   }
 });
 
@@ -2284,6 +2384,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2292,6 +2395,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       folderForm: {
         title: ''
       },
+      currentFolderId: '',
+      // 検索ワード
+      keyword: '',
       // darkテーマ切り替え
       theme: false,
       // 新規作成及び編集フォーム用
@@ -2299,7 +2405,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       placeHolder: 'New Folder',
       // editがtrueなら編集フォームに変更
       edit: false,
-      editID: '',
+      editId: '',
       // バリデーション
       valid: true,
       folderRules: [function (v) {
@@ -2343,20 +2449,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // 新規作成フォームから編集フォームに切り替える
     editFolder: function editFolder(id, title) {
       this.edit = true;
-      this.editID = id;
+      this.editId = id;
       this.placeHolder = title;
       this.formTitle = 'Edit Folder';
     },
     // 編集フォームから新規作成フォームに戻す
     cancelEdit: function cancelEdit() {
       this.edit = false;
-      this.editID = '';
+      this.editId = '';
       this.placeHolder = 'New Folder';
       this.formTitle = 'Create Folder';
     },
-    // クリックされたフォルダのidを親コンポーネントに渡す
+    // 選択されたフォルダのidを親コンポーネントに渡す
     selectedFolder: function selectedFolder(id) {
-      this.$emit('input', id);
+      this.$emit('input', id); // 現在選択されたフォルダidをデータに格納
+
+      this.currentFolderId = id;
     },
     // フォルダ新規作成 POST
     createFolder: function createFolder() {
@@ -2397,18 +2505,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.put('api/label_folder/' + _this3.editID, _this3.folderForm);
+                return axios.put('api/label_folder/' + _this3.editId, _this3.folderForm);
 
               case 2:
                 response = _context3.sent;
-                // editIDと一致するフォルダのindexをfoldersIndexに代入
+                // editIdと一致するフォルダのindexをfoldersIndexに代入
                 foldersIndex = '';
 
                 _this3.labelFolders.map(function (folder, index) {
-                  if (folder.id === _this3.editID) {
+                  if (folder.id === _this3.editId) {
                     foldersIndex = index;
                   }
-                }); // editIDと一致したフォルダのタイトルに変更したタイトルを代入
+                }); // editIdと一致したフォルダのタイトルに変更したタイトルを代入
 
 
                 _this3.labelFolders[foldersIndex].title = _this3.folderForm.title; // 編集モードをリセットする
@@ -2447,7 +2555,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 response = _context4.sent;
 
-                _this4.labelFolders.splice(index, 1);
+                // フォルダのindexを受け取ってlabelFoldersから削除
+                _this4.labelFolders.splice(index, 1); // 選択されたフォルダidをリセットする
+
 
                 _this4.selectedFolder(null);
 
@@ -2461,6 +2571,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee4);
       }))();
+    }
+  },
+  computed: {
+    // フォルダー検索
+    filteredLabelFolders: function filteredLabelFolders() {
+      // 空配列をもつ変数をセット
+      var filteredLabelFolders = [];
+      var searchWord = this.keyword && this.keyword.toLowerCase();
+
+      for (var i in this.labelFolders) {
+        // apiでgetしたlabelFoldersをfor文で一つずつ変数に代入していく
+        var labelFolder = this.labelFolders[i]; // titleの中でkeywordの文字列(大文字小文字の区別はなし)が存在すれば、filterdFoldersにpush
+
+        if (labelFolder.title.toLowerCase().indexOf(searchWord) !== -1) {
+          filteredLabelFolders.push(labelFolder);
+        }
+      } // keyowordの文字列が存在したものだけ格納された配列を返す
+
+
+      return filteredLabelFolders;
     }
   }
 });
@@ -2588,7 +2718,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2601,7 +2730,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      // クリックされたフォルダid
+      // クリックされたフォルダid　
       selectedFolder: null
     };
   }
@@ -7481,7 +7610,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nspan[data-v-a3c544ce] {\n  width: 90%;\n  color: white;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-bottom: 0;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n}\n", ""]);
+exports.push([module.i, "\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 150px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all 0.9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: white;\n}\ninput[data-v-a3c544ce]::-webkit-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::-moz-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]:-ms-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::-ms-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::placeholder {\n  color: white;\n}\n[data-v-a3c544ce]:focus::-webkit-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::-moz-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus:-ms-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::-ms-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::placeholder {\n  opacity: 0.3;\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
 
 // exports
 
@@ -7500,7 +7629,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 15px;\n  transition: all 0.9s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
+exports.push([module.i, "\n.foldercard[data-v-55332b32] {\n  height: 580px;\n  width: 256px;\n  margin-left: 60px;\n}\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 15px;\n  transition: all .6s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
 
 // exports
 
@@ -7557,7 +7686,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(233, 231, 231);\n  min-height: 700px;\n}\n", ""]);
+exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(247, 247, 247);\n  min-height: 700px;\n}\n", ""]);
 
 // exports
 
@@ -40378,37 +40507,91 @@ var render = function() {
     "v-container",
     [
       _c(
+        "v-bottom-navigation",
+        {
+          staticClass: "labelbar",
+          attrs: { height: "70px", color: "primary", dark: _vm.theme }
+        },
+        [
+          _c(
+            "v-btn",
+            [
+              _vm._v("\n      Create Label\n      "),
+              _c("v-icon", { staticClass: "pt-3" }, [
+                _vm._v("mdi-image-filter-none")
+              ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-text-field", {
+            staticClass: "mt-2",
+            attrs: {
+              outlined: "",
+              label: "Search Label",
+              "append-icon": "mdi-magnify"
+            },
+            model: {
+              value: _vm.keyword,
+              callback: function($$v) {
+                _vm.keyword = $$v
+              },
+              expression: "keyword"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-select", {
+            staticClass: "mt-2",
+            attrs: {
+              label: "Search of color",
+              outlined: "",
+              "prepend-inner-icon": "mdi-file-search",
+              items: _vm.color
+            },
+            model: {
+              value: _vm.selectedColor,
+              callback: function($$v) {
+                _vm.selectedColor = $$v
+              },
+              expression: "selectedColor"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-select", {
+            staticClass: "mt-2",
+            attrs: { label: "sort", outlined: "" }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-switch", {
+        staticClass: "switch",
+        attrs: { label: "Bar Theme", light: "" },
+        model: {
+          value: _vm.theme,
+          callback: function($$v) {
+            _vm.theme = $$v
+          },
+          expression: "theme"
+        }
+      }),
+      _vm._v(" "),
+      _c(
         "v-row",
-        _vm._l(_vm.labels, function(label) {
+        _vm._l(_vm.filteredLabels, function(label, index) {
           return _c(
             "v-col",
-            { key: label.id, attrs: { cols: "4" } },
+            { key: label.id, staticClass: "label", attrs: { cols: "4" } },
             [
               _c(
                 "v-card",
-                { attrs: { raised: "", color: label.color, dark: "" } },
+                { attrs: { raised: "", dark: "", color: label.color } },
                 [
-                  _c("v-card-title", [
-                    !_vm.input
-                      ? _c(
-                          "span",
-                          {
-                            on: {
-                              dblclick: function($event) {
-                                _vm.input = true
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(label.title))]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.input
-                      ? _c("input", {
-                          attrs: { type: "text" },
-                          domProps: { value: label.title }
-                        })
-                      : _vm._e()
+                  _c("v-card-title", { staticClass: "title" }, [
+                    _c("input", {
+                      attrs: { type: "text", placeholder: label.title }
+                    })
                   ]),
                   _vm._v(" "),
                   _c(
@@ -40419,19 +40602,20 @@ var render = function() {
                         "v-icon",
                         {
                           staticClass: "copy-btn",
-                          attrs: { left: "", small: "" },
+                          attrs: { left: "" },
                           on: {
                             click: function($event) {
-                              return _vm.witeToClipboard(label.id)
+                              return _vm.copyToClipboard(index)
                             }
                           }
                         },
-                        [_vm._v("mdi-file")]
+                        [_vm._v("mdi-content-copy")]
                       ),
                       _vm._v(" "),
                       _c("input", {
-                        attrs: { type: "text" },
-                        domProps: { value: label.text }
+                        ref: "copyMe",
+                        refInFor: true,
+                        attrs: { type: "text", placeholder: label.text }
                       })
                     ],
                     1
@@ -40441,33 +40625,6 @@ var render = function() {
                     "div",
                     { staticClass: "d-flex" },
                     [
-                      _c(
-                        "div",
-                        { staticClass: "text-left ml-3" },
-                        [
-                          _vm.input
-                            ? _c(
-                                "v-btn",
-                                {
-                                  attrs: { "x-small": "", right: "", light: "" }
-                                },
-                                [_vm._v("save")]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.input
-                            ? _c(
-                                "v-btn",
-                                {
-                                  attrs: { "x-small": "", right: "", light: "" }
-                                },
-                                [_vm._v("back")]
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
                       _c("v-spacer"),
                       _vm._v(" "),
                       _c(
@@ -40475,16 +40632,38 @@ var render = function() {
                         { staticClass: "text-right" },
                         [
                           _c("v-icon", { attrs: { left: "" } }, [
-                            _vm._v("mdi-delete")
+                            _vm._v("mdi-gesture-swipe")
                           ]),
                           _vm._v(" "),
-                          _c("v-icon", { attrs: { left: "" } }, [
-                            _vm._v("mdi-email")
-                          ]),
+                          label.url
+                            ? _c(
+                                "a",
+                                {
+                                  attrs: { href: label.url, target: "_blank" }
+                                },
+                                [
+                                  _c("v-icon", { attrs: { left: "" } }, [
+                                    _vm._v("mdi-microsoft-internet-explorer")
+                                  ])
+                                ],
+                                1
+                              )
+                            : _c("v-icon", { attrs: { left: "" } }, [
+                                _vm._v("mdi-cloud-off-outline")
+                              ]),
                           _vm._v(" "),
-                          _c("v-icon", { attrs: { left: "" } }, [
-                            _vm._v("mdi-message-text")
-                          ])
+                          _c(
+                            "v-icon",
+                            {
+                              attrs: { left: "" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteLabel(label.id, index)
+                                }
+                              }
+                            },
+                            [_vm._v("mdi-delete")]
+                          )
                         ],
                         1
                       )
@@ -40528,10 +40707,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-card",
-    {
-      staticClass: "mx-auto",
-      attrs: { height: "580", width: "256", dark: _vm.theme }
-    },
+    { staticClass: "foldercard", attrs: { dark: _vm.theme } },
     [
       _c(
         "v-navigation-drawer",
@@ -40543,6 +40719,21 @@ var render = function() {
               _c(
                 "v-list-item-content",
                 [
+                  _c("v-text-field", {
+                    attrs: {
+                      outlined: "",
+                      label: "Search Folder",
+                      "append-icon": "mdi-folder-search"
+                    },
+                    model: {
+                      value: _vm.keyword,
+                      callback: function($$v) {
+                        _vm.keyword = $$v
+                      },
+                      expression: "keyword"
+                    }
+                  }),
+                  _vm._v(" "),
                   _c("v-list-item-title", { staticClass: "text-center" }, [
                     _vm._v(_vm._s(_vm.formTitle))
                   ]),
@@ -40568,7 +40759,9 @@ var render = function() {
                       _c("v-text-field", {
                         attrs: {
                           label: _vm.placeHolder,
-                          "prepend-icon": "mdi-folder",
+                          "prepend-icon": _vm.edit
+                            ? "mdi-folder-edit"
+                            : "mdi-folder-plus",
                           clearable: "",
                           rules: _vm.folderRules
                         },
@@ -40664,7 +40857,7 @@ var render = function() {
           _c(
             "v-list",
             { attrs: { dense: "", nav: "" } },
-            _vm._l(_vm.labelFolders, function(folder, index) {
+            _vm._l(_vm.filteredLabelFolders, function(folder, index) {
               return _c(
                 "v-list-item",
                 {
@@ -40680,7 +40873,11 @@ var render = function() {
                 [
                   _c(
                     "v-list-item-icon",
-                    [_c("v-icon", [_vm._v("mdi-folder")])],
+                    [
+                      folder.id === _vm.currentFolderId
+                        ? _c("v-icon", [_vm._v("mdi-folder-open")])
+                        : _c("v-icon", [_vm._v("mdi-folder")])
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -40911,14 +41108,8 @@ var render = function() {
             _vm._v(" "),
             _c(
               "v-flex",
-              { attrs: { xs9: "" } },
+              { attrs: { xs9: "", "pr-5": "" } },
               [
-                _c("span", [
-                  _vm._v(
-                    "　　　　現在のフォルダ 検索 　　　　　　　　　ここにコンポーネント"
-                  )
-                ]),
-                _vm._v(" "),
                 _c("Label", {
                   model: {
                     value: _vm.selectedFolder,

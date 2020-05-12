@@ -76,11 +76,10 @@ class LabelFolderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Label_Folder $label_folder)
     {
-        $folder = LabelFolder::find($id);
         $form = $request->all();
-        $folder->fill($form)->save();
+        $label_folder->fill($form)->save();
         return response('', 200);
     }
 
@@ -90,9 +89,9 @@ class LabelFolderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(LabelFolder $label_folder)
     {
-        LabelFolder::find($id)->delete();
+        $label_folder->delete();
         return response('', 200);
     }
 }

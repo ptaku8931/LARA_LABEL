@@ -75,9 +75,11 @@ class LabelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Label $label)
     {
-        //
+        $form = $request->input();
+        $label->fill($form)->save();
+        return $label;
     }
 
     /**
@@ -86,8 +88,9 @@ class LabelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Label $label)
     {
-        //
+        $label->delete();
+        return response('', 200);
     }
 }
