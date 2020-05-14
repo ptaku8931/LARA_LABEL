@@ -41,7 +41,10 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form = $request->all();
+        $label = new Label;
+        $label->fill($form)->save();
+        return $label;
     }
 
     /**
@@ -77,7 +80,7 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        $form = $request->input();
+        $form = $request->all();
         $label->fill($form)->save();
         return $label;
     }

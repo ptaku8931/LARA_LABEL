@@ -2155,6 +2155,139 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // 親コンポーネントから選択されたフォルダidをもらう
   props: {
@@ -2164,14 +2297,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       // ラベルデータ格納
       labels: '',
+      // 新規作成用データ格納
+      newLabel: {
+        label_folder_id: '',
+        title: '',
+        text: '',
+        color: '',
+        url: ''
+      },
+      // 新規作成モーダル
+      createModal: false,
+      // 新規作成カラー
+      createdColor: '',
+      // カラー変更モーダル
+      colorModal: false,
+      // カラー変更前のラベルのカラー
+      beforeChangeColor: '',
+      // カラー変更前のラベルid
+      beforeChangeLabelId: '',
+      // 変更したいカラー
+      changedColor: '',
+      // URL追加及び編集用モーダル
+      urlModal: false,
+      // URL追加及び編集用モーダル
+      editUrl: false,
+      // URL追加もしくは編集したいラベルのid
+      urlId: '',
+      // 追加もしくは変更したいURL
+      newUrl: '',
       // 検索ワード
       keyword: '',
+      // カラー検索用
+      selectedColor: '',
       // darkテーマ切り替え
       theme: false,
-      // colorドロップダウン
-      color: ['', 'red', 'indigo', 'black', 'grey', 'cyan', 'pink', 'teal'],
-      // カラー検索用
-      selectedColor: ''
+      // colors新規作成、編集用
+      colors: ['red', 'indigo', 'black', 'grey', 'cyan', 'pink', 'teal', 'blue', 'green']
     };
   },
   // propsのvalue つまり selectedFolderを監視
@@ -2219,13 +2380,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }()
   },
   methods: {
+    // 新規作成用カラーをget
+    createRadioColor: function createRadioColor(index) {
+      this.createdColor = this.$refs.createRadioColor[index].value;
+      this.newLabel.color = this.createdColor;
+    },
+    // 新規作成モーダルリセット
+    clearCreateModal: function clearCreateModal() {
+      this.newLabel.title = '';
+      this.newLabel.text = '';
+      this.newLabel.url = '';
+      this.createModal = false;
+    },
+    // カラー変更モーダルオープン&カラー変更するラベルの色とidをget
+    editColorModal: function editColorModal(index, id) {
+      this.colorModal = true;
+      this.beforeChangeColor = this.$refs.labelColor[index].color;
+      this.beforeChangeLabelId = id;
+    },
+    // 変更したいカラーをget
+    editRadioColor: function editRadioColor(index) {
+      this.changedColor = this.$refs.editRadioColor[index].value;
+    },
+    // addUrlModalを開く
+    addUrlModal: function addUrlModal(id) {
+      this.urlModal = true;
+      this.editUrl = false;
+      this.urlId = id;
+    },
+    // editUrlModalを開く
+    editUrlModal: function editUrlModal(id) {
+      this.urlModal = true;
+      this.editUrl = true;
+      this.urlId = id;
+    },
+    // urlModalを閉じる
+    clearUrlModal: function clearUrlModal() {
+      this.newUrl = '';
+      this.urlModal = false;
+    },
     // クリックしたテキストをクリップボードにコピー
     copyToClipboard: function copyToClipboard(index) {
-      var copyText = this.$refs.copyMe[index].placeholder;
+      var copyText = this.$refs.labelText[index].value;
       navigator.clipboard.writeText(copyText);
     },
-    // ラベル削除 api
-    deleteLabel: function deleteLabel(id, index) {
+    // ラベル新規作成 post
+    createLabel: function createLabel() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -2234,21 +2434,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!confirm('are you sure?')) {
-                  _context2.next = 5;
-                  break;
-                }
-
+                // 現在開いているフォルダidを代入
+                _this.newLabel.label_folder_id = _this.value;
                 _context2.next = 3;
-                return axios["delete"]('api/label/' + id);
+                return axios.post('api/label', _this.newLabel);
 
               case 3:
                 response = _context2.sent;
 
-                _this.labels.splice(index, 1);
+                _this.labels.push(response.data);
 
-              case 5:
-                return _context2.abrupt("return", false);
+                _this.clearCreateModal();
 
               case 6:
               case "end":
@@ -2256,6 +2452,216 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee2);
+      }))();
+    },
+    // ラベルタイトル更新 patch
+    editLabelTitle: function editLabelTitle(e, index, id) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var changedTitle, response, labelsIndex;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                // 変更があったinputを取得し変数に代入
+                changedTitle = e.target.value; // タイトルの変更があれば、apiで更新を行う
+
+                if (!(changedTitle !== _this2.labels[index].title)) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _context3.next = 4;
+                return axios.patch('api/label/' + id, {
+                  title: changedTitle
+                });
+
+              case 4:
+                response = _context3.sent;
+                labelsIndex = '';
+
+                _this2.labels.map(function (label, index) {
+                  // 変更があったラベルのidと一致するラベルを探す
+                  if (label.id === id) {
+                    labelsIndex = index;
+                  }
+                }); // 一致したラベルのタイトルに変更されたタイトルを代入
+
+
+                _this2.labels[labelsIndex].title = changedTitle;
+
+              case 8:
+                return _context3.abrupt("return", false);
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    // ラベルテキスト更新 patch
+    editLabelText: function editLabelText(e, index, id) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var changedText, response, labelsIndex;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                // 変更があったinputを取得し変数に代入
+                changedText = e.target.value; // タイトルの変更があれば、apiで更新を行う
+
+                if (!(changedText !== _this3.labels[index].text)) {
+                  _context4.next = 8;
+                  break;
+                }
+
+                _context4.next = 4;
+                return axios.patch('api/label/' + id, {
+                  text: changedText
+                });
+
+              case 4:
+                response = _context4.sent;
+                labelsIndex = '';
+
+                _this3.labels.map(function (label, index) {
+                  // 変更があったラベルのidと一致するラベルを探す
+                  if (label.id === id) {
+                    labelsIndex = index;
+                  }
+                }); // 一致したラベルのタイトルに変更されたタイトルを代入
+
+
+                _this3.labels[labelsIndex].text = changedText;
+
+              case 8:
+                return _context4.abrupt("return", false);
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    // ラベルカラー更新 patch
+    editLabelColor: function editLabelColor() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var response, labelsIndex;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!(_this4.changedColor !== _this4.beforeChangeLabelColor)) {
+                  _context5.next = 7;
+                  break;
+                }
+
+                _context5.next = 3;
+                return axios.patch('api/label/' + _this4.beforeChangeLabelId, {
+                  color: _this4.changedColor
+                });
+
+              case 3:
+                response = _context5.sent;
+                labelsIndex = '';
+
+                _this4.labels.map(function (label, index) {
+                  if (label.id === _this4.beforeChangeLabelId) {
+                    labelsIndex = index;
+                  }
+                });
+
+                _this4.labels[labelsIndex].color = _this4.changedColor;
+
+              case 7:
+                _this4.colorModal = false;
+
+              case 8:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    // ラベルURL追加及び更新 patch
+    editLabelUrl: function editLabelUrl() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        var response, labelsIndex;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return axios.patch('api/label/' + _this5.urlId, {
+                  url: _this5.newUrl
+                });
+
+              case 2:
+                response = _context6.sent;
+                labelsIndex = '';
+
+                _this5.labels.map(function (label, index) {
+                  if (label.id === _this5.urlId) {
+                    labelsIndex = index;
+                  }
+                });
+
+                _this5.labels[labelsIndex].url = _this5.newUrl;
+                _this5.newUrl = '';
+                _this5.urlModal = false;
+
+              case 8:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }))();
+    },
+    // ラベル削除 delete
+    deleteLabel: function deleteLabel(id, index) {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                if (!confirm('are you sure?')) {
+                  _context7.next = 5;
+                  break;
+                }
+
+                _context7.next = 3;
+                return axios["delete"]('api/label/' + id);
+
+              case 3:
+                response = _context7.sent;
+
+                _this6.labels.splice(index, 1);
+
+              case 5:
+                return _context7.abrupt("return", false);
+
+              case 6:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
       }))();
     }
   },
@@ -2285,6 +2691,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
       return filteredLabels;
+    },
+    // カラー検索用カラー配列作成
+    searchColors: function searchColors() {
+      // カラー配列のコピーを作成
+      var searchColors = this.colors.slice(); // 先頭に空文字を追加して返す
+
+      searchColors.unshift('');
+      return searchColors;
     }
   }
 });
@@ -2308,6 +2722,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7610,7 +8029,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 150px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all 0.9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: white;\n}\ninput[data-v-a3c544ce]::-webkit-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::-moz-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]:-ms-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::-ms-input-placeholder {\n  color: white;\n}\ninput[data-v-a3c544ce]::placeholder {\n  color: white;\n}\n[data-v-a3c544ce]:focus::-webkit-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::-moz-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus:-ms-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::-ms-input-placeholder {\n  opacity: 0.3;\n}\n[data-v-a3c544ce]:focus::placeholder {\n  opacity: 0.3;\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-content .v-card.v-sheet.theme--light {\n    background-color: white !important;\n    border-left: 8px solid rgb(30, 112, 219) !important;\n} */\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 50px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all .9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: rgb(245, 243, 243);\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
 
 // exports
 
@@ -7629,7 +8048,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.foldercard[data-v-55332b32] {\n  height: 580px;\n  width: 256px;\n  margin-left: 60px;\n}\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 15px;\n  transition: all .6s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
+exports.push([module.i, "\n.foldercard[data-v-55332b32] {\n  height: 580px;\n  width: 256px;\n  margin-left: 60px;\n}\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 10px;\n  transition: all .9s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
 
 // exports
 
@@ -7686,7 +8105,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(247, 247, 247);\n  min-height: 700px;\n}\n", ""]);
+exports.push([module.i, "\n.back[data-v-d2f6ea2c] {\n  background-color: rgb(238, 234, 234);\n  min-height: 700px;\n}\n", ""]);
 
 // exports
 
@@ -40508,13 +40927,18 @@ var render = function() {
     [
       _c(
         "v-bottom-navigation",
-        {
-          staticClass: "labelbar",
-          attrs: { height: "70px", color: "primary", dark: _vm.theme }
-        },
+        { staticClass: "labelbar", attrs: { height: "70px", dark: _vm.theme } },
         [
           _c(
             "v-btn",
+            {
+              attrs: { disabled: !_vm.value },
+              on: {
+                click: function($event) {
+                  _vm.createModal = true
+                }
+              }
+            },
             [
               _vm._v("\n      Create Label\n      "),
               _c("v-icon", { staticClass: "pt-3" }, [
@@ -40546,7 +40970,7 @@ var render = function() {
               label: "Search of color",
               outlined: "",
               "prepend-inner-icon": "mdi-file-search",
-              items: _vm.color
+              items: _vm.searchColors
             },
             model: {
               value: _vm.selectedColor,
@@ -40567,7 +40991,7 @@ var render = function() {
       _vm._v(" "),
       _c("v-switch", {
         staticClass: "switch",
-        attrs: { label: "Bar Theme", light: "" },
+        attrs: { dark: "" },
         model: {
           value: _vm.theme,
           callback: function($$v) {
@@ -40579,90 +41003,571 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-row",
-        _vm._l(_vm.filteredLabels, function(label, index) {
-          return _c(
-            "v-col",
-            { key: label.id, staticClass: "label", attrs: { cols: "4" } },
-            [
-              _c(
-                "v-card",
-                { attrs: { raised: "", dark: "", color: label.color } },
-                [
-                  _c("v-card-title", { staticClass: "title" }, [
-                    _c("input", {
-                      attrs: { type: "text", placeholder: label.title }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-subtitle",
-                    { staticClass: "subtitle" },
-                    [
-                      _c(
-                        "v-icon",
-                        {
-                          staticClass: "copy-btn",
-                          attrs: { left: "" },
+        [
+          _vm._l(_vm.filteredLabels, function(label, index) {
+            return _c(
+              "v-col",
+              { key: label.id, staticClass: "label", attrs: { cols: "4" } },
+              [
+                _c(
+                  "v-card",
+                  {
+                    ref: "labelColor",
+                    refInFor: true,
+                    attrs: { raised: "", dark: "", color: label.color }
+                  },
+                  [
+                    _c("v-card-title", { staticClass: "title" }, [
+                      _c("input", {
+                        attrs: { type: "text" },
+                        domProps: { value: label.title },
+                        on: {
+                          blur: function($event) {
+                            return _vm.editLabelTitle($event, index, label.id)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-card-subtitle",
+                      { staticClass: "subtitle" },
+                      [
+                        _c(
+                          "v-icon",
+                          {
+                            staticClass: "copy-btn",
+                            attrs: { left: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.copyToClipboard(index)
+                              }
+                            }
+                          },
+                          [_vm._v("mdi-content-copy")]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          ref: "labelText",
+                          refInFor: true,
+                          attrs: { type: "text" },
+                          domProps: { value: label.text },
                           on: {
-                            click: function($event) {
-                              return _vm.copyToClipboard(index)
+                            blur: function($event) {
+                              return _vm.editLabelText($event, index, label.id)
                             }
                           }
-                        },
-                        [_vm._v("mdi-content-copy")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        ref: "copyMe",
-                        refInFor: true,
-                        attrs: { type: "text", placeholder: label.text }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "text-right" },
+                      [
+                        _c("v-icon", { attrs: { left: "" } }, [
+                          _vm._v("mdi-gesture-swipe")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "v-icon",
+                          {
+                            attrs: { left: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.editColorModal(index, label.id)
+                              }
+                            }
+                          },
+                          [_vm._v("mdi-pencil")]
+                        ),
+                        _vm._v(" "),
+                        label.url
+                          ? _c(
+                              "a",
+                              { attrs: { href: label.url, target: "_blank" } },
+                              [
+                                _c("v-icon", { attrs: { left: "" } }, [
+                                  _vm._v("mdi-microsoft-internet-explorer")
+                                ])
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        label.url
+                          ? _c(
+                              "v-icon",
+                              {
+                                attrs: { left: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editUrlModal(label.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("mdi-microsoft-windows")]
+                            )
+                          : _c(
+                              "v-icon",
+                              {
+                                attrs: { left: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.addUrlModal(label.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("mdi-microsoft-windows")]
+                            ),
+                        _vm._v(" "),
+                        _c(
+                          "v-icon",
+                          {
+                            attrs: { left: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteLabel(label.id, index)
+                              }
+                            }
+                          },
+                          [_vm._v("mdi-delete")]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-dialog",
+                {
+                  attrs: { persistent: "", "max-width": "500px" },
+                  model: {
+                    value: _vm.createModal,
+                    callback: function($$v) {
+                      _vm.createModal = $$v
+                    },
+                    expression: "createModal"
+                  }
+                },
+                [
                   _c(
-                    "div",
-                    { staticClass: "d-flex" },
+                    "v-card",
                     [
-                      _c("v-spacer"),
-                      _vm._v(" "),
                       _c(
-                        "div",
-                        { staticClass: "text-right" },
+                        "v-card-title",
                         [
-                          _c("v-icon", { attrs: { left: "" } }, [
-                            _vm._v("mdi-gesture-swipe")
+                          _c("v-icon", { staticClass: "mr-4" }, [
+                            _vm._v("mdi-image-filter-none")
                           ]),
                           _vm._v(" "),
-                          label.url
-                            ? _c(
-                                "a",
-                                {
-                                  attrs: { href: label.url, target: "_blank" }
-                                },
+                          _c("span", { staticClass: "headliner" }, [
+                            _vm._v("Create Label")
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-container",
+                            { attrs: { "d-flex": "" } },
+                            [
+                              _c(
+                                "v-row",
                                 [
-                                  _c("v-icon", { attrs: { left: "" } }, [
-                                    _vm._v("mdi-microsoft-internet-explorer")
-                                  ])
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "10" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          label: "Title",
+                                          required: "",
+                                          "prepend-icon":
+                                            "mdi-file-check-outline"
+                                        },
+                                        model: {
+                                          value: _vm.newLabel.title,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.newLabel, "title", $$v)
+                                          },
+                                          expression: "newLabel.title"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "10" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          label: "Text",
+                                          required: "",
+                                          "prepend-icon":
+                                            "mdi-file-document-outline"
+                                        },
+                                        model: {
+                                          value: _vm.newLabel.text,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.newLabel, "text", $$v)
+                                          },
+                                          expression: "newLabel.text"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-col",
+                                    { attrs: { cols: "10" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          label: "URL",
+                                          "prepend-icon":
+                                            "mdi-microsoft-internet-explorer"
+                                        },
+                                        model: {
+                                          value: _vm.newLabel.url,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.newLabel, "url", $$v)
+                                          },
+                                          expression: "newLabel.url"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("small", [
+                                        _vm._v("URLは必須ではありません。")
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-row",
+                                [
+                                  _c(
+                                    "v-col",
+                                    [
+                                      _c(
+                                        "v-radio-group",
+                                        {
+                                          staticClass: "text-center",
+                                          attrs: { label: "Color", colmn: "" },
+                                          model: {
+                                            value: _vm.createdColor,
+                                            callback: function($$v) {
+                                              _vm.createdColor = $$v
+                                            },
+                                            expression: "createdColor"
+                                          }
+                                        },
+                                        _vm._l(_vm.colors, function(
+                                          color,
+                                          index
+                                        ) {
+                                          return _c("v-radio", {
+                                            key: color,
+                                            ref: "createRadioColor",
+                                            refInFor: true,
+                                            attrs: {
+                                              color: color,
+                                              label: color,
+                                              value: color
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.createRadioColor(
+                                                  index
+                                                )
+                                              }
+                                            }
+                                          })
+                                        }),
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
                                 ],
                                 1
                               )
-                            : _c("v-icon", { attrs: { left: "" } }, [
-                                _vm._v("mdi-cloud-off-outline")
-                              ]),
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
                           _vm._v(" "),
                           _c(
-                            "v-icon",
+                            "v-btn",
                             {
-                              attrs: { left: "" },
+                              attrs: { text: "" },
                               on: {
                                 click: function($event) {
-                                  return _vm.deleteLabel(label.id, index)
+                                  return _vm.clearCreateModal()
                                 }
                               }
                             },
-                            [_vm._v("mdi-delete")]
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { text: "" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.createLabel()
+                                }
+                              }
+                            },
+                            [_vm._v("Create")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-dialog",
+                {
+                  attrs: { scrollable: "", "max-width": "250px" },
+                  model: {
+                    value: _vm.colorModal,
+                    callback: function($$v) {
+                      _vm.colorModal = $$v
+                    },
+                    expression: "colorModal"
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-icon", { staticClass: "mr-3" }, [
+                            _vm._v("mdi-pencil")
+                          ]),
+                          _vm._v("Edit Label Color\n          ")
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-divider"),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        { staticStyle: { height: "200px" } },
+                        [
+                          _c(
+                            "v-radio-group",
+                            {
+                              attrs: { column: "" },
+                              model: {
+                                value: _vm.changedColor,
+                                callback: function($$v) {
+                                  _vm.changedColor = $$v
+                                },
+                                expression: "changedColor"
+                              }
+                            },
+                            _vm._l(_vm.colors, function(color, index) {
+                              return _c("v-radio", {
+                                key: color,
+                                ref: "editRadioColor",
+                                refInFor: true,
+                                attrs: {
+                                  color: color,
+                                  label: color,
+                                  value: color
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editRadioColor(index)
+                                  }
+                                }
+                              })
+                            }),
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-divider"),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "grey", text: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.colorModal = false
+                                }
+                              }
+                            },
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "success", text: "" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editLabelColor()
+                                }
+                              }
+                            },
+                            [_vm._v("Update")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { justify: "center" } },
+            [
+              _c(
+                "v-dialog",
+                {
+                  attrs: { persistent: "", "max-width": "350" },
+                  model: {
+                    value: _vm.urlModal,
+                    callback: function($$v) {
+                      _vm.urlModal = $$v
+                    },
+                    expression: "urlModal"
+                  }
+                },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c(
+                        "v-container",
+                        [
+                          _c(
+                            "v-card-title",
+                            { staticClass: "headline" },
+                            [
+                              _c("v-icon", { staticClass: "mr-2" }, [
+                                _vm._v("mdi-microsoft-windows")
+                              ]),
+                              _vm._v(" "),
+                              _vm.editUrl
+                                ? _c("span", [_vm._v("Edit URL")])
+                                : _c("span", [_vm._v("Add URL")])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "URL",
+                              hint: _vm.editUrl
+                                ? "URLを削除する場合は未入力のまま送信してください"
+                                : "",
+                              "prepend-icon": "mdi-microsoft-internet-explorer",
+                              clearable: ""
+                            },
+                            model: {
+                              value: _vm.newUrl,
+                              callback: function($$v) {
+                                _vm.newUrl = $$v
+                              },
+                              expression: "newUrl"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "black", text: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.clearUrlModal()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Cancel")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "primary", text: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editLabelUrl()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Submit")]
+                              )
+                            ],
+                            1
                           )
                         ],
                         1
@@ -40676,8 +41581,8 @@ var render = function() {
             ],
             1
           )
-        }),
-        1
+        ],
+        2
       )
     ],
     1
@@ -40761,7 +41666,7 @@ var render = function() {
                           label: _vm.placeHolder,
                           "prepend-icon": _vm.edit
                             ? "mdi-folder-edit"
-                            : "mdi-folder-plus",
+                            : "mdi-folder-multiple",
                           clearable: "",
                           rules: _vm.folderRules
                         },
@@ -40933,7 +41838,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("v-switch", {
-        attrs: { label: "Folder Theme", light: "" },
+        attrs: { dark: "" },
         model: {
           value: _vm.theme,
           callback: function($$v) {

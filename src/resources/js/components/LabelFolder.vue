@@ -5,14 +5,19 @@
       <v-list-item>
         <v-list-item-content>
           <!-- フォルダ検索 -->
-          <v-text-field outlined label="Search Folder" append-icon="mdi-folder-search" v-model="keyword"></v-text-field>
+          <v-text-field
+            outlined
+            label="Search Folder"
+            append-icon="mdi-folder-search"
+            v-model="keyword"
+          ></v-text-field>
           <!-- 新規作成及び編集フォームタイトル -->
           <v-list-item-title class="text-center">{{ formTitle }}</v-list-item-title>
           <v-form v-model="valid" ref="form" @submit.prevent>
             <!-- 入力エリア-->
             <v-text-field
               :label="placeHolder"
-              :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-plus'"
+              :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-multiple'"
               clearable
               v-model="folderForm.title"
               :rules="folderRules"
@@ -73,7 +78,7 @@
       </v-list>
       <!-- フォルダ一覧表示ここまで -->
     </v-navigation-drawer>
-    <v-switch label="Folder Theme" light v-model="theme"></v-switch>
+    <v-switch dark v-model="theme"></v-switch>
   </v-card>
 </template>
 
@@ -207,8 +212,8 @@ export default {
   margin-left: 0px;
 }
 .folder:hover {
-  margin-left: 15px;
-  transition: all .6s;
+  margin-left: 10px;
+  transition: all .9s;
   background-color: rgb(212, 212, 216);
 }
 </style>

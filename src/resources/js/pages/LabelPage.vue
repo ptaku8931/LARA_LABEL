@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 .back {
-  background-color: rgb(247, 247, 247);
+  background-color: rgb(238, 234, 234);
   min-height: 700px;
 }
 </style>
