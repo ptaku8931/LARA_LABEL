@@ -56,8 +56,11 @@ class LabelController extends Controller
     public function show($id)
     {
         $folder = LabelFolder::find($id);
-        $labels = $folder->labels()->get();
-        return $labels;
+        if($folder->labels() !== null) {
+            $labels = $folder->labels()->get();
+            return $labels;
+        }
+        return response('', 200);
     }
 
     /**

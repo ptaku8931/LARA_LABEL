@@ -76,7 +76,7 @@ class LabelFolderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Label_Folder $label_folder)
+    public function update(Request $request, LabelFolder $label_folder)
     {
         $form = $request->all();
         $label_folder->fill($form)->save();

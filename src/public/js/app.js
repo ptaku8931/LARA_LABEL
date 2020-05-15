@@ -2288,6 +2288,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // 親コンポーネントから選択されたフォルダidをもらう
   props: {
@@ -2423,6 +2433,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     copyToClipboard: function copyToClipboard(index) {
       var copyText = this.$refs.labelText[index].value;
       navigator.clipboard.writeText(copyText);
+    },
+    pickupLabel: function pickupLabel(e, index) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.dropEffect = 'move';
+      e.dataTransfer.setData('from-label-index', index);
+    },
+    moveLabel: function moveLabel(e, toLabelIndex) {
+      var fromLabelIndex = e.dataTransfer.getData('from-label-index');
+      var labelToMove = this.labels.splice(fromLabelIndex, 1)[0];
+      this.labels.splice(toLabelIndex, 0, labelToMove);
     },
     // ラベル新規作成 post
     createLabel: function createLabel() {
@@ -2806,6 +2826,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2884,6 +2915,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$emit('input', id); // 現在選択されたフォルダidをデータに格納
 
       this.currentFolderId = id;
+    },
+    pickupLabelFolder: function pickupLabelFolder(e, index) {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.dropEffect = 'move';
+      e.dataTransfer.setData('from-label-folder-index', index);
+    },
+    moveLabelFolder: function moveLabelFolder(e, toLabelFolderIndex) {
+      var fromLabelFolderIndex = e.dataTransfer.getData('from-label-folder-index');
+      var labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex, 1)[0];
+      this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove);
     },
     // フォルダ新規作成 POST
     createFolder: function createFolder() {
@@ -8029,7 +8070,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-content .v-card.v-sheet.theme--light {\n    background-color: white !important;\n    border-left: 8px solid rgb(30, 112, 219) !important;\n} */\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 50px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all .9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: rgb(245, 243, 243);\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-content .v-card.v-sheet.theme--light {\n    background-color: white !important;\n    border-left: 8px solid rgb(30, 112, 219) !important;\n} */\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 50px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all .9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\n.draggable[data-v-a3c544ce] {\n  cursor: pointer;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: rgb(245, 243, 243);\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
 
 // exports
 
@@ -8048,7 +8089,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.foldercard[data-v-55332b32] {\n  height: 580px;\n  width: 256px;\n  margin-left: 60px;\n}\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 10px;\n  transition: all .9s;\n  background-color: rgb(212, 212, 216);\n}\n", ""]);
+exports.push([module.i, "\n.foldercard[data-v-55332b32] {\n  height: 580px;\n  width: 256px;\n  margin-left: 60px;\n}\n.folder[data-v-55332b32] {\n  margin-left: 0px;\n}\n.folder[data-v-55332b32]:hover {\n  margin-left: 10px;\n  transition: all 0.9s;\n  background-color: rgb(212, 212, 216);\n}\n.folder-icon[data-v-55332b32] {\n  padding: 0 12px !important;\n}\n.folder-title[data-v-55332b32] {\n  margin-top: 5px;\n  padding: 0 12px !important;\n}\n.folder-btn[data-v-55332b32] {\n  padding: 0 12px !important;\n}\n", ""]);
 
 // exports
 
@@ -41007,7 +41048,25 @@ var render = function() {
           _vm._l(_vm.filteredLabels, function(label, index) {
             return _c(
               "v-col",
-              { key: label.id, staticClass: "label", attrs: { cols: "4" } },
+              {
+                key: label.id,
+                staticClass: "label",
+                attrs: { cols: "4", draggable: "" },
+                on: {
+                  dragover: function($event) {
+                    $event.preventDefault()
+                  },
+                  dragenter: function($event) {
+                    $event.preventDefault()
+                  },
+                  dragstart: function($event) {
+                    return _vm.pickupLabel($event, index)
+                  },
+                  drop: function($event) {
+                    return _vm.moveLabel($event, index)
+                  }
+                }
+              },
               [
                 _c(
                   "v-card",
@@ -41066,9 +41125,11 @@ var render = function() {
                       "div",
                       { staticClass: "text-right" },
                       [
-                        _c("v-icon", { attrs: { left: "" } }, [
-                          _vm._v("mdi-gesture-swipe")
-                        ]),
+                        _c(
+                          "v-icon",
+                          { staticClass: "draggable", attrs: { left: "" } },
+                          [_vm._v("mdi-gesture-swipe")]
+                        ),
                         _vm._v(" "),
                         _c(
                           "v-icon",
@@ -41768,61 +41829,104 @@ var render = function() {
                 {
                   key: folder.id,
                   staticClass: "folder",
-                  attrs: { link: "", disabled: _vm.edit },
+                  attrs: { disabled: _vm.edit },
                   on: {
-                    mouseover: function($event) {
+                    click: function($event) {
                       return _vm.selectedFolder(folder.id)
+                    },
+                    dragover: function($event) {
+                      $event.preventDefault()
+                    },
+                    dragenter: function($event) {
+                      $event.preventDefault()
+                    },
+                    dragstart: function($event) {
+                      return _vm.pickupLabelFolder($event, index, folder.id)
+                    },
+                    drop: function($event) {
+                      return _vm.moveLabelFolder($event, index)
                     }
                   }
                 },
                 [
                   _c(
-                    "v-list-item-icon",
-                    [
-                      folder.id === _vm.currentFolderId
-                        ? _c("v-icon", [_vm._v("mdi-folder-open")])
-                        : _c("v-icon", [_vm._v("mdi-folder")])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-item-content",
-                    [
-                      _c("v-list-item-title", { staticClass: "folder-name" }, [
-                        _vm._v(_vm._s(folder.title))
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-item-icon",
+                    "v-row",
+                    { attrs: { draggable: "" } },
                     [
                       _c(
-                        "v-icon",
-                        {
-                          attrs: { right: "", disabled: _vm.edit },
-                          on: {
-                            click: function($event) {
-                              return _vm.editFolder(folder.id, folder.title)
-                            }
-                          }
-                        },
-                        [_vm._v("mdi-pen")]
+                        "v-col",
+                        { staticClass: "folder-icon", attrs: { cols: "2" } },
+                        [
+                          _c(
+                            "v-list-item-icon",
+                            [
+                              folder.id === _vm.currentFolderId
+                                ? _c("v-icon", [_vm._v("mdi-folder-open")])
+                                : _c("v-icon", [_vm._v("mdi-folder")])
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       ),
                       _vm._v(" "),
                       _c(
-                        "v-icon",
-                        {
-                          attrs: { right: "", disabled: _vm.edit },
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteFolder(folder.id, index)
-                            }
-                          }
-                        },
-                        [_vm._v("mdi-delete")]
+                        "v-col",
+                        { staticClass: "folder-title", attrs: { cols: "6" } },
+                        [
+                          _c(
+                            "v-list-item-content",
+                            [
+                              _c("v-list-item-title", [
+                                _vm._v(_vm._s(folder.title))
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "folder-btn", attrs: { cols: "4" } },
+                        [
+                          _c(
+                            "v-list-item-icon",
+                            [
+                              _c(
+                                "v-icon",
+                                {
+                                  attrs: { right: "", disabled: _vm.edit },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editFolder(
+                                        folder.id,
+                                        folder.title
+                                      )
+                                    }
+                                  }
+                                },
+                                [_vm._v("mdi-pen")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-icon",
+                                {
+                                  attrs: { right: "", disabled: _vm.edit },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteFolder(folder.id, index)
+                                    }
+                                  }
+                                },
+                                [_vm._v("mdi-delete")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       )
                     ],
                     1

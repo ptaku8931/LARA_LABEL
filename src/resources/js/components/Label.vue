@@ -31,7 +31,17 @@
     <v-switch class="switch" dark v-model="theme"></v-switch>
     <!-- ラベル一覧 ここから-->
     <v-row>
-      <v-col cols="4" class="label" v-for="(label, index) in filteredLabels" :key="label.id">
+      <v-col 
+        cols="4" 
+        class="label" 
+        v-for="(label, index) in filteredLabels" 
+        :key="label.id"
+        draggable
+        @dragover.prevent
+        @dragenter.prevent
+        @dragstart="pickupLabel($event, index)"
+        @drop="moveLabel($event, index)"
+      >
         <v-card raised dark :color="label.color" ref="labelColor">
           <v-card-title class="title">
             <input type="text" :value="label.title" @blur="editLabelTitle($event, index, label.id)" />
@@ -47,7 +57,7 @@
           </v-card-subtitle>
           <div class="text-right">
             <!-- ドラッグボタン -->
-            <v-icon left>mdi-gesture-swipe</v-icon>
+            <v-icon class="draggable" left>mdi-gesture-swipe</v-icon>
             <!-- カラー変更ボタン -->
             <v-icon @click="editColorModal(index, label.id)" left>mdi-pencil</v-icon>
             <!-- URLボタン -->
@@ -317,6 +327,18 @@ export default {
       navigator.clipboard.writeText(copyText)
     },
 
+    pickupLabel(e, index) {
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.dropEffect = 'move'
+      e.dataTransfer.setData('from-label-index', index)
+    },
+
+    moveLabel(e, toLabelIndex) {
+      const fromLabelIndex = e.dataTransfer.getData('from-label-index')
+      const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
+      this.labels.splice(toLabelIndex, 0, labelToMove)
+    },
+    
     // ラベル新規作成 post
     async createLabel() {
       // 現在開いているフォルダidを代入
@@ -491,6 +513,9 @@ export default {
 }
 .copy-btn {
   margin-right: 0;
+}
+.draggable {
+  cursor: pointer;
 }
 input {
   width: 90%;

@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       // クリックされたフォルダid　
-      selectedFolder: null
+      selectedFolder: null,
     }
   }
 }

@@ -54,26 +54,37 @@
         <v-list-item
           v-for="(folder, index) in filteredLabelFolders"
           :key="folder.id"
-          link
           class="folder"
-          @mouseover="selectedFolder(folder.id)"
+          @click="selectedFolder(folder.id)"
           :disabled="edit"
+          @dragover.prevent
+          @dragenter.prevent
+          @dragstart="pickupLabelFolder($event, index, folder.id)"
+          @drop="moveLabelFolder($event, index)"
         >
-          <v-list-item-icon>
-            <!-- フォルダアイコン -->
-            <v-icon v-if="folder.id === currentFolderId">mdi-folder-open</v-icon>
-            <v-icon v-else>mdi-folder</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <!-- フォルダタイトル -->
-            <v-list-item-title class="folder-name">{{ folder.title }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-icon>
-            <!-- フォルダ編集用アイコン -->
-            <v-icon right @click="editFolder(folder.id, folder.title)" :disabled="edit">mdi-pen</v-icon>
-            <!-- フォルダ削除用アイコン -->
-            <v-icon right @click="deleteFolder(folder.id, index)" :disabled="edit">mdi-delete</v-icon>
-          </v-list-item-icon>
+          <v-row draggable>
+            <v-col cols="2" class="folder-icon">
+              <v-list-item-icon>
+                <!-- フォルダアイコン -->
+                <v-icon v-if="folder.id === currentFolderId">mdi-folder-open</v-icon>
+                <v-icon v-else>mdi-folder</v-icon>
+              </v-list-item-icon>
+            </v-col>
+            <v-col cols="6" class="folder-title">
+              <v-list-item-content>
+                <!-- フォルダタイトル -->
+                <v-list-item-title>{{ folder.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-col>
+            <v-col cols="4" class="folder-btn">
+            <v-list-item-icon>
+              <!-- フォルダ編集用アイコン -->
+              <v-icon right @click="editFolder(folder.id, folder.title)" :disabled="edit">mdi-pen</v-icon>
+              <!-- フォルダ削除用アイコン -->
+              <v-icon right @click="deleteFolder(folder.id, index)" :disabled="edit">mdi-delete</v-icon>
+            </v-list-item-icon>
+            </v-col>
+          </v-row>
         </v-list-item>
       </v-list>
       <!-- フォルダ一覧表示ここまで -->
@@ -137,18 +148,33 @@ export default {
       this.placeHolder = 'New Folder'
       this.formTitle = 'Create Folder'
     },
+
     // 選択されたフォルダのidを親コンポーネントに渡す
     selectedFolder(id) {
       this.$emit('input', id)
       // 現在選択されたフォルダidをデータに格納
       this.currentFolderId = id
     },
+
+    pickupLabelFolder(e, index) {
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.dropEffect = 'move'
+      e.dataTransfer.setData('from-label-folder-index', index)
+    },
+
+    moveLabelFolder(e, toLabelFolderIndex) {
+      const fromLabelFolderIndex = e.dataTransfer.getData('from-label-folder-index')
+      const labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex,1)[0]
+      this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove)
+    },
+
     // フォルダ新規作成 POST
     async createFolder() {
       const response = await axios.post('api/label_folder', this.folderForm)
       this.labelFolders.push(response.data)
       this.resetValidation()
     },
+
     // フォルダ更新 PUT
     async updateFolder() {
       const response = await axios.put(
@@ -169,6 +195,7 @@ export default {
       // バリデーションをクリアする
       this.resetValidation()
     },
+
     // フォルダ削除 DELETE
     async deleteFolder(id, index) {
       if (confirm('Are you sure?')) {
@@ -213,7 +240,17 @@ export default {
 }
 .folder:hover {
   margin-left: 10px;
-  transition: all .9s;
+  transition: all 0.9s;
   background-color: rgb(212, 212, 216);
+}
+.folder-icon {
+  padding: 0 12px !important;
+}
+.folder-title {
+  margin-top: 5px;
+  padding: 0 12px !important;
+}
+.folder-btn {
+  padding: 0 12px !important;
 }
 </style>
