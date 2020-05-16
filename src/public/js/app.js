@@ -2088,6 +2088,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue */ "./resources/js/components/Pagination.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2298,13 +2299,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   // 親コンポーネントから選択されたフォルダidをもらう
   props: {
     value: ''
   },
   data: function data() {
     return {
+      snackbar: true,
+      text1: 'フォルダタイトルは20文字以下です。',
+      text2: 'フォルダタイトルは必須です。',
+      timeout: 10000,
       // ラベルデータ格納
       labels: '',
       // 新規作成用データ格納
@@ -2342,7 +2372,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // darkテーマ切り替え
       theme: false,
       // colors新規作成、編集用
-      colors: ['red', 'indigo', 'black', 'grey', 'cyan', 'pink', 'teal', 'blue', 'green']
+      colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'orange', 'brown', 'grey', 'black'],
+      page: 1,
+      perPage: 12,
+      totalPage: 1,
+      afterSearchLabel: 1
     };
   },
   // propsのvalue つまり selectedFolderを監視
@@ -2357,7 +2391,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 selected_id = folder_id; // folder_idがnullでなければapiを叩いてデータをリクエスト
 
                 if (!(selected_id !== null)) {
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
                 }
 
@@ -2366,15 +2400,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
                 response = _context.sent;
-                this.labels = response.data; // folder_idがnullならばlabelsをリセット
+                this.labels = response.data;
+                this.totalPage = Math.ceil(this.labels.length / this.perPage); // folder_idがnullならばlabelsをリセット
 
-                _context.next = 9;
+                _context.next = 11;
                 break;
 
-              case 8:
-                this.labels = '';
-
               case 9:
+                this.labels = '';
+                this.totalPage = 1;
+
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -2443,6 +2479,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var fromLabelIndex = e.dataTransfer.getData('from-label-index');
       var labelToMove = this.labels.splice(fromLabelIndex, 1)[0];
       this.labels.splice(toLabelIndex, 0, labelToMove);
+    },
+    changedPage: function changedPage(page) {
+      this.page = page;
     },
     // ラベル新規作成 post
     createLabel: function createLabel() {
@@ -2710,7 +2749,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } // keyowordの文字列が存在したものだけ格納された配列を返す
 
 
-      return filteredLabels;
+      this.afterSearchLabel = filteredLabels.length;
+      return filteredLabels.slice((this.page - 1) * this.perPage, this.page * this.perPage);
     },
     // カラー検索用カラー配列作成
     searchColors: function searchColors() {
@@ -3123,6 +3163,79 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     username: function username() {
       return this.$store.getters['auth/username'];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pagination.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pagination.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: Number,
+      required: true
+    },
+    totalPage: {
+      type: Number,
+      required: true
+    },
+    afterSearchLabel: {
+      type: Number,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      currentPage: this.value
+    };
+  },
+  methods: {
+    onPrev: function onPrev() {
+      this.currentPage = Math.max(this.currentPage - 1, 1);
+      this.$emit('input', this.currentPage);
+    },
+    onNext: function onNext() {
+      this.currentPage = Math.min(this.currentPage + 1, this.totalPage);
+      this.$emit('input', this.currentPage);
+    }
+  },
+  computed: {
+    isFirstPage: function isFirstPage() {
+      return this.currentPage === 1;
+    },
+    isLastPage: function isLastPage() {
+      return this.currentPage === this.totalPage;
     }
   }
 });
@@ -8070,7 +8183,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-content .v-card.v-sheet.theme--light {\n    background-color: white !important;\n    border-left: 8px solid rgb(30, 112, 219) !important;\n} */\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 50px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all .9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\n.draggable[data-v-a3c544ce] {\n  cursor: pointer;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: rgb(245, 243, 243);\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .v-content .v-card.v-sheet.theme--light {\n    background-color: white !important;\n    border-left: 8px solid rgb(30, 112, 219) !important;\n} */\n.labelbar[data-v-a3c544ce] {\n  margin-top: 5px;\n}\n.switch[data-v-a3c544ce] {\n  width: 50px;\n  height: 10px;\n  margin-bottom: 20px;\n  margin-left: auto;\n}\n.label[data-v-a3c544ce] {\n  transition: all .9s;\n}\n.label[data-v-a3c544ce]:hover {\n  transform: scale(1.08, 1.08);\n}\n.title[data-v-a3c544ce] {\n  padding-left: 14px;\n  padding-top: 5px;\n  padding-bottom: 20px;\n}\n.subtitle[data-v-a3c544ce] {\n  font-size: 14px;\n  padding-left: 10px;\n  padding-bottom: 0;\n  padding-top: 5px;\n  height: 30px;\n}\n.copy-btn[data-v-a3c544ce] {\n  margin-right: 0;\n}\n.draggable[data-v-a3c544ce] {\n  cursor: pointer;\n}\ninput[data-v-a3c544ce] {\n  width: 90%;\n  color: rgb(245, 243, 243);\n}\na[data-v-a3c544ce] {\n  text-decoration: none;\n}\nul[data-v-a3c544ce] {\n  list-style: none;\n}\n", ""]);
 
 // exports
 
@@ -8165,7 +8278,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container[data-v-3b6adb30] {\n  padding-top: 25px;\n}\n.tabs[data-v-3b6adb30] {\n  width: 500px;\n  margin: 20px auto;\n}\n.form[data-v-3b6adb30] {\n  width: 500px;\n  margin: 0 auto;\n}\n.back[data-v-3b6adb30] {\n  background-color: rgb(3, 3, 3);\n  height: 700px;\n}\n", ""]);
+exports.push([module.i, "\nul[data-v-3b6adb30] {\n  list-style: none;\n}\n.container[data-v-3b6adb30] {\n  padding-top: 25px;\n}\n.tabs[data-v-3b6adb30] {\n  width: 500px;\n  margin: 20px auto;\n}\n.form[data-v-3b6adb30] {\n  width: 500px;\n  margin: 0 auto;\n}\n.back[data-v-3b6adb30] {\n  background-color: rgb(3, 3, 3);\n  height: 700px;\n}\n", ""]);
 
 // exports
 
@@ -41030,17 +41143,39 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-switch", {
-        staticClass: "switch",
-        attrs: { dark: "" },
-        model: {
-          value: _vm.theme,
-          callback: function($$v) {
-            _vm.theme = $$v
-          },
-          expression: "theme"
-        }
-      }),
+      _c(
+        "div",
+        { staticClass: "d-flex" },
+        [
+          _c("Pagination", {
+            staticClass: "mt-4",
+            attrs: {
+              totalPage: _vm.totalPage,
+              afterSearchLabel: _vm.afterSearchLabel
+            },
+            model: {
+              value: _vm.page,
+              callback: function($$v) {
+                _vm.page = $$v
+              },
+              expression: "page"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-switch", {
+            staticClass: "switch",
+            attrs: { dark: "" },
+            model: {
+              value: _vm.theme,
+              callback: function($$v) {
+                _vm.theme = $$v
+              },
+              expression: "theme"
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-row",
@@ -41644,6 +41779,40 @@ var render = function() {
           )
         ],
         2
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "text-center" },
+        [
+          _c(
+            "v-snackbar",
+            {
+              attrs: {
+                color: "red",
+                top: "",
+                vertical: "",
+                left: "",
+                timeout: _vm.timeout
+              },
+              model: {
+                value: _vm.snackbar,
+                callback: function($$v) {
+                  _vm.snackbar = $$v
+                },
+                expression: "snackbar"
+              }
+            },
+            [
+              _c("ul", [
+                _c("li", [_vm._v(_vm._s(_vm.text1))]),
+                _vm._v(" "),
+                _c("li", [_vm._v(_vm._s(_vm.text2))])
+              ])
+            ]
+          )
+        ],
+        1
       )
     ],
     1
@@ -42039,6 +42208,72 @@ var render = function() {
         ],
         1
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      !_vm.isFirstPage
+        ? _c(
+            "v-btn",
+            {
+              attrs: { text: "", rounded: "", color: "success" },
+              on: {
+                click: function($event) {
+                  return _vm.onPrev()
+                }
+              }
+            },
+            [_vm._v("« prev")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      this.totalPage !== 0 && this.totalPage !== 1 && this.afterSearchLabel > 12
+        ? _c("span", [
+            _vm._v(
+              "Page " + _vm._s(_vm.currentPage) + " / " + _vm._s(_vm.totalPage)
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.isLastPage && this.totalPage !== 0 && this.afterSearchLabel > 12
+        ? _c(
+            "v-btn",
+            {
+              attrs: { text: "", rounded: "", color: "success" },
+              on: {
+                click: function($event) {
+                  return _vm.onNext()
+                }
+              }
+            },
+            [_vm._v("next »")]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -103124,6 +103359,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_6dde423b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navbar_vue_vue_type_template_id_6dde423b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Pagination.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/Pagination.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Pagination.vue?vue&type=template&id=d7acf176&scoped=true& */ "./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true&");
+/* harmony import */ var _Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Pagination.vue?vue&type=script&lang=js& */ "./resources/js/components/Pagination.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "d7acf176",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Pagination.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Pagination.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Pagination.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Pagination.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pagination.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Pagination.vue?vue&type=template&id=d7acf176&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Pagination.vue?vue&type=template&id=d7acf176&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_template_id_d7acf176_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

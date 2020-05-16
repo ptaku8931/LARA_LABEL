@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/label',
     name: 'LabelPage',
-    component: LabelPage
+    component: LabelPage,
   },
   {
     path: '/snippet',

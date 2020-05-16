@@ -27,10 +27,14 @@
       <v-select class="mt-2" label="sort" outlined></v-select>
     </v-bottom-navigation>
     <!-- ラベルナビバーここまで -->
-    <!-- ラベルバーテーマ -->
-    <v-switch class="switch" dark v-model="theme"></v-switch>
-    <!-- ラベル一覧 ここから-->
+    <div class="d-flex">
+      <!-- ページネーションコンポーネント -->
+      <Pagination class="mt-4"  v-model="page" :totalPage="totalPage" :afterSearchLabel="afterSearchLabel" />
+      <!-- ラベルバーテーマ -->
+      <v-switch class="switch" dark v-model="theme"></v-switch>
+    </div>
     <v-row>
+      <!-- ラベル一覧 ここから-->
       <v-col 
         cols="4" 
         class="label" 
@@ -199,17 +203,42 @@
         </v-dialog>
       </v-row>
     </v-row>
+  <div class="text-center">
+    <v-snackbar
+      v-model="snackbar"
+      color="red"
+      top
+      vertical
+      left
+      :timeout="timeout"
+    >
+      <ul>
+        <li>{{ text1 }}</li>
+        <li>{{ text2 }}</li>
+      </ul>
+     
+    </v-snackbar>
+  </div>
+    <!-- URL追加及び編集モーダルここまで -->
   </v-container>
 </template>
 
 <script>
+import Pagination from './Pagination.vue'
 export default {
+  components: {
+    Pagination
+  },
   // 親コンポーネントから選択されたフォルダidをもらう
   props: {
     value: ''
   },
   data() {
     return {
+      snackbar: true,
+      text1: 'フォルダタイトルは20文字以下です。',
+      text2: 'フォルダタイトルは必須です。',
+      timeout: 10000,
       // ラベルデータ格納
       labels: '',
       // 新規作成用データ格納
@@ -249,15 +278,22 @@ export default {
       // colors新規作成、編集用
       colors: [
         'red',
-        'indigo',
-        'black',
-        'grey',
-        'cyan',
         'pink',
-        'teal',
+        'purple',
+        'indigo',
         'blue',
-        'green'
-      ]
+        'cyan',
+        'teal',
+        'green',
+        'orange',
+        'brown',
+        'grey',
+        'black'
+      ],
+      page: 1,
+      perPage: 12,
+      totalPage: 1,
+      afterSearchLabel: 1
     }
   },
   // propsのvalue つまり selectedFolderを監視
@@ -268,9 +304,11 @@ export default {
       if (selected_id !== null) {
         const response = await axios.get('api/label/' + folder_id)
         this.labels = response.data
+        this.totalPage = Math.ceil(this.labels.length / this.perPage)
         // folder_idがnullならばlabelsをリセット
       } else {
         this.labels = ''
+        this.totalPage = 1
       }
     }
   },
@@ -337,6 +375,10 @@ export default {
       const fromLabelIndex = e.dataTransfer.getData('from-label-index')
       const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
       this.labels.splice(toLabelIndex, 0, labelToMove)
+    },
+
+    changedPage(page) {
+      this.page = page
     },
     
     // ラベル新規作成 post
@@ -464,7 +506,8 @@ export default {
         }
       }
       // keyowordの文字列が存在したものだけ格納された配列を返す
-      return filteredLabels
+      this.afterSearchLabel = filteredLabels.length
+      return filteredLabels.slice((this.page - 1) * this.perPage, this.page * this.perPage)  
     },
     
     // カラー検索用カラー配列作成
@@ -523,5 +566,8 @@ input {
 }
 a {
   text-decoration: none;
+}
+ul {
+  list-style: none;
 }
 </style>
