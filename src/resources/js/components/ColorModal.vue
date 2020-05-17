@@ -16,8 +16,6 @@
               :color="color"
               :label="color"
               :value="color"
-              ref="editRadioColor"
-              @click="editRadioColor(index)"
             ></v-radio>
           </v-radio-group>
         </v-card-text>
@@ -48,10 +46,22 @@ export default {
       changedColor: ''
     }
   },
+  watch: {
+    // valueの値をwatchしてfalseになれば値をリセット
+    value: {
+      handler (val) {
+        if (val === false) {
+          this.clearColorModal()
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
-    // 変更したいカラーをget
-    editRadioColor(index) {
-      this.changedColor = this.$refs.editRadioColor[index].value
+
+    // カラーモーダルクリア
+    clearColorModal() {
+      this.changedColor = ''
     },
 
     // カラーモーダルを閉じる

@@ -68,6 +68,9 @@ const actions = {
     if (response.status === OK) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', null)
+      commit('label/SET_FOLDER_THEME', false, { root: true })
+      commit('label/SET_LABEL_THEME', false, { root: true })
+      commit('label/SET_BACKGROUND_IMG', {name: 'dark', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg'}, { root: true })
       return false
     }
 

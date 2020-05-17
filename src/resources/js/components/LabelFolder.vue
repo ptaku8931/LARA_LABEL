@@ -66,7 +66,7 @@
             <v-col cols="2" class="folder-icon">
               <v-list-item-icon>
                 <!-- フォルダアイコン -->
-                <v-icon v-if="folder.id === currentFolderId">mdi-folder-open</v-icon>
+                <v-icon v-if="folder.id === getCurrentFolderId">mdi-folder-open</v-icon>
                 <v-icon v-else>mdi-folder</v-icon>
               </v-list-item-icon>
             </v-col>
@@ -89,7 +89,7 @@
       </v-list>
       <!-- フォルダ一覧表示ここまで -->
     </v-navigation-drawer>
-    <v-switch dark v-model="theme"></v-switch>
+    <v-switch v-model="theme" dark></v-switch>
   </v-card>
 </template>
 
@@ -102,7 +102,6 @@ export default {
       folderForm: {
         title: ''
       },
-      currentFolderId: '',
       // 検索ワード
       keyword: '',
       // darkテーマ切り替え
@@ -122,12 +121,22 @@ export default {
       ]
     }
   },
+  watch: {
+    theme: {
+      handler () {
+        this.$store.commit('label/SET_FOLDER_THEME', this.theme)
+      }
+    }
+  },
   // フォルダ一覧 GET  created ライフサイクル
   async created() {
     const response = await axios.get('api/label_folder')
     this.labelFolders = response.data
+    // 現在のフォルダidを渡す
+    this.selectedFolder(this.getCurrentFolderId)
+    // stateからテーマをgetして反映させる
+    this.theme = this.getFolderTheme
   },
-
   methods: {
     // バリデーションクリア
     resetValidation() {
@@ -152,8 +161,8 @@ export default {
     // 選択されたフォルダのidを親コンポーネントに渡す
     selectedFolder(id) {
       this.$emit('input', id)
-      // 現在選択されたフォルダidをデータに格納
-      this.currentFolderId = id
+      // mutationに現在のフォルダidを渡す
+      this.$store.commit('label/SET_CURRENT_FOLDER_ID', id)
     },
 
     pickupLabelFolder(e, index) {
@@ -209,6 +218,17 @@ export default {
     }
   },
   computed: {
+
+    // stateから現在のidをget
+    getCurrentFolderId() {
+      return this.$store.state.label.currentFolderId
+    },
+
+    // stateからテーマをget
+    getFolderTheme() {
+      return this.$store.state.label.folderTheme
+    },
+
     // フォルダー検索
     filteredLabelFolders() {
       // 空配列をもつ変数をセット
@@ -248,6 +268,7 @@ export default {
 }
 .folder-title {
   margin-top: 5px;
+  font-family:monospace;
   padding: 0 12px !important;
 }
 .folder-btn {

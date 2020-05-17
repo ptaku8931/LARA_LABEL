@@ -1,8 +1,8 @@
 <template>
   <v-content>
-    <div class="back">
+    <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
       <v-layout wrap pt-5>
-        <v-flex xs3 pt-4 class="folder" >
+        <v-flex xs3 pt-4 class="folder">
           <LabelFolder v-model="selectedFolder" />
         </v-flex>
         <v-flex xs9 pr-5>
@@ -19,15 +19,32 @@ import Label from '../components/Label.vue'
 export default {
   components: {
     LabelFolder,
-    Label,
+    Label
   },
   metaInfo: {
     title: 'Label Page'
   },
   data() {
     return {
-      // クリックされたフォルダid　
+      // クリックされたフォルダid
       selectedFolder: null,
+      // 背景画像
+      img: ''
+    }
+  },
+  watch: {
+    getBackgroundImg: {
+      handler() {
+        this.img = this.getBackgroundImg.url
+      }
+    }
+  },
+  created() {
+    this.img = this.getBackgroundImg.url
+  },
+  computed: {
+    getBackgroundImg() {
+      return this.$store.state.label.backgroundImg
     }
   }
 }
@@ -35,7 +52,8 @@ export default {
 
 <style scoped>
 .back {
-  background-color: rgb(240, 240, 240);
-  min-height: 700px;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
 }
 </style>

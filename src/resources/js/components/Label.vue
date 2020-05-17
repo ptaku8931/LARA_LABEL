@@ -24,21 +24,37 @@
         :items="searchColors"
         v-model="selectedColor"
       ></v-select>
-      <v-select class="mt-2" label="sort" outlined></v-select>
+      <!-- 背景画像変更エリア -->
+      <v-select 
+        class="mt-2" 
+        label="background-img" 
+        outlined
+        prepend-inner-icon="mdi-file-image-outline"
+        :items="images"
+        item-text="name"
+        item-value="url"
+        return-object
+        v-model="selectedImage"
+      ></v-select>
     </v-bottom-navigation>
     <!-- ラベルナビバーここまで -->
     <div class="d-flex">
       <!-- ページネーションコンポーネント -->
-      <Pagination class="mt-4" v-model="page" :totalPage="totalPage" :afterSearchLabel="afterSearchLabel" />
+      <Pagination
+        class="mt-4"
+        v-model="page"
+        :totalPage="totalPage"
+        :afterSearchLabel="afterSearchLabel"
+      />
       <!-- ラベルバーテーマ -->
-      <v-switch class="switch" dark v-model="theme"></v-switch>
+      <v-switch class="switch" v-model="theme" dark></v-switch>
     </div>
     <v-row>
       <!-- ラベル一覧 ここから-->
-      <v-col 
-        cols="4" 
-        class="label" 
-        v-for="(label, index) in filteredLabels" 
+      <v-col
+        cols="4"
+        class="label"
+        v-for="(label, index) in filteredLabels"
         :key="label.id"
         draggable
         @dragover.prevent
@@ -46,12 +62,12 @@
         @dragstart="pickupLabel($event, index)"
         @drop="moveLabel($event, index)"
       >
-        <v-card raised dark :color="label.color" ref="labelColor">
+        <v-card raised :color="label.color" ref="labelColor">
           <v-card-title class="title">
             <input type="text" :value="label.title" @blur="editLabelTitle($event, index, label.id)" />
           </v-card-title>
           <v-card-subtitle class="subtitle">
-            <v-icon left class="copy-btn" @click="copyToClipboard(index)">mdi-content-copy</v-icon>
+            <v-icon left dark class="copy-btn" @click="copyToClipboard(index)">mdi-content-copy</v-icon>
             <input
               type="text"
               :value="label.text"
@@ -61,19 +77,19 @@
           </v-card-subtitle>
           <div class="text-right">
             <!-- ドラッグボタン -->
-            <v-icon class="draggable" left>mdi-gesture-swipe</v-icon>
+            <v-icon class="draggable" left dark>mdi-gesture-swipe</v-icon>
             <!-- カラー変更ボタン -->
-            <v-icon @click="editColorModal(index, label.id)" left>mdi-pencil</v-icon>
+            <v-icon @click="editColorModal(index, label.id)" left dark>mdi-pencil</v-icon>
             <!-- URLボタン -->
             <a v-if="label.url" :href="label.url" target="_blank">
-              <v-icon left>mdi-microsoft-internet-explorer</v-icon>
+              <v-icon left dark>mdi-microsoft-internet-explorer</v-icon>
             </a>
             <!-- URL変更ボタン -->
-            <v-icon v-if="label.url" left @click="editUrlModal(label.id)">mdi-microsoft-windows</v-icon>
+            <v-icon v-if="label.url" left dark @click="editUrlModal(label.id)">mdi-microsoft-windows</v-icon>
             <!-- URL 追加ボタン -->
-            <v-icon left v-else @click="addUrlModal(label.id)">mdi-microsoft-windows</v-icon>
+            <v-icon v-else left dark @click="addUrlModal(label.id)">mdi-microsoft-windows</v-icon>
             <!-- ラベル削除ボタン -->
-            <v-icon @click="deleteLabel(label.id, index)" left>mdi-delete</v-icon>
+            <v-icon left dark @click="deleteLabel(label.id, index)">mdi-delete</v-icon>
           </div>
         </v-card>
       </v-col>
@@ -85,7 +101,7 @@
       <!-- URL追加及び編集モーダル -->
       <UrlModal :editUrl="editUrl" @edit-label-url="editLabelUrl" v-model="urlModal" />
 
-      <div class="text-center">
+      <!-- <div class="text-center">
     <v-snackbar
       v-model="snackbar"
       color="red"
@@ -101,7 +117,7 @@
      
     </v-snackbar>
   </div>
-     
+      -->
     </v-row>
   </v-container>
 </template>
@@ -124,10 +140,10 @@ export default {
   },
   data() {
     return {
-      snackbar: true,
-      text1: 'フォルダタイトルは20文字以下です。',
-      text2: 'フォルダタイトルは必須です。',
-      timeout: 10000,
+      // snackbar: true,
+      // text1: 'フォルダタイトルは20文字以下です。',
+      // text2: 'フォルダタイトルは必須です。',
+      // timeout: 10000,
       // ラベルデータ格納
       labels: '',
       // 新規作成モーダル
@@ -150,21 +166,6 @@ export default {
       selectedColor: '',
       // darkテーマ切り替え
       theme: false,
-      // colors新規作成、編集用
-      colors: [
-        'red',
-        'pink',
-        'purple',
-        'indigo',
-        'blue',
-        'cyan',
-        'teal',
-        'green',
-        'orange',
-        'brown',
-        'grey',
-        'black'
-      ],
       // 現在のページ番号
       page: 1,
       // 1ページあたりのラベル数
@@ -172,7 +173,20 @@ export default {
       // ページ総数
       totalPage: 1,
       // 検索で絞ったあとのラベル数
-      afterSearchLabel: 1
+      afterSearchLabel: 1,
+      // colors新規作成、編集用
+      colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'yellow', 'orange', 'grey', 'white'],
+      // background-image用
+      images: [ 
+        { name: 'dark', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg'},
+        { name: 'light', url: '/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg'},
+        { name: 'board', url: '/img/joanna-kosinska-1_CMoFsPfso-unsplash.jpg'},
+      ],
+      // 選択されたbackground-image
+      selectedImage: {
+        name: '',
+        url: ''
+      }
     }
   },
   // propsのvalue つまり selectedFolderを監視
@@ -189,8 +203,28 @@ export default {
         this.labels = ''
         this.totalPage = 1
       }
-    }
+    },
+    theme: {
+      handler () {
+        this.$store.commit('label/SET_LABEL_THEME', this.theme)
+      }
+    },
+    // background-imgの変更を監視する
+    selectedImage: {
+      handler (val) {
+        if(val.name !== "" && val.url !== "") {
+          this.$store.commit('label/SET_BACKGROUND_IMG', this.selectedImage)
+        }
+      },
+      immediate: true
+    },
   },
+
+  created () {
+    this.theme = this.getLabelTheme
+    this.selectedImage = this.getBackgroundImg
+  },
+
   methods: {
 
     // カラー変更モーダルオープン&カラー変更するラベルの色とidをget
@@ -231,7 +265,7 @@ export default {
       const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
       this.labels.splice(toLabelIndex, 0, labelToMove)
     },
-    
+
     // ラベル新規作成 post
     async createLabel(newLabel) {
       // 現在開いているフォルダidを代入
@@ -331,8 +365,17 @@ export default {
   },
   computed: {
 
+    getLabelTheme () {
+      return this.$store.state.label.labelTheme
+    },
+
+    getBackgroundImg() {
+      return this.$store.state.label.backgroundImg
+      
+    },
+
     // カラー検索用カラー配列作成 先頭に空文字を挿入する
-    searchColors() {
+    searchColors () {
       // カラー配列のコピーを作成
       const searchColors = this.colors.slice()
       // 先頭に空文字を追加して返す
@@ -370,17 +413,21 @@ export default {
       this.afterSearchLabel = filteredLabels.length
       // keyowordの文字列が存在したものだけ格納された配列を12ラベルごとにスライスしてreturn
       // v-modelのpageに変更があれば、その都度このcomputedが走る
-      return filteredLabels.slice((this.page - 1) * this.perPage, this.page * this.perPage)  
+      return filteredLabels.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      )
     }
   }
 }
 </script>
 
 <style scoped>
-/* .v-content .v-card.v-sheet.theme--light {
-    background-color: white !important;
-    border-left: 8px solid rgb(30, 112, 219) !important;
-} */
+.v-content .v-card.v-sheet.theme--light {
+  background-color: rgb(49, 48, 48) !important;
+  border-left-width: 30px !important;
+  border-left-style: solid !important;
+}
 .labelbar {
   margin-top: 5px;
 }
@@ -398,15 +445,18 @@ export default {
 }
 .title {
   padding-left: 14px;
+  padding-right: 0;
   padding-top: 5px;
   padding-bottom: 20px;
+  height: 50px;
 }
 .subtitle {
-  font-size: 14px;
+  font-size: 15px;
   padding-left: 10px;
+  padding-right: 0;
   padding-bottom: 0;
   padding-top: 5px;
-  height: 30px;
+  height: 25px;
 }
 .copy-btn {
   margin-right: 0;
@@ -415,8 +465,11 @@ export default {
   cursor: pointer;
 }
 input {
-  width: 90%;
-  color: rgb(245, 243, 243);
+  width: 85%;
+  height: 25px;
+  color: white;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 a {
   text-decoration: none;

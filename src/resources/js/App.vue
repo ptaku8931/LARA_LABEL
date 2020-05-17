@@ -24,11 +24,6 @@ export default {
     Navbar,
     Footer
   },
-  computed: {
-    errorCode() {
-      return this.$store.state.error.code
-    }
-  },
   watch: {
     errorCode: {
       handler (val) {
@@ -41,6 +36,11 @@ export default {
     $route () {
       this.$store.commit('error/SET_CODE', null)
     }
+  },
+  computed: {
+    errorCode() {
+      return this.$store.state.error.code
+      }
   }
 }
 </script>

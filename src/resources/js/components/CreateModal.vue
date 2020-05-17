@@ -9,7 +9,7 @@
         </v-card-title>
         <v-card-text>
           <v-container d-flex>
-            <v-row>
+            <v-row class="mt-5 pt-5">
               <!-- ラベルタイトル入力フォーム -->
               <v-col cols="10">
                 <v-text-field
@@ -48,8 +48,6 @@
                     :color="color"
                     :label="color"
                     :value="color"
-                    ref="createRadioColor"
-                    @click="createRadioColor(index)"
                   ></v-radio>
                 </v-radio-group>
               </v-col>
@@ -102,17 +100,13 @@ export default {
     }
   },
   methods: {
-    // 新規作成用カラーをget
-    createRadioColor(index) {
-      this.createdColor = this.$refs.createRadioColor[index].value
-      this.newLabel.color = this.createdColor
-    },
 
     // 新規作成モーダルリセット
     clearCreateModal() {
       this.newLabel.title = ''
       this.newLabel.text = ''
       this.newLabel.url = ''
+      this.createdColor = ''
     },
 
     // 新規作成モーダル閉じる
@@ -122,6 +116,7 @@ export default {
 
     // 新規作成データを親コンポーネントにemit
     createLabel() {
+      this.newLabel.color = this.createdColor
       this.$emit('create-label', this.newLabel)
     }
   }
