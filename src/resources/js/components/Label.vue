@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <!-- ラベルナビバーここから -->
-    <v-bottom-navigation class="labelbar" height="70px" :dark="theme">
+    <v-bottom-navigation class="labelbar" height="70px" :dark="!theme" outlined>
       <!-- 新規作成ボタン -->
-      <v-btn :disabled="!value" @click="createModal = true">
+      <v-btn :disabled="!getCurrentFolderId" @click="createModal = true">
         Create Label
-        <v-icon class="pt-3">mdi-image-filter-none</v-icon>
+        <v-icon>mdi-sticker-plus-outline</v-icon>
       </v-btn>
       <!-- 検索エリア -->
       <v-text-field
@@ -25,9 +25,9 @@
         v-model="selectedColor"
       ></v-select>
       <!-- 背景画像変更エリア -->
-      <v-select 
-        class="mt-2" 
-        label="background-img" 
+      <v-select
+        class="mt-2"
+        label="background-img"
         outlined
         prepend-inner-icon="mdi-file-image-outline"
         :items="images"
@@ -61,35 +61,101 @@
         @dragenter.prevent
         @dragstart="pickupLabel($event, index)"
         @drop="moveLabel($event, index)"
+        @mouseover="showBtn(index)"
+        @mouseleave="hideBtn(index)"
       >
-        <v-card raised :color="label.color" ref="labelColor">
+        <v-card raised :color="label.color" ref="labelColor" class="cardBody">
           <v-card-title class="title">
-            <input type="text" :value="label.title" @blur="editLabelTitle($event, index, label.id)" />
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <input
+                  type="text"
+                  :value="label.title"
+                  @change="editLabelTitle($event, index, label.id)"
+                  v-on="on"
+                />
+              </template>
+              <span>Please press enter key if you change title</span>
+            </v-tooltip>
           </v-card-title>
           <v-card-subtitle class="subtitle">
-            <v-icon left dark class="copy-btn" @click="copyToClipboard(index)">mdi-content-copy</v-icon>
-            <input
-              type="text"
-              :value="label.text"
-              ref="labelText"
-              @blur="editLabelText($event, index, label.id)"
-            />
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon
+                  left
+                  dark
+                  class="copy-btn"
+                  @click="copyToClipboard(index)"
+                  v-on="on"
+                >mdi-content-copy</v-icon>
+              </template>
+              <span>Copy Text</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <input
+                  type="text"
+                  :value="label.text"
+                  ref="labelText"
+                  @change="editLabelText($event, index, label.id)"
+                  v-on="on"
+                />
+              </template>
+              <span>Please press enter key if you change text</span>
+            </v-tooltip>
           </v-card-subtitle>
-          <div class="text-right">
-            <!-- ドラッグボタン -->
-            <v-icon class="draggable" left dark>mdi-gesture-swipe</v-icon>
-            <!-- カラー変更ボタン -->
-            <v-icon @click="editColorModal(index, label.id)" left dark>mdi-pencil</v-icon>
-            <!-- URLボタン -->
+          <div class="text-right" v-show="isBtn && index === btnIndex">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <!-- ドラッグボタン -->
+                <v-icon class="draggable" left dark v-on="on">mdi-gesture-swipe</v-icon>
+              </template>
+              <span>Drug & Drop</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <!-- カラー変更ボタン -->
+                <v-icon @click="editColorModal(index, label.id)" left dark v-on="on">mdi-pencil</v-icon>
+              </template>
+              <span>Edit Color</span>
+            </v-tooltip>
             <a v-if="label.url" :href="label.url" target="_blank">
-              <v-icon left dark>mdi-microsoft-internet-explorer</v-icon>
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <!-- URLボタン -->
+                  <v-icon left dark v-on="on">mdi-microsoft-internet-explorer</v-icon>
+                </template>
+                <span>Bookmark</span>
+              </v-tooltip>
             </a>
-            <!-- URL変更ボタン -->
-            <v-icon v-if="label.url" left dark @click="editUrlModal(label.id)">mdi-microsoft-windows</v-icon>
-            <!-- URL 追加ボタン -->
-            <v-icon v-else left dark @click="addUrlModal(label.id)">mdi-microsoft-windows</v-icon>
-            <!-- ラベル削除ボタン -->
-            <v-icon left dark @click="deleteLabel(label.id, index)">mdi-delete</v-icon>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <!-- URL変更ボタン -->
+                <v-icon
+                  v-if="label.url"
+                  left
+                  dark
+                  @click="editUrlModal(label.id)"
+                  v-on="on"
+                >mdi-microsoft-windows</v-icon>
+                <!-- URL 追加ボタン -->
+                <v-icon
+                  v-else
+                  left
+                  dark
+                  @click="addUrlModal(label.id)"
+                  v-on="on"
+                >mdi-microsoft-windows</v-icon>
+              </template>
+              <span>Add or Edit URL</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <!-- ラベル削除ボタン -->
+                <v-icon left dark @click="deleteConfirm(label.id, index)" v-on="on">mdi-delete</v-icon>
+              </template>
+              <span>Delete Label</span>
+            </v-tooltip>
           </div>
         </v-card>
       </v-col>
@@ -100,24 +166,8 @@
       <ColorModal :colors="colors" @edit-label-color="editLabelColor" v-model="colorModal" />
       <!-- URL追加及び編集モーダル -->
       <UrlModal :editUrl="editUrl" @edit-label-url="editLabelUrl" v-model="urlModal" />
-
-      <!-- <div class="text-center">
-    <v-snackbar
-      v-model="snackbar"
-      color="red"
-      top
-      vertical
-      left
-      :timeout="timeout"
-    >
-      <ul>
-        <li>{{ text1 }}</li>
-        <li>{{ text2 }}</li>
-      </ul>
-     
-    </v-snackbar>
-  </div>
-      -->
+      <!-- 削除確認モーダル -->
+      <ConfirmModal v-model="confirmModal" @do-delete="deleteLabel"/>
     </v-row>
   </v-container>
 </template>
@@ -127,25 +177,24 @@ import Pagination from './Pagination.vue'
 import CreateModal from './CreateModal.vue'
 import ColorModal from './ColorModal.vue'
 import UrlModal from './UrlModal.vue'
+import ConfirmModal from './ConfirmModal.vue'
+import { OK, CREATED, VALIDATION_ERROR } from '../error_code'
 export default {
   components: {
     Pagination,
     CreateModal,
     ColorModal,
-    UrlModal
-  },
-  // 親コンポーネントから選択されたフォルダidをもらう
-  props: {
-    value: ''
+    UrlModal,
+    ConfirmModal
   },
   data() {
     return {
-      // snackbar: true,
-      // text1: 'フォルダタイトルは20文字以下です。',
-      // text2: 'フォルダタイトルは必須です。',
-      // timeout: 10000,
       // ラベルデータ格納
       labels: '',
+      // ホバーでボタン出現
+      isBtn: false,
+      // ボタンindex番号
+      btnIndex: null,
       // 新規作成モーダル
       createModal: false,
       // カラー変更モーダル
@@ -160,6 +209,12 @@ export default {
       editUrl: false,
       // URL追加もしくは編集したいラベルのid
       urlId: '',
+      // 削除確認用モーダル
+      confirmModal: false,
+      // 削除するラベルのid
+      deleteId: '',
+      // 削除するラベルのインデックス
+      deleteIndex: '',
       // 検索ワード
       keyword: '',
       // カラー検索用
@@ -175,12 +230,29 @@ export default {
       // 検索で絞ったあとのラベル数
       afterSearchLabel: 1,
       // colors新規作成、編集用
-      colors: ['red', 'pink', 'purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'yellow', 'orange', 'grey', 'white'],
+      colors: ['white', 'blue', 'cyan', 'indigo', 'green', 'teal', 'yellow', 'orange', 'pink', 'red', 'purple', 'grey'],
       // background-image用
-      images: [ 
-        { name: 'dark', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg'},
-        { name: 'light', url: '/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg'},
-        { name: 'board', url: '/img/joanna-kosinska-1_CMoFsPfso-unsplash.jpg'},
+      images: [
+        { name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg' },
+        { name: 'Blue', url: '/img/jason-dent-9m0h7SSYipg-unsplash.jpg' },
+        {
+          name: 'Yellow',
+          url: '/img/joanna-kosinska-1_CMoFsPfso-unsplash.jpg'
+        },
+        { name: 'Light', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg' },
+        { name: 'Dark', url: '/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg' },
+        { name: 'Sky', url: '/img/stacy-marie-mLx1dc-AJ5k-unsplash.jpg' },
+        { name: 'Sea', url: '/img/olu-famule-kYx_g4YBfLI-unsplash.jpg' },
+        { name: 'Sunset', url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg' },
+        {
+          name: 'Sunrise',
+          url: '/img/frank-mckenna-OD9EOzfSOh0-unsplash.jpg'
+        },
+        {
+          name: 'Blossom',
+          url: '/img/masaaki-komori-1hUsp3zi0rA-unsplash.jpg'
+        },
+        { name: 'Snow', url: '/img/jonatan-pie-NBvcQRdRSeQ-unsplash.jpg' }
       ],
       // 選択されたbackground-image
       selectedImage: {
@@ -189,43 +261,70 @@ export default {
       }
     }
   },
-  // propsのvalue つまり selectedFolderを監視
+  // stateのcurrentFolderIdを監視
   watch: {
-    value: async function(folder_id) {
-      const selected_id = folder_id
+    getCurrentFolderId: async function(folder_id) {
       // folder_idがnullでなければapiを叩いてデータをリクエスト
-      if (selected_id !== null) {
+      if (folder_id !== null) {
         const response = await axios.get('api/label/' + folder_id)
-        this.labels = response.data
-        this.totalPage = Math.ceil(this.labels.length / this.perPage)
-        // folder_idがnullならばlabelsをリセット
+        if (response.status === OK) {
+          this.labels = response.data
+          this.totalPage = Math.ceil(this.labels.length / this.perPage)
+        }
+        this.$store.commit('error/SET_CODE', response.status, { root: true })
       } else {
+        // folder_idがnullならばlabelsをリセット
         this.labels = ''
         this.totalPage = 1
       }
     },
+    // themeの変更を監視する
     theme: {
-      handler () {
+      handler() {
         this.$store.commit('label/SET_LABEL_THEME', this.theme)
       }
     },
     // background-imgの変更を監視する
     selectedImage: {
-      handler (val) {
-        if(val.name !== "" && val.url !== "") {
+      handler(val) {
+        if (val.name !== '' && val.url !== '') {
           this.$store.commit('label/SET_BACKGROUND_IMG', this.selectedImage)
         }
       },
       immediate: true
-    },
+    }
   },
 
-  created () {
+  async created() {
+    // 現在のフォルダidがnullでなければ
+    if (this.getCurrentFolderId !== null) {
+      const response = await axios.get('api/label/' + this.getCurrentFolderId)
+      if (response.status === OK) {
+        this.labels = response.data
+        this.totalPage = Math.ceil(this.labels.length / this.perPage)
+      }
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
+    } else {
+      // folder_idがnullならばlabelsをリセット
+      this.labels = ''
+      this.totalPage = 1
+    }
+    // テーマとイメージをstateからget
     this.theme = this.getLabelTheme
     this.selectedImage = this.getBackgroundImg
   },
 
   methods: {
+    // ホバーでボタン出現
+    showBtn(index) {
+      this.isBtn = true
+      this.btnIndex = index
+    },
+
+    // ホバーアウトでボタン隠す
+    hideBtn(index) {
+      this.isBtn = false
+    },
 
     // カラー変更モーダルオープン&カラー変更するラベルの色とidをget
     editColorModal(index, id) {
@@ -248,10 +347,22 @@ export default {
       this.urlId = id
     },
 
+    // 削除確認用モーダルを開く
+    deleteConfirm(id, index) {
+      this.confirmModal = true
+      this.deleteId = id
+      this.deleteIndex = index
+    },
+
     // クリックしたテキストをクリップボードにコピー
-    copyToClipboard(index) {
-      const copyText = this.$refs.labelText[index].value
+    async copyToClipboard(index) {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
+      const copyText = await this.$refs.labelText[index].value
       navigator.clipboard.writeText(copyText)
+      this.$store.commit(
+        'message/SET_SUCCESS_MSG',
+        'The text is successfully copied to the clipboard !!'
+      )
     },
 
     pickupLabel(e, index) {
@@ -268,11 +379,22 @@ export default {
 
     // ラベル新規作成 post
     async createLabel(newLabel) {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
       // 現在開いているフォルダidを代入
-      newLabel.label_folder_id = this.value
+      newLabel.label_folder_id = this.getCurrentFolderId
       const response = await axios.post('api/label', newLabel)
-      this.labels.push(response.data)
-      this.createModal = false
+      if (response.status === CREATED) {
+        this.labels.push(response.data)
+        this.createModal = false
+        if (this.labels.length % 13 === 0) {
+          this.page++
+        }
+        this.$store.commit(
+          'message/SET_SUCCESS_MSG',
+          'The new label was created successfully !!'
+        )
+      }
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
     },
 
     // ラベルタイトル更新 patch
@@ -280,21 +402,44 @@ export default {
       // 変更があったinputを取得し変数に代入
       const changedTitle = e.target.value
       // タイトルの変更があれば、apiで更新を行う
-      if (changedTitle !== this.labels[index].title) {
+      if (
+        changedTitle !== this.labels[index].title &&
+        changedTitle !== '' &&
+        changedTitle.length < 30
+      ) {
+        this.$store.commit('message/SET_SUCCESS_MSG', null)
         const response = await axios.patch('api/label/' + id, {
           title: changedTitle
         })
-        let labelsIndex = ''
-        this.labels.map((label, index) => {
-          // 変更があったラベルのidと一致するラベルを探す
-          if (label.id === id) {
-            labelsIndex = index
-          }
-        })
-        // 一致したラベルのタイトルに変更されたタイトルを代入
-        this.labels[labelsIndex].title = changedTitle
+        if (response.status === OK) {
+          let labelsIndex = ''
+          this.labels.map((label, index) => {
+            // 変更があったラベルのidと一致するラベルを探す
+            if (label.id === id) {
+              labelsIndex = index
+            }
+          })
+          // 一致したラベルのタイトルに変更されたタイトルを代入
+          this.labels[labelsIndex].title = changedTitle
+          this.$store.commit(
+            'message/SET_SUCCESS_MSG',
+            'The label was updated successfully !!'
+          )
+        }
+        this.$store.commit('error/SET_CODE', response.status, { root: true })
       }
       // タイトルに変更がなければfalseを返して終了
+      if (changedTitle === '') {
+        await this.$store.commit('message/SET_ERROR_MSG', null)
+        this.$store.commit('message/SET_ERROR_MSG', 'The title is required !!')
+      }
+      if (changedTitle.length > 30) {
+        await this.$store.commit('message/SET_ERROR_MSG', null)
+        this.$store.commit(
+          'message/SET_ERROR_MSG',
+          'The title must be less than 30 characters !!'
+        )
+      }
       return false
     },
 
@@ -302,80 +447,132 @@ export default {
     async editLabelText(e, index, id) {
       // 変更があったinputを取得し変数に代入
       const changedText = e.target.value
-      // タイトルの変更があれば、apiで更新を行う
-      if (changedText !== this.labels[index].text) {
+      // テキストの変更があれば、apiで更新を行う
+      if (
+        changedText !== this.labels[index].text &&
+        changedText !== '' &&
+        changedText.length < 50
+      ) {
+        this.$store.commit('message/SET_SUCCESS_MSG', null)
         const response = await axios.patch('api/label/' + id, {
           text: changedText
         })
-        let labelsIndex = ''
-        this.labels.map((label, index) => {
-          // 変更があったラベルのidと一致するラベルを探す
-          if (label.id === id) {
-            labelsIndex = index
-          }
-        })
-        // 一致したラベルのタイトルに変更されたタイトルを代入
-        this.labels[labelsIndex].text = changedText
+        if (response.status === OK) {
+          let labelsIndex = ''
+          this.labels.map((label, index) => {
+            // 変更があったラベルのidと一致するラベルを探す
+            if (label.id === id) {
+              labelsIndex = index
+            }
+          })
+          // 一致したラベルのテキストに変更されたテキストを代入
+          this.labels[labelsIndex].text = changedText
+          this.$store.commit(
+            'message/SET_SUCCESS_MSG',
+            'The label was updated successfully !!'
+          )
+        }
+        this.$store.commit('error/SET_CODE', response.status, { root: true })
       }
-      // タイトルに変更がなければfalseを返して終了
+      // テキストに変更がなければfalseを返して終了
+      if (changedText === '') {
+        await this.$store.commit('message/SET_ERROR_MSG', null)
+        this.$store.commit('message/SET_ERROR_MSG', 'The text is required !!')
+      }
+      if (changedText.length > 50) {
+        await this.$store.commit('message/SET_ERROR_MSG', null)
+        this.$store.commit(
+          'message/SET_ERROR_MSG',
+          'The text must be less than 50 characters !!'
+        )
+      }
       return false
     },
 
     // ラベルカラー更新 patch
     async editLabelColor(newColor) {
       if (newColor !== this.beforeChangeLabelColor) {
+        this.$store.commit('message/SET_SUCCESS_MSG', null)
         const response = await axios.patch(
           'api/label/' + this.beforeChangeLabelId,
           { color: newColor }
         )
-        let labelsIndex = ''
-        this.labels.map((label, index) => {
-          if (label.id === this.beforeChangeLabelId) {
-            labelsIndex = index
-          }
-        })
-        this.labels[labelsIndex].color = newColor
+        if (response.status === OK) {
+          let labelsIndex = ''
+          this.labels.map((label, index) => {
+            if (label.id === this.beforeChangeLabelId) {
+              labelsIndex = index
+            }
+          })
+          this.labels[labelsIndex].color = newColor
+          this.$store.commit(
+            'message/SET_SUCCESS_MSG',
+            'The label was updated successfully !!'
+          )
+        }
+        this.$store.commit('error/SET_CODE', response.status, { root: true })
       }
       this.colorModal = false
     },
 
     // ラベルURL追加及び更新 patch
     async editLabelUrl(newUrl) {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
       const response = await axios.patch('api/label/' + this.urlId, {
         url: newUrl
       })
-      let labelsIndex = ''
-      this.labels.map((label, index) => {
-        if (label.id === this.urlId) {
-          labelsIndex = index
-        }
-      })
-      this.labels[labelsIndex].url = newUrl
-      this.urlModal = false
+      if (response.status === OK) {
+        let labelsIndex = ''
+        this.labels.map((label, index) => {
+          if (label.id === this.urlId) {
+            labelsIndex = index
+          }
+        })
+        this.labels[labelsIndex].url = newUrl
+        this.urlModal = false
+        this.$store.commit(
+          'message/SET_SUCCESS_MSG',
+          'The label was updated successfully !!'
+        )
+      }
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
     },
 
     // ラベル削除 delete
-    async deleteLabel(id, index) {
-      if (confirm('are you sure?')) {
-        const response = await axios.delete('api/label/' + id)
-        this.labels.splice(index, 1)
+    async deleteLabel() {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
+      const response = await axios.delete('api/label/' + this.deleteId)
+      if (response.status === OK) {
+        this.labels.splice(this.deleteIndex, 1)
+        if (this.labels.length % 12 === 0 && this.labels.length !== 0) {
+          this.page--
+        }
+        this.$store.commit(
+          'message/SET_SUCCESS_MSG',
+          'The label was deleted successfully !!'
+        )
       }
-      return false
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
     }
   },
   computed: {
+    // stateから現在のフォルダidをget
+    getCurrentFolderId() {
+      return this.$store.state.label.currentFolderId
+    },
 
-    getLabelTheme () {
+    // stateからlabelテーマget
+    getLabelTheme() {
       return this.$store.state.label.labelTheme
     },
 
+    // stateから背景画像get
     getBackgroundImg() {
       return this.$store.state.label.backgroundImg
-      
     },
 
     // カラー検索用カラー配列作成 先頭に空文字を挿入する
-    searchColors () {
+    searchColors() {
       // カラー配列のコピーを作成
       const searchColors = this.colors.slice()
       // 先頭に空文字を追加して返す
@@ -430,6 +627,7 @@ export default {
 }
 .labelbar {
   margin-top: 5px;
+  border-width: 2px !important;
 }
 .switch {
   width: 50px;
@@ -437,8 +635,11 @@ export default {
   margin-bottom: 20px;
   margin-left: auto;
 }
+.cardBody {
+  height: 86px !important;
+}
 .label {
-  transition: all .9s;
+  transition: all 0.9s;
 }
 .label:hover {
   transform: scale(1.08, 1.08);

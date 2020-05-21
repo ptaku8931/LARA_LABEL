@@ -16,8 +16,8 @@ class CreateLabelsTable extends Migration
         Schema::create('labels', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('label_folder_id');
-            $table->string('title', 20);
-            $table->string('text', 40);
+            $table->string('title', 30);
+            $table->string('text', 50);
             $table->text('url')->nullable();
             $table->string('color', 20);
             $table->timestamps();

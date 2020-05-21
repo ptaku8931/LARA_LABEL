@@ -26,10 +26,10 @@ const actions = {
   async login({ commit }, data) {
     commit('SET_API_STATUS', null)
     const response = await axios.post('api/login', data)
-
     if (response.status === OK) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', response.data)
+      commit('message/SET_SUCCESS_MSG', 'Welcome! How are you ??', { root: true })
       return false
     }
 
@@ -70,7 +70,9 @@ const actions = {
       commit('SET_USER', null)
       commit('label/SET_FOLDER_THEME', false, { root: true })
       commit('label/SET_LABEL_THEME', false, { root: true })
-      commit('label/SET_BACKGROUND_IMG', {name: 'dark', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg'}, { root: true })
+      commit('label/SET_BACKGROUND_IMG', {name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg'}, { root: true })
+      commit('label/SET_CURRENT_FOLDER_ID', '', { root: true })
+      commit('message/SET_SUCCESS_MSG', 'Thanks! See you later !!',  { root: true })
       return false
     }
 

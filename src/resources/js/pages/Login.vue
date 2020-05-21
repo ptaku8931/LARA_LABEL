@@ -10,7 +10,7 @@
         <!-- tab end -->
 
         <!-- login start -->
-        <v-card v-show="tab === 1" class="form" shaped>
+        <v-card v-show="tab === 1" class="form" dark>
           <v-card-title>
             <h1 class="display-1">LOGIN</h1>
           </v-card-title>
@@ -25,26 +25,29 @@
                 </ul>
               </v-alert>
             </div>
-            <v-form @submit.prevent="login">
+            <v-form @submit.prevent="login" v-model="valid">
               <v-text-field
                 label="E-mail"
                 prepend-icon="mdi-email"
                 clearable
+                :rules="emailRules"
                 v-model="loginForm.email"
               />
               <v-text-field
                 label="Password"
                 prepend-icon="mdi-lock"
                 clearable
+                counter
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
+                :rules="passRules"
                 v-model="loginForm.password"
               />
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" color="primary">Login</v-btn>
+                <v-btn text type="submit" :disabled="!valid">Login</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -52,12 +55,12 @@
         <!-- login end -->
 
         <!-- register start -->
-        <v-card v-show="tab === 2" class="form" shaped>
+        <v-card v-show="tab === 2" class="form" dark>
           <v-card-title>
             <h1 class="display-1">REGISTER</h1>
           </v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="register">
+            <v-form @submit.prevent="register" v-model="valid">
               <div v-if="registerErrors">
                 <v-alert dense type="error">
                   <ul v-if="registerErrors.name">
@@ -75,27 +78,33 @@
                 label="Username"
                 prepend-icon="mdi-account-circle"
                 clearable
+                :rules="nameRules"
                 v-model="registerForm.name"
               />
               <v-text-field
                 label="E-mail"
                 prepend-icon="mdi-email"
                 clearable
+                :rules="emailRules"
                 v-model="registerForm.email"
+                
               />
               <v-text-field
                 label="Password"
                 prepend-icon="mdi-lock"
                 clearable
+                counter
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
+                :rules="passRules"
                 v-model="registerForm.password"
               />
               <v-text-field
                 label="Password (confirmation)"
                 prepend-icon="mdi-lock"
                 clearable
+                counter
                 :type="showPasswordConfirmation ? 'text' : 'password'"
                 :append-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPasswordConfirmation = !showPasswordConfirmation"
@@ -104,7 +113,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" color="primary">REGISTER</v-btn>
+                <v-btn text type="submit" :disabled="!valid">REGISTER</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -125,6 +134,7 @@ export default {
       showPassword: false,
       showPasswordConfirmation: false,
       tab: 1,
+      valid: false,
       loginForm: {
         email: '',
         password: ''
@@ -134,7 +144,18 @@ export default {
         email: '',
         password: '',
         password_confirmation: ''
-      }
+      },
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      passRules: [
+        v => !!v || 'Password is required',
+        v => v.length >= 8 || 'Password must be more than 8 characters',
+      ]
     }
   },
   methods: {
@@ -188,9 +209,12 @@ ul {
 .form {
   width: 500px;
   margin: 0 auto;
+  opacity: 0.7;
 }
 .back {
-  background-color: rgb(3, 3, 3);
-  height: 700px;
+  background-image: url(/img/sean-o-KMn4VEeEPR8-unsplash.jpg);
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
 }
 </style>

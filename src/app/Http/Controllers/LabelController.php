@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Label;
 use App\LabelFolder;
 
+
 class LabelController extends Controller
 {
 
@@ -59,8 +60,9 @@ class LabelController extends Controller
         if($folder->labels() !== null) {
             $labels = $folder->labels()->get();
             return $labels;
+            return response('', 200);
         }
-        return response('', 200);
+        return false;
     }
 
     /**

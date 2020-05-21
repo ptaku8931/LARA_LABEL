@@ -1,26 +1,30 @@
 <template>
   <!-- URL追加及び編集モーダルここから -->
   <v-row justify="center">
-    <v-dialog v-model="value" persistent max-width="350">
-      <v-card>
+    <v-dialog v-model="value" persistent max-width="400">
+      <v-card dark outlined class="modal"> 
         <v-container>
-          <v-card-title class="headline">
+          <v-card-title class="headline title">
             <v-icon class="mr-2">mdi-microsoft-windows</v-icon>
             <span v-if="editUrl">Edit URL</span>
             <span v-else>Add URL</span>
           </v-card-title>
-          <v-text-field
-            label="URL"
-            :hint="editUrl ? 'URLを削除する場合は未入力のまま送信してください' : ''"
-            prepend-icon="mdi-microsoft-internet-explorer"
-            clearable
-            v-model="newUrl"
-          ></v-text-field>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="black" text @click="closeUrlModal">Cancel</v-btn>
-            <v-btn color="primary" text @click="editLabelUrl()">Submit</v-btn>
-          </v-card-actions>
+          <v-form ref="form" v-model="valid" @submit.prevent>
+            <v-text-field
+              label="URL"
+              :hint="editUrl ? 'Please send empty field if you wanna delete URL' : 'URL is required'"
+              persistent-hint
+              prepend-icon="mdi-microsoft-internet-explorer"
+              clearable
+              :rules="urlRules"
+              v-model="newUrl"
+            ></v-text-field>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="closeUrlModal">Cancel</v-btn>
+              <v-btn text :disabled="!valid || !editUrl && newUrl === '' || !editUrl && newUrl === null" @click="editLabelUrl()">Submit</v-btn>
+            </v-card-actions>
+          </v-form>
         </v-container>
       </v-card>
     </v-dialog>
@@ -43,36 +47,41 @@ export default {
   data() {
     return {
       // 追加もしくは変更したいURL
-      newUrl: ''
-    }
-  },
-  watch: {
-    // valueの値をwatchしてfalseになれば値をリセット
-    value: {
-      handler (val) {
-        if (val === false) {
-          this.clearUrlModal()
-        }
-      },
-      immediate: true
+      newUrl: '',
+      valid: true,
+      urlRules: [
+        v =>  !v || 'ok' && /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/.test(v) || 'URL must be valid',
+      ],
     }
   },
   methods: {
 
-    // urlモーダルリセット
-    clearUrlModal() {
-      this.newUrl = ''
+    // バリデーションリセット
+    resetValidation() {
+      this.$refs.form.resetValidation()
     },
 
     // urlモーダルを閉じる
     closeUrlModal() {
       this.$emit('input', false)
+      this.newUrl = ''
+      this.resetValidation()
     },
 
     // 新規Urlを親にemit
     editLabelUrl() {
       this.$emit('edit-label-url', this.newUrl)
-    }
+      this.closeUrlModal()
+    },
   }
 }
 </script>
+<style scoped>
+.modal {
+  border-width: 2px !important;
+  border-color: white !important;
+}
+.title {
+  margin-left: 100px;
+}
+</style>

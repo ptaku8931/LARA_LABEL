@@ -1,9 +1,9 @@
 <template>
   <!-- カラー変更モーダルここから -->
   <v-row justify="center">
-    <v-dialog v-model="value" scrollable max-width="250px">
-      <v-card>
-        <v-card-title>
+    <v-dialog v-model="value" scrollable max-width="300px">
+      <v-card dark outlined class="modal">
+        <v-card-title class="title">
           <v-icon class="mr-3">mdi-pencil</v-icon>Edit Label Color
         </v-card-title>
         <v-divider></v-divider>
@@ -22,8 +22,8 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="grey" text @click="closeColorModal()">Cancel</v-btn>
-          <v-btn color="success" text @click="editLabelColor()">Update</v-btn>
+          <v-btn text @click="closeColorModal()">Cancel</v-btn>
+          <v-btn text @click="editLabelColor()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -46,34 +46,35 @@ export default {
       changedColor: ''
     }
   },
-  watch: {
-    // valueの値をwatchしてfalseになれば値をリセット
-    value: {
-      handler (val) {
-        if (val === false) {
-          this.clearColorModal()
-        }
-      },
-      immediate: true
-    }
+  
+  created() {
+    this.changedColor = 'white'
   },
-  methods: {
 
-    // カラーモーダルクリア
-    clearColorModal() {
-      this.changedColor = ''
-    },
+  methods: {
 
     // カラーモーダルを閉じる
     closeColorModal() {
       this.$emit('input', false)
+      this.changedColor = 'white'
     },
 
     // 変更カラーを親にemit
     editLabelColor() {
       this.$emit('edit-label-color', this.changedColor)
+      this.closeColorModal()
     }
   }
 }
 </script>
+
+<style scoped>
+.modal {
+  border-width: 2px !important;
+  border-color: white !important;
+}
+.title {
+  margin-left: 20px;
+}
+</style>
 

@@ -16,7 +16,7 @@ class CreateLabelFoldersTable extends Migration
         Schema::create('label_folders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('title', 20);
+            $table->string('title', 30);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

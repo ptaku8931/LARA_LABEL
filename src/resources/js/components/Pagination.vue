@@ -4,8 +4,6 @@
     <v-btn 
       v-if="!isFirstPage" 
       text 
-      rounded 
-      color="success" 
       @click="onPrev()"
       >&laquo; prev</v-btn>
     <!-- ページ総数が0及び1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
@@ -16,8 +14,6 @@
     <v-btn
       v-if="!isLastPage && totalPage !== 0 && afterSearchLabel > 12"
       text
-      rounded
-      color="success"
       @click="onNext()"
     >next &raquo;</v-btn>
   </div>
@@ -49,6 +45,18 @@ export default {
       currentPage: this.value
     }
   },
+  watch: {
+    onPrev: {
+      hendler() {
+        return this.onPrev()
+      }
+    },
+    onNext: {
+      handler() {
+        return this.onNext()
+      }
+    }
+  },
   methods: {
     onPrev() {
       // 引数の中で最大の値を返す、つまり、最低1が返る
@@ -71,10 +79,13 @@ export default {
     // 現在のページがページ総数に等しい
     isLastPage() {
       return this.currentPage === this.totalPage
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
+span {
+  font-size: 14px;
+}
 </style>

@@ -7,44 +7,67 @@ import Login from './pages/Login.vue'
 import LabelPage from './pages/LabelPage.vue'
 import SnippetPage from './pages/SnippetPage.vue'
 import SystemError from './pages/errors/System.vue'
+import NotFound from './pages/errors/NotFound.vue'
 
 Vue.use(VueRouter)
-
-const beforeEnter = function(to, from, next) {
-  if (store.getters['auth/check']) {
-    next('/label')
-  } else {
-    next()
-  }
-}
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next('/label')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
-    beforeEnter
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next('/label')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/label',
     name: 'LabelPage',
     component: LabelPage,
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path: '/snippet',
     name: 'SnippetPage',
-    component: SnippetPage
+    component: SnippetPage,
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path: '/500',
     component: SystemError
-  }
+  },
+  {
+    path: '*',
+    component: NotFound
+  },
 ]
 
 const router = new VueRouter({

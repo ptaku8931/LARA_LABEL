@@ -3,10 +3,10 @@
     <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
       <v-layout wrap pt-5>
         <v-flex xs3 pt-4 class="folder">
-          <LabelFolder v-model="selectedFolder" />
+          <LabelFolder />
         </v-flex>
         <v-flex xs9 pr-5>
-          <Label v-model="selectedFolder" />
+          <Label />
         </v-flex>
       </v-layout>
     </div>
@@ -26,8 +26,6 @@ export default {
   },
   data() {
     return {
-      // クリックされたフォルダid
-      selectedFolder: null,
       // 背景画像
       img: ''
     }

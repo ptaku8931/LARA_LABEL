@@ -3,9 +3,9 @@ const state = {
   folderTheme: false,
   labelTheme: false,
   backgroundImg: {
-    name: 'dark',
-    url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg'
-  }
+    name: 'White',
+    url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg'
+  },
 }
 
 const mutations = {

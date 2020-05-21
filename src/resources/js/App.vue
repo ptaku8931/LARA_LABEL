@@ -1,12 +1,13 @@
 <template>
   <v-app>
     <header>
+      <transition name="slide" appear  mode="out-in">
+        <Message v-show="notification" v-model="msg" :isSuccess="isSuccess"/>
+      </transition>
       <Navbar />
     </header>
     <main>
-      <transition name="fade" appear mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <router-view></router-view>
     </main>
     <footer>
       <Footer />
@@ -18,11 +19,20 @@
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import { INTERNAL_SERVER_ERROR } from './error_code'
+import Message from './components/Message.vue'
 
 export default {
   components: {
     Navbar,
-    Footer
+    Footer,
+    Message
+  },
+  data() {
+    return {
+      notification: false,
+      msg: null,
+      isSuccess: true
+    }
   },
   watch: {
     errorCode: {
@@ -33,6 +43,28 @@ export default {
       },
       immediate: true
     },
+    successMsg: {
+      handler (val) {
+        if (val !== null) {
+          this.notification = true
+          this.msg = val  
+          this.isSuccess = true
+        }
+        this.msg = val
+      },
+      immediate: true
+    },
+    errorMsg: {
+      handler (val) {
+        if (val !== null) {
+          this.notification = true
+          this.msg = val 
+          this.isSuccess = false
+        }
+        this.msg = val
+      },
+      immediate: true
+    },
     $route () {
       this.$store.commit('error/SET_CODE', null)
     }
@@ -40,24 +72,30 @@ export default {
   computed: {
     errorCode() {
       return this.$store.state.error.code
-      }
+    },
+    successMsg() {
+      return this.$store.state.message.successMsg
+    },
+    errorMsg() {
+      return this.$store.state.message.errorMsg
+    },
   }
 }
 </script>
 
 <style scoped>
-.fade-enter {
-  /* transform: translateX(200px); */
+.slide-enter {
+  transform: translateX(500px);
   opacity: 0;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all .9s ease;
 }
 
-.fade-leave-to {
-  /* transform: translateX(-200px); */
+.slide-leave-to {
+  transform: translateX(500px);
   opacity: 0;
 }
 </style>
