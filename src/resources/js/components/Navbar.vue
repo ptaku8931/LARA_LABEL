@@ -1,28 +1,48 @@
 <template>
-  <v-app-bar app color="indigo" dark>
-    <v-container d-flex align-items-center>
-      <v-btn v-if="!isLogin" text rounded to="/">POST IT APP</v-btn>
-      <v-btn v-if="isLogin" text rounded class="user-icon">
-        <v-icon class="mr-2">mdi-account-circle</v-icon>
-        {{ username }}
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn v-if="isLogin" text rounded to="/label">Post it</v-btn>
-      <v-btn v-if="isLogin" text rounded to="/snippet">Snippet</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn v-if="!isLogin" text rounded to="/login">Login / Register</v-btn>
-      <v-btn v-if="isLogin" text rounded @click="logout">logout</v-btn>
-    </v-container>
-  </v-app-bar>
+  <div>
+    <v-app-bar app color="indigo" dark>
+      <v-container d-flex align-items-center>
+        <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
+        <v-btn v-if="isLogin" text rounded class="user-icon" @click="openModal">
+          <v-icon class="mr-2">mdi-account-circle</v-icon>
+          {{ username }}
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn v-if="isLogin" text rounded to="/label">Lara_label</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn v-if="!isLogin" text rounded to="/login">Login / Register</v-btn>
+        <v-btn v-if="isLogin" text rounded @click="logout">logout</v-btn>
+      </v-container>
+    </v-app-bar>
+    <UserConfirmModal v-model="userConfirmModal" @do-delete="softDelete"/>
+  </div>
+
 </template>
 
 <script>
+import UserConfirmModal from './UserConfirmModal.vue'
 export default {
+  components: {
+    UserConfirmModal
+  },
+  data() {
+    return {
+      userConfirmModal: false
+    }
+  },
   methods: {
     async logout() {
       await this.$store.dispatch('auth/logout')
       this.$router.push('/')
+    },
+    async softDelete() {
+      await this.$store.dispatch('auth/softDelete')
+      this.$router.push('/')
+    },
+    openModal() {
+      this.userConfirmModal = true
     }
+
   },
   computed: {
     isLogin() {

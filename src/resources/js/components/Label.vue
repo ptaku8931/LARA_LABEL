@@ -386,8 +386,15 @@ export default {
       if (response.status === CREATED) {
         this.labels.push(response.data)
         this.createModal = false
-        if (this.labels.length % 13 === 0) {
-          this.page++
+        if (this.labels.length % 12 === 1 && this.labels.length !== 1) {
+          const response = await axios.get('api/label/' + this.getCurrentFolderId)
+          if(response.status === OK) {
+            this.labels = response.data
+            this.page++
+            this.totalPage = Math.ceil(this.labels.length / this.perPage)
+            this.$store.commit('label/SET_CURRENT_PAGE', this.page)
+          }
+          this.$store.commit('error/SET_CODE', response.status, { root: true })
         }
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
@@ -543,9 +550,28 @@ export default {
       this.$store.commit('message/SET_SUCCESS_MSG', null)
       const response = await axios.delete('api/label/' + this.deleteId)
       if (response.status === OK) {
-        this.labels.splice(this.deleteIndex, 1)
+        if (this.page > 1) {
+          this.labels.splice(this.deleteIndex + this.page * 12, 1)
+          const response = await axios.get('api/label/' + this.getCurrentFolderId)
+          if(response.status === OK) {
+            this.labels = response.data
+          }
+        } else {
+          this.labels.splice(this.deleteIndex, 1)
+        }
         if (this.labels.length % 12 === 0 && this.labels.length !== 0) {
-          this.page--
+          const response = await axios.get('api/label/' + this.getCurrentFolderId)
+          if(response.status === OK) {
+            this.labels = response.data
+            if (this.page > 1) {
+              this.page--
+            } else {
+              this.page = 1
+            }
+            this.totalPage = Math.ceil(this.labels.length / this.perPage)
+            this.$store.commit('label/SET_CURRENT_PAGE', this.page)
+          }
+          this.$store.commit('error/SET_CODE', response.status, { root: true })
         }
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
@@ -627,6 +653,7 @@ export default {
 }
 .labelbar {
   margin-top: 5px;
+  margin-bottom: 5px;
   border-width: 2px !important;
 }
 .switch {
@@ -640,6 +667,7 @@ export default {
 }
 .label {
   transition: all 0.9s;
+  margin-top: 5px;
 }
 .label:hover {
   transform: scale(1.08, 1.08);

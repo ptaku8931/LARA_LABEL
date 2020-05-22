@@ -49,6 +49,7 @@ const actions = {
     if (response.status === CREATED) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', response.data)
+      commit('message/SET_SUCCESS_MSG', 'Welcome! How are you ??', { root: true })
       return false
     }
 
@@ -88,6 +89,20 @@ const actions = {
     if (response.status === OK) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', user)
+      return false
+    }
+
+    commit('SET_API_STATUS', false)
+    commit('error/SET_CODE', response.status, { root: true })
+  },
+
+  async softDelete({ commit }) {
+    commit('SET_API_STATUS', null)
+    const response = await axios.delete('/api/user/softdelete')  
+    if (response.status === OK) {
+      commit('SET_API_STATUS', true)
+      commit('SET_USER', null)
+      commit('message/SET_SUCCESS_MSG', 'Your account was deleted.', { root: true })
       return false
     }
 

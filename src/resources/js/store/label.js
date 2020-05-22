@@ -6,6 +6,7 @@ const state = {
     name: 'White',
     url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg'
   },
+  currentPage: ''
 }
 
 const mutations = {
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_BACKGROUND_IMG(state, img) {
     state.backgroundImg = img
+  },
+  SET_CURRENT_PAGE(state, page) {
+    state.currentPage = page
   }
 }
 

@@ -28,3 +28,5 @@ Route::get('/user', function() {
 Route::resource('label_folder', 'LabelFolderController');
 // ラベル api
 Route::resource('label', 'LabelController');
+// アカウント削除
+Route::delete('/user/softdelete', 'UserController@softdelete');

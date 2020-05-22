@@ -8,7 +8,7 @@
       >&laquo; prev</v-btn>
     <!-- ページ総数が0及び1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
     <span
-      v-if="totalPage !== 0 && totalPage !== 1 && afterSearchLabel > 12"
+      v-if="totalPage !== 1 && afterSearchLabel > 12"
     >Page {{ currentPage }} / {{ totalPage }}</span>
     <!-- ラストページではないかつ、ページ総数が0ではないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
     <v-btn
@@ -46,14 +46,18 @@ export default {
     }
   },
   watch: {
-    onPrev: {
-      hendler() {
-        return this.onPrev()
+    getCurrentFolderId: {
+      handler(val) {
+        if ( val !== null) {
+          this.$emit('input', 1)
+          this.currentPage = 1
+          this.$store.commit('label/SET_CURRENT_PAGE', '')
+        }
       }
     },
-    onNext: {
-      handler() {
-        return this.onNext()
+    getCurrentPage: {
+      handler(val) {
+        this.currentPage = val
       }
     }
   },
@@ -74,12 +78,18 @@ export default {
   computed: {
     // 現在のページが1に等しい
     isFirstPage() {
-      return this.currentPage === 1
+      return this.currentPage === 1 || this.currentPage === ''
     },
     // 現在のページがページ総数に等しい
     isLastPage() {
       return this.currentPage === this.totalPage
     },
+    getCurrentFolderId() {
+      return this.$store.state.label.currentFolderId
+    },
+    getCurrentPage() {
+      return this.$store.state.label.currentPage
+    }
   }
 }
 </script>

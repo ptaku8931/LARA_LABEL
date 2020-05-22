@@ -5,7 +5,6 @@ import store from './store/store'
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import LabelPage from './pages/LabelPage.vue'
-import SnippetPage from './pages/SnippetPage.vue'
 import SystemError from './pages/errors/System.vue'
 import NotFound from './pages/errors/NotFound.vue'
 
@@ -40,18 +39,6 @@ const routes = [
     path: '/label',
     name: 'LabelPage',
     component: LabelPage,
-    beforeEnter (to, from, next) {
-      if (store.getters['auth/check']) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
-  },
-  {
-    path: '/snippet',
-    name: 'SnippetPage',
-    component: SnippetPage,
     beforeEnter (to, from, next) {
       if (store.getters['auth/check']) {
         next()

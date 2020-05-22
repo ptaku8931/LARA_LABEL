@@ -356,7 +356,7 @@ export default {
 
 <style scoped>
 .foldercard {
-  height: 580px;
+  height: 600px;
   width: 256px;
   margin-left: 60px;
   border-width: 2px !important;
