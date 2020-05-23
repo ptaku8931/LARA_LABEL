@@ -648,7 +648,7 @@ export default {
 <style scoped>
 .v-content .v-card.v-sheet.theme--light {
   background-color: rgb(49, 48, 48) !important;
-  border-left-width: 30px !important;
+  border-left-width: 35px !important;
   border-left-style: solid !important;
 }
 .labelbar {

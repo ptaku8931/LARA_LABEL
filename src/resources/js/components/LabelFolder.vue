@@ -366,7 +366,7 @@ export default {
   margin-left: 0px;
 }
 .folder:hover {
-  margin-left: 15px;
+  margin-left: 10px;
   transition: all 0.9s;
 }
 .folder-icon {
@@ -375,7 +375,7 @@ export default {
 .folder-title {
   margin-top: 5px;
   font-family: monospace;
-  padding: 0 20px !important;
+  padding: 0 10px !important;
 }
 .folder-btn {
   padding: 0 12px !important;
