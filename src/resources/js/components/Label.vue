@@ -368,13 +368,30 @@ export default {
     pickupLabel(e, index) {
       e.dataTransfer.effectAllowed = 'move'
       e.dataTransfer.dropEffect = 'move'
-      e.dataTransfer.setData('from-label-index', index)
+      if (this.page > 1) {
+        e.dataTransfer.setData('from-label-index', index + (this.page - 1) * 12)
+      } else {
+        e.dataTransfer.setData('from-label-index', index)
+      }
     },
 
-    moveLabel(e, toLabelIndex) {
+    async moveLabel(e, toLabelIndex) {
       const fromLabelIndex = e.dataTransfer.getData('from-label-index')
       const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
-      this.labels.splice(toLabelIndex, 0, labelToMove)
+      if (this.page > 1) {
+        this.labels.splice(toLabelIndex + (this.page - 1) * 12, 0, labelToMove)
+      } else {
+        this.labels.splice(toLabelIndex, 0, labelToMove)
+      }
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
+      const response = await axios.put('api/Ldrugdrop', this.labels)
+      if (response.status === OK) {
+        this.$store.commit(
+          'message/SET_SUCCESS_MSG',
+          'success drug and drop !!'
+          )
+      }
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
     },
 
     // ラベル新規作成 post
@@ -551,7 +568,7 @@ export default {
       const response = await axios.delete('api/label/' + this.deleteId)
       if (response.status === OK) {
         if (this.page > 1) {
-          this.labels.splice(this.deleteIndex + this.page * 12, 1)
+          this.labels.splice(this.deleteIndex + (this.page - 1) * 12, 1)
           const response = await axios.get('api/label/' + this.getCurrentFolderId)
           if(response.status === OK) {
             this.labels = response.data

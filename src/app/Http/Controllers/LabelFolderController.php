@@ -95,4 +95,18 @@ class LabelFolderController extends Controller
         $label_folder->delete();
         return response('', 200);
     }
+
+    public function drugdrop(Request $request) 
+    {
+        $folders = Auth::user()->label_folders()->get();
+        $i = 0;
+
+        foreach($folders as $folder) {
+            $new_folder = $request[$i];
+            $folder->fill($new_folder)->save();
+            $i++;
+        }
+
+        return response('', 200);
+    }
 }

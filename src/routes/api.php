@@ -30,3 +30,6 @@ Route::resource('label_folder', 'LabelFolderController');
 Route::resource('label', 'LabelController');
 // アカウント削除
 Route::delete('/user/softdelete', 'UserController@softdelete');
+
+Route::put('/Fdrugdrop', 'LabelFolderController@drugdrop');
+Route::put('/Ldrugdrop', 'LabelController@drugdrop');

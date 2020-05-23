@@ -229,15 +229,13 @@ export default {
       e.dataTransfer.setData('from-label-folder-index', index)
     },
 
-    moveLabelFolder(e, toLabelFolderIndex) {
+    async moveLabelFolder(e, toLabelFolderIndex) {
       const fromLabelFolderIndex = e.dataTransfer.getData(
         'from-label-folder-index'
       )
-      const labelFolderToMove = this.labelFolders.splice(
-        fromLabelFolderIndex,
-        1
-      )[0]
+      const labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex, 1)[0]
       this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove)
+      const response = await axios.put('api/Fdrugdrop', this.labelFolders)
     },
 
     // フォルダ新規作成 POST

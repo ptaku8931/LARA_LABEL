@@ -101,4 +101,21 @@ class LabelController extends Controller
         $label->delete();
         return response('', 200);
     }
+
+    public function drugdrop(Request $request)
+    {
+        $label = $request[0];
+        $id = $label['label_folder_id'];
+        $folder = LabelFolder::find($id);
+        $labels = $folder->labels()->get();
+        $i = 0;
+
+        foreach($labels as $label) {
+            $label->fill($request[$i])->save();
+            $i++;
+        }
+
+        return response ('', 200);
+;
+    }
 }
