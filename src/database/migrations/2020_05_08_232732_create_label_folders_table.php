@@ -19,7 +19,7 @@ class CreateLabelFoldersTable extends Migration
             $table->string('title', 30);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             
         });
     }

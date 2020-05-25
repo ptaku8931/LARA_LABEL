@@ -236,6 +236,7 @@ export default {
       const labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex, 1)[0]
       this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove)
       const response = await axios.put('api/Fdrugdrop', this.labelFolders)
+      console.log(response)
     },
 
     // フォルダ新規作成 POST

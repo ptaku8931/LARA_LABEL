@@ -22,7 +22,7 @@ class CreateLabelsTable extends Migration
             $table->string('color', 20);
             $table->timestamps();
 
-            $table->foreign('label_folder_id')->references('id')->on('label_folders')->onDelete('cascade');
+            $table->foreign('label_folder_id')->references('id')->on('label_folders')->onDelete('cascade')->onUpdate('cascade');
 
 
             

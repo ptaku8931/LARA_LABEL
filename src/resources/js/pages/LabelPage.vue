@@ -2,10 +2,10 @@
   <v-content>
     <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
       <v-layout wrap pt-5>
-        <v-flex xs3 pt-4 class="folder">
+        <v-flex md3 pt-4 class="folder">
           <LabelFolder />
         </v-flex>
-        <v-flex xs9 pr-5>
+        <v-flex md9 pr-5>
           <Label />
         </v-flex>
       </v-layout>

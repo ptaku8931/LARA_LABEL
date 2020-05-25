@@ -8,7 +8,7 @@
 <script>
 export default {
   metaInfo: {
-    title: 'POST IT App',
+    title: 'LARA_LABEL',
   }
 }
 </script>

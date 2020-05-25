@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\LabelFolder;
+use App\Label;
 use App\Http\Requests\LabelFolderRequest;
 
 class LabelFolderController extends Controller
@@ -98,10 +99,11 @@ class LabelFolderController extends Controller
 
     public function drugdrop(Request $request) 
     {
+
         $folders = Auth::user()->label_folders()->get();
         $i = 0;
 
-        foreach($folders as $folder) {
+        foreach ($folders as $folder) {
             $new_folder = $request[$i];
             $folder->fill($new_folder)->save();
             $i++;

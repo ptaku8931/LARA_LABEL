@@ -52,7 +52,8 @@
     <v-row>
       <!-- ラベル一覧 ここから-->
       <v-col
-        cols="4"
+        cols="12"
+        md="4"
         class="label"
         v-for="(label, index) in filteredLabels"
         :key="label.id"
