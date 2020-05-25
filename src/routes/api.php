@@ -33,3 +33,11 @@ Route::delete('/user/softdelete', 'UserController@softdelete');
 
 Route::put('/Fdrugdrop', 'LabelFolderController@drugdrop');
 Route::put('/Ldrugdrop', 'LabelController@drugdrop');
+
+Route::get('/login/{provider}', 'Auth\OAuthController@socialOAuth')
+       ->where('provider','google')
+       ->name('socialOAuth');
+
+Route::get('/login/{provider}/callback', 'Auth\OAuthController@handleProviderCallback')
+       ->where('provider','google')
+       ->name('oauthCallback');

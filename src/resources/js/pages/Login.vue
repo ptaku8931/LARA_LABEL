@@ -46,6 +46,7 @@
               />
               <v-divider></v-divider>
               <v-card-actions>
+                <v-btn @click="loginGoogle">Google</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn text type="submit" :disabled="!valid">Login</v-btn>
               </v-card-actions>
@@ -172,6 +173,9 @@ export default {
       if (this.apiStatus) {
         this.$router.push('/label')
       }
+    },
+    async loginGoogle() {
+      const response = await axios.get('api/login/google')
     },
     clearError() {
       this.$store.commit('auth/SET_LOGIN_ERROR_MESSAGES', null)
