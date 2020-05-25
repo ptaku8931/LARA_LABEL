@@ -5,7 +5,7 @@
       <!-- 新規作成ボタン -->
       <v-btn :disabled="!getCurrentFolderId" @click="createModal = true">
         Create Label
-        <v-icon>mdi-sticker-plus-outline</v-icon>
+        <v-icon>mdi-card-plus-outline</v-icon>
       </v-btn>
       <!-- 検索エリア -->
       <v-text-field

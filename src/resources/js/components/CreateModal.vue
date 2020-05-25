@@ -5,7 +5,7 @@
       <v-card dark outlined class="modal">
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-card-title class="title">
-            <v-icon class="mr-4">mdi-sticker-plus-outline</v-icon>
+            <v-icon class="mr-4">mdi-card-plus-outline</v-icon>
             <span class="headliner">Create Label</span>
           </v-card-title>
           <v-card-text>

@@ -46,7 +46,26 @@
               />
               <v-divider></v-divider>
               <v-card-actions>
-                <v-btn @click="loginGoogle">Google</v-btn>
+                <a href="/api/login/google"> 
+                  <v-btn class="mt-4 mr-3" fab small dark color="red">
+                    <v-icon dark>mdi-google</v-icon>
+                  </v-btn>
+                </a>
+                <a href="/api/login/google"> 
+                  <v-btn class="mt-4 mr-3" fab small dark color="black">
+                    <v-icon dark>mdi-github</v-icon>
+                  </v-btn>
+                </a>
+                <a href="/api/login/google"> 
+                  <v-btn class="mt-4 mr-3" fab small dark color="indigo">
+                    <v-icon dark>mdi-facebook</v-icon>
+                  </v-btn>
+                </a>
+                <a href="/api/login/google"> 
+                  <v-btn class="mt-4 mr-3" fab small dark color="blue">
+                    <v-icon dark>mdi-twitter</v-icon>
+                  </v-btn>
+                </a>
                 <v-spacer></v-spacer>
                 <v-btn text type="submit" :disabled="!valid">Login</v-btn>
               </v-card-actions>
@@ -174,9 +193,6 @@ export default {
         this.$router.push('/label')
       }
     },
-    async loginGoogle() {
-      const response = await axios.get('api/login/google')
-    },
     clearError() {
       this.$store.commit('auth/SET_LOGIN_ERROR_MESSAGES', null)
       this.$store.commit('auth/SET_REGISTER_ERROR_MESSAGES', null)
@@ -202,6 +218,9 @@ export default {
 <style scoped>
 ul {
   list-style: none;
+}
+a {
+  text-decoration: none;
 }
 .container {
   padding-top: 25px;

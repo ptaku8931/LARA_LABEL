@@ -25,7 +25,7 @@ class OAuthController extends Controller
      * @param string $provider サービス名
      * @return mixed
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback(string $provider)
     {
         $socialUser = Socialite::driver($provider)->user();
         $user = User::firstOrNew(['email' => $socialUser->email]);

@@ -108,7 +108,7 @@ const actions = {
 
     commit('SET_API_STATUS', false)
     commit('error/SET_CODE', response.status, { root: true })
-  }
+  },
 }
 
 const getters = {
