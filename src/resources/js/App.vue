@@ -7,7 +7,9 @@
       <Navbar />
     </header>
     <main>
-      <router-view></router-view>
+      <transition name="fade" appear mode="out-in">
+        <router-view></router-view>
+      </transition>
     </main>
     <footer>
       <Footer />
@@ -84,6 +86,19 @@ export default {
 </script>
 
 <style scoped>
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .5s ease;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
 .slide-enter {
   transform: translateX(500px);
   opacity: 0;

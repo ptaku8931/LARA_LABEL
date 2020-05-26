@@ -30,6 +30,11 @@ export default {
       userConfirmModal: false
     }
   },
+  mounted() {
+    if (this.isLogin) {
+      this.$store.commit('message/SET_SUCCESS_MSG', 'Welcome to LARA_LABEL !!')
+    }
+  },
   methods: {
     async logout() {
       await this.$store.dispatch('auth/logout')

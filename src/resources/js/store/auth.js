@@ -29,7 +29,7 @@ const actions = {
     if (response.status === OK) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', response.data)
-      commit('message/SET_SUCCESS_MSG', 'Welcome! How are you ??', { root: true })
+      commit('message/SET_SUCCESS_MSG', 'Welcome to LARA_LABEL !!', { root: true })
       return false
     }
 
@@ -49,7 +49,7 @@ const actions = {
     if (response.status === CREATED) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', response.data)
-      commit('message/SET_SUCCESS_MSG', 'Welcome! How are you ??', { root: true })
+      commit('message/SET_SUCCESS_MSG', 'Welcome to LARA_LABEL !!', { root: true })
       return false
     }
 

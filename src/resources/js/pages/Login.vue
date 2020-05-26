@@ -95,7 +95,7 @@
                 </v-alert>
               </div>
               <v-text-field
-                label="Username"
+                label="Name"
                 prepend-icon="mdi-account-circle"
                 clearable
                 :rules="nameRules"

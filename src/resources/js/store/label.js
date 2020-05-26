@@ -3,8 +3,8 @@ const state = {
   folderTheme: false,
   labelTheme: false,
   backgroundImg: {
-    name: 'White',
-    url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg'
+    name: 'sunset',
+    url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
   },
   currentPage: ''
 }

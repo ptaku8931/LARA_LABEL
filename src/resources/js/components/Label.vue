@@ -235,30 +235,18 @@ export default {
       // background-image用
       images: [
         { name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg' },
-        { name: 'Blue', url: '/img/jason-dent-9m0h7SSYipg-unsplash.jpg' },
-        {
-          name: 'Yellow',
-          url: '/img/joanna-kosinska-1_CMoFsPfso-unsplash.jpg'
-        },
-        { name: 'Light', url: '/img/ramiro-mendes-CjS3QsRuxnE-unsplash.jpg' },
-        { name: 'Dark', url: '/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg' },
-        { name: 'Sky', url: '/img/stacy-marie-mLx1dc-AJ5k-unsplash.jpg' },
-        { name: 'Sea', url: '/img/olu-famule-kYx_g4YBfLI-unsplash.jpg' },
         { name: 'Sunset', url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg' },
-        {
-          name: 'Sunrise',
-          url: '/img/frank-mckenna-OD9EOzfSOh0-unsplash.jpg'
-        },
-        {
-          name: 'Blossom',
-          url: '/img/masaaki-komori-1hUsp3zi0rA-unsplash.jpg'
-        },
-        { name: 'Snow', url: '/img/jonatan-pie-NBvcQRdRSeQ-unsplash.jpg' }
+        { name: 'Sunrise', url: '/img/frank-mckenna-OD9EOzfSOh0-unsplash.jpg' },
+        { name: 'Dark', url: '/img/jez-timms-r4lM2v9M84Q-unsplash.jpg' },
+        { name: 'Snow', url: '/img/chandler-cruttenden-w8hWTFpGtpY-unsplash.jpg' },
+        { name: 'Galaxy', url: '/img/neven-krcmarek-3ym-ev0Pe58-unsplash.jpg' },
+        { name: 'Mountain', url: '/img/john-rodenn-castillo-eluzJSfkNCk-unsplash.jpg' },
+        { name: 'Blossom', url: '/img/masaaki-komori-1hUsp3zi0rA-unsplash.jpg' },
       ],
       // 選択されたbackground-image
       selectedImage: {
-        name: '',
-        url: ''
+        name: 'Sunset',
+        url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
       }
     }
   },
@@ -312,7 +300,6 @@ export default {
     }
     // テーマとイメージをstateからget
     this.theme = this.getLabelTheme
-    this.selectedImage = this.getBackgroundImg
   },
 
   methods: {
