@@ -2,7 +2,7 @@
   <!-- カラー変更モーダルここから -->
   <v-row justify="center">
     <v-dialog v-model="value" scrollable max-width="300px">
-      <v-card dark outlined class="modal">
+      <v-card outlined>
         <v-card-title class="title">
           <v-icon class="mr-3">mdi-pencil</v-icon>Edit Label Color
         </v-card-title>
@@ -22,8 +22,8 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="closeColorModal()">Cancel</v-btn>
-          <v-btn text @click="editLabelColor()">Update</v-btn>
+          <v-btn small @click="closeColorModal()">Cancel</v-btn>
+          <v-btn small color="success" :disabled="beforeChangeColor === changedColor" @click="editLabelColor()">Update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -38,7 +38,8 @@ export default {
       type: Boolean,
       required: true
     },
-    colors: ''
+    colors: '',
+    beforeChangeColor: '',
   },
   data() {
     return {
@@ -48,7 +49,7 @@ export default {
   },
   
   created() {
-    this.changedColor = 'white'
+    this.changedColor = 'indigo'
   },
 
   methods: {
@@ -56,7 +57,7 @@ export default {
     // カラーモーダルを閉じる
     closeColorModal() {
       this.$emit('input', false)
-      this.changedColor = 'white'
+      this.changedColor = 'indigo'
     },
 
     // 変更カラーを親にemit
@@ -69,10 +70,6 @@ export default {
 </script>
 
 <style scoped>
-.modal {
-  border-width: 2px !important;
-  border-color: white !important;
-}
 .title {
   margin-left: 20px;
 }

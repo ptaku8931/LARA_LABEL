@@ -2,7 +2,7 @@
   <!-- URL追加及び編集モーダルここから -->
   <v-row justify="center">
     <v-dialog v-model="value" persistent max-width="400">
-      <v-card dark outlined class="modal"> 
+      <v-card outlined> 
         <v-container>
           <v-card-title class="headline title">
             <v-icon class="mr-2">mdi-microsoft-windows</v-icon>
@@ -21,8 +21,8 @@
             ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="closeUrlModal">Cancel</v-btn>
-              <v-btn text :disabled="!valid || !editUrl && newUrl === '' || !editUrl && newUrl === null" @click="editLabelUrl()">Submit</v-btn>
+              <v-btn small @click="closeUrlModal">Cancel</v-btn>
+              <v-btn small color="primary" :disabled="!valid || !editUrl && newUrl === '' || !editUrl && newUrl === null" @click="editLabelUrl()">Submit</v-btn>
             </v-card-actions>
           </v-form>
         </v-container>
@@ -77,10 +77,6 @@ export default {
 }
 </script>
 <style scoped>
-.modal {
-  border-width: 2px !important;
-  border-color: white !important;
-}
 .title {
   margin-left: 100px;
 }

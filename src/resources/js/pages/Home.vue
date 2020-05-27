@@ -2,7 +2,7 @@
   <v-content>
     <div class="back">
       <h1>LARA_LABEL</h1>
-      <p>Memo + Bookmark + Color + Copy</p>
+      <p>Memo + Bookmark + Color + Snippet</p>
     </div>
   </v-content>
 </template>

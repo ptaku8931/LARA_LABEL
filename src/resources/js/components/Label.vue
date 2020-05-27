@@ -115,6 +115,15 @@
             </v-tooltip>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
+                <!-- snippet追加ボタン -->
+                <v-icon v-if="label.snippet === null" left dark v-on="on" @click="addSnippetModal(label.id)">mdi-text-box-outline</v-icon>
+                <!-- snippet編集ボタン -->
+                <v-icon v-else left dark v-on="on" @click="editSnippetModal(label.id, label.snippet)">mdi-text-box-check-outline</v-icon>
+              </template>
+              <span>Snippet</span>
+            </v-tooltip>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
                 <!-- カラー変更ボタン -->
                 <v-icon @click="editColorModal(index, label.id)" left dark v-on="on">mdi-pencil</v-icon>
               </template>
@@ -164,11 +173,13 @@
       <!-- 新規登録モーダルコンポーネント -->
       <CreateModal :colors="colors" @create-label="createLabel" v-model="createModal" />
       <!-- カラー編集モーダルコンポーネント -->
-      <ColorModal :colors="colors" @edit-label-color="editLabelColor" v-model="colorModal" />
+      <ColorModal :colors="colors" :beforeChangeColor="beforeChangeColor" @edit-label-color="editLabelColor" v-model="colorModal" />
       <!-- URL追加及び編集モーダル -->
       <UrlModal :editUrl="editUrl" @edit-label-url="editLabelUrl" v-model="urlModal" />
       <!-- 削除確認モーダル -->
-      <ConfirmModal v-model="confirmModal" @do-delete="deleteLabel"/>
+      <ConfirmModal @do-delete="deleteLabel" v-model="confirmModal" />
+
+      <SnippetModal :snippetValue="snippetValue" :addSnippet="addSnippet" @edit-snippet="editSnippet" v-model="snippetModal" />
     </v-row>
   </v-container>
 </template>
@@ -179,6 +190,7 @@ import CreateModal from './CreateModal.vue'
 import ColorModal from './ColorModal.vue'
 import UrlModal from './UrlModal.vue'
 import ConfirmModal from './ConfirmModal.vue'
+import SnippetModal from './SnippetModal.vue'
 import { OK, CREATED, VALIDATION_ERROR } from '../error_code'
 export default {
   components: {
@@ -186,7 +198,8 @@ export default {
     CreateModal,
     ColorModal,
     UrlModal,
-    ConfirmModal
+    ConfirmModal,
+    SnippetModal
   },
   data() {
     return {
@@ -216,6 +229,14 @@ export default {
       deleteId: '',
       // 削除するラベルのインデックス
       deleteIndex: '',
+      // snippetモーダル
+      snippetModal: false,
+      // snippetを追加するラベルのid
+      snippetId: '',
+      // snippetの値
+      snippetValue: '',
+      // snippetモーダル切り替え
+      addSnippet: false,
       // 検索ワード
       keyword: '',
       // カラー検索用
@@ -231,7 +252,7 @@ export default {
       // 検索で絞ったあとのラベル数
       afterSearchLabel: 1,
       // colors新規作成、編集用
-      colors: ['white', 'blue', 'cyan', 'indigo', 'green', 'teal', 'yellow', 'orange', 'pink', 'red', 'purple', 'grey'],
+      colors: ['indigo', 'blue', 'cyan', 'green', 'teal', 'yellow', 'orange', 'pink', 'red', 'purple', 'grey', 'white'],
       // background-image用
       images: [
         { name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg' },
@@ -340,6 +361,20 @@ export default {
       this.confirmModal = true
       this.deleteId = id
       this.deleteIndex = index
+    },
+
+    addSnippetModal(id) {
+      this.snippetModal = true
+      this.snippetId = id
+      this.snippetValue = ''
+      this.addSnippet = true
+    },
+
+    editSnippetModal(id, snippet) {
+      this.snippetModal = true
+      this.snippetId = id
+      this.snippetValue = snippet
+      this.addSnippet = false
     },
 
     // クリックしたテキストをクリップボードにコピー
@@ -541,10 +576,31 @@ export default {
           }
         })
         this.labels[labelsIndex].url = newUrl
-        this.urlModal = false
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The label was updated successfully !!'
+        )
+      }
+      this.$store.commit('error/SET_CODE', response.status, { root: true })
+    },
+     
+     //  snippet追加及び編集
+     async editSnippet(newSnippet) {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
+      const response = await axios.patch('api/label/' + this.snippetId, {
+        snippet: newSnippet })
+      if (response.status === OK) {
+        let labelsIndex = ''
+        this.labels.map((label, index) => {
+          if (label.id === this.snippetId) {
+            labelsIndex = index
+          }
+        })
+        this.labels[labelsIndex].snippet = newSnippet
+        console.log(this.labels)
+        this.$store.commit(
+          'message/SET_SUCCESS_MSG',
+          'The Snippet was updated successfully !!'
         )
       }
       this.$store.commit('error/SET_CODE', response.status, { root: true })

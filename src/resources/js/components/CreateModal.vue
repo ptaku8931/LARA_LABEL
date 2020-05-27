@@ -2,7 +2,7 @@
   <!-- 新規作成モーダルここから -->
   <v-row justify="center">
     <v-dialog v-model="value" persistent max-width="500px">
-      <v-card dark outlined class="modal">
+      <v-card  outlined>
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-card-title class="title">
             <v-icon class="mr-4">mdi-card-plus-outline</v-icon>
@@ -67,8 +67,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text @click="closeCreateModal()">Cancel</v-btn>
-            <v-btn text :disabled="!valid" @click="createLabel()">Create</v-btn>
+            <v-btn @click="closeCreateModal()">Cancel</v-btn>
+            <v-btn color="primary" :disabled="!valid" @click="createLabel()">Create</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -124,7 +124,7 @@ export default {
     }
   },
   created() {
-    this.createdColor = 'white'
+    this.createdColor = 'indigo'
   },
   methods: {
 
@@ -133,7 +133,7 @@ export default {
       this.newLabel.title = ''
       this.newLabel.text = ''
       this.newLabel.url = ''
-      this.createdColor = 'white'
+      this.createdColor = 'indigo'
       this.resetValidation()
     },
 
@@ -157,10 +157,6 @@ export default {
 }
 </script>
 <style scoped>
-.modal {
-  border-width: 2px !important;
-  border-color: white !important;
-}
 .title {
   margin-left: 135px;
 }

@@ -18,6 +18,7 @@ class CreateLabelsTable extends Migration
             $table->unsignedInteger('label_folder_id');
             $table->string('title', 30);
             $table->string('text', 50);
+            $table->text('snippet')->nullable();
             $table->text('url')->nullable();
             $table->string('color', 20);
             $table->timestamps();
