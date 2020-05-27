@@ -18,7 +18,7 @@
       <!-- color検索エリア -->
       <v-select
         class="mt-2"
-        label="Search of color"
+        label="Search by color"
         outlined
         prepend-inner-icon="mdi-file-search"
         :items="searchColors"
@@ -27,7 +27,7 @@
       <!-- 背景画像変更エリア -->
       <v-select
         class="mt-2"
-        label="background-img"
+        label="background-image"
         outlined
         prepend-inner-icon="mdi-file-image-outline"
         :items="images"
@@ -653,7 +653,7 @@ export default {
 <style scoped>
 .v-content .v-card.v-sheet.theme--light {
   background-color: rgb(49, 48, 48) !important;
-  border-left-width: 35px !important;
+  border-left-width: 40px !important;
   border-left-style: solid !important;
 }
 .labelbar {

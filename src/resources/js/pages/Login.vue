@@ -51,19 +51,14 @@
                     <v-icon dark>mdi-google</v-icon>
                   </v-btn>
                 </a>
-                <a href="/api/login/google"> 
+                <a href="/api/login/github"> 
                   <v-btn class="mt-4 mr-3" fab small dark color="black">
                     <v-icon dark>mdi-github</v-icon>
                   </v-btn>
                 </a>
-                <a href="/api/login/google"> 
+                <a href="/api/login/facebook"> 
                   <v-btn class="mt-4 mr-3" fab small dark color="indigo">
                     <v-icon dark>mdi-facebook</v-icon>
-                  </v-btn>
-                </a>
-                <a href="/api/login/google"> 
-                  <v-btn class="mt-4 mr-3" fab small dark color="blue">
-                    <v-icon dark>mdi-twitter</v-icon>
                   </v-btn>
                 </a>
                 <v-spacer></v-spacer>

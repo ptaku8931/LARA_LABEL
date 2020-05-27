@@ -3,7 +3,8 @@
     <!-- 現在のページが1でないならば -->
     <v-btn 
       v-if="!isFirstPage" 
-      text 
+      color="blue"
+      text
       @click="onPrev()"
       >&laquo; prev</v-btn>
     <!-- ページ総数が0及び1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
@@ -13,6 +14,7 @@
     <!-- ラストページではないかつ、ページ総数が0ではないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
     <v-btn
       v-if="!isLastPage && totalPage !== 0 && afterSearchLabel > 12"
+      color="blue"
       text
       @click="onNext()"
     >next &raquo;</v-btn>
@@ -97,5 +99,6 @@ export default {
 <style scoped>
 span {
   font-size: 14px;
+  color: rgb(0, 132, 255);
 }
 </style>
