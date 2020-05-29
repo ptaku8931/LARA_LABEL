@@ -1,7 +1,7 @@
 <template>
   <!-- カラー変更モーダルここから -->
   <v-row justify="center">
-    <v-dialog v-model="value" scrollable max-width="300px">
+    <v-dialog v-model="value" scrollable persistent max-width="300px">
       <v-card outlined>
         <v-card-title class="title">
           <v-icon class="mr-3">mdi-pencil</v-icon>Edit Label Color

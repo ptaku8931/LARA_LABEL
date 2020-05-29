@@ -333,6 +333,7 @@ export default {
     editColorModal(index, id) {
       this.colorModal = true
       this.beforeChangeColor = this.$refs.labelColor[index].color
+      console.log(this.beforeChangeColor)
       this.beforeChangeLabelId = id
     },
 
@@ -557,6 +558,8 @@ export default {
             }
           })
           this.labels[labelsIndex].color = newColor
+          this.beforeChangeLabelColor = ''
+          this.beforeChangeLabelId = ''
           this.$store.commit(
             'message/SET_SUCCESS_MSG',
             'The label was updated successfully !!'
