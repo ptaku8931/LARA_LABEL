@@ -102,7 +102,7 @@ class LabelController extends Controller
         return response('', 200);
     }
 
-    public function drugdrop(Request $request)
+    public function dragdrop(Request $request)
     {
         $label = $request[0];
         $id = $label['label_folder_id'];

@@ -4,7 +4,7 @@ const state = {
   user: null,
   apiStatus: null,
   loginErrorMessages: null,
-  registerErrorMessages: null
+  registerErrorMessages: null,
 }
 
 const mutations = {
@@ -109,11 +109,13 @@ const actions = {
     commit('SET_API_STATUS', false)
     commit('error/SET_CODE', response.status, { root: true })
   },
+
 }
 
 const getters = {
   check: state => !!state.user,
-  username: state => (state.user ? state.user.name : '')
+  username: state => (state.user ? state.user.name : ''),
+  userEmail: state => (state.user ? state.user.email : '')
 }
 
 export default {

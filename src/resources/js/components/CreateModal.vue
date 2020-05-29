@@ -94,7 +94,8 @@ export default {
         title: '',
         text: '',
         color: '',
-        url: ''
+        url: '',
+        snippet: ''
       },
       // 新規作成カラー
       createdColor: '',

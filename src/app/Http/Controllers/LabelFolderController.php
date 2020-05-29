@@ -97,7 +97,7 @@ class LabelFolderController extends Controller
         return response('', 200);
     }
 
-    public function drugdrop(Request $request) 
+    public function dragdrop(Request $request) 
     {
 
         $folders = Auth::user()->label_folders()->get();

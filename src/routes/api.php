@@ -31,8 +31,8 @@ Route::resource('label', 'LabelController');
 // アカウント削除
 Route::delete('/user/softdelete', 'UserController@softdelete');
 
-Route::put('/Fdrugdrop', 'LabelFolderController@drugdrop');
-Route::put('/Ldrugdrop', 'LabelController@drugdrop');
+Route::put('/Fdragdrop', 'LabelFolderController@dragdrop');
+Route::put('/Ldragdrop', 'LabelController@dragdrop');
 
 Route::get('/login/{provider}', 'Auth\OAuthController@socialOAuth');
 Route::get('/login/{provider}/callback', 'Auth\OAuthController@handleProviderCallback');

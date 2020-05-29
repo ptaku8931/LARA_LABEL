@@ -235,15 +235,13 @@ export default {
       )
       const labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex, 1)[0]
       this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove)
-      const response = await axios.put('api/Fdrugdrop', this.labelFolders)
-      console.log(response)
+      const response = await axios.put('api/Fdragdrop', this.labelFolders)
     },
 
     // フォルダ新規作成 POST
     async createFolder() {
       this.$store.commit('message/SET_SUCCESS_MSG', null)
       const response = await axios.post('api/label_folder', this.folderForm)
-
       // responseのstatusが201ならば
       if (response.status === CREATED) {
         this.labelFolders.push(response.data)

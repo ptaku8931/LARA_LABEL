@@ -9,19 +9,25 @@
             <v-icon v-else class="mr-2">mdi-text-box-check-outline</v-icon>
             <span class="headliner">Snippet</span>
           </v-card-title>
+          <v-card-subtitle 
+            class="subtitle" 
+            v-if="!addSnippet && newSnippet && newSnippet.trim().length !== 0"
+          >
+            <v-icon @click="copyToClipboard()">mdi-content-copy</v-icon>
+            Copy Snippet 
+          </v-card-subtitle>
           <v-card-text class="mb-0">
             <v-textarea
               class="textarea"
-              :label="addSnippet ? 'Please create your snippet' : ''"
-              :append-icon="!addSnippet && newSnippet && newSnippet.trim().length !== 0 ? 'mdi-content-copy' : ''"
-              @click:append
               outlined 
               clearable
-              color="indigo"
-              background-color="blue lighten-5"
-              height="540"
+              dark
+              color="white"
+              background-color="black"
+              height="500"
               v-model="newSnippet"
             ></v-textarea>
+            <small class="pl-1" v-if="!addSnippet">Please click X button ( top and right ) and update if you wanna delete your snippet</small>
           </v-card-text>
           <v-card-actions class="pt-0 mr-2">
             <v-spacer></v-spacer>
@@ -82,9 +88,20 @@ export default {
     },
 
     // 新規snippetを親にemit
-    editSnippet() {
-      this.$emit('edit-snippet', this.newSnippet)
+    async editSnippet() {
+      await this.$emit('edit-snippet', this.newSnippet)
+      this.newSnippet = ''
       this.$emit('input', false)
+    },
+
+    async copyToClipboard() {
+      this.$store.commit('message/SET_SUCCESS_MSG', null)
+      const copyText = await this.newSnippet
+      navigator.clipboard.writeText(copyText)
+      this.$store.commit(
+        'message/SET_SUCCESS_MSG',
+        'The Snippet is successfully copied to the clipboard !!'
+      )
     }
   }
 }
@@ -92,7 +109,11 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 215px;
+  margin-left: 218px;
+}
+.subtitle {
+  padding-bottom: 0px;
+  padding-top: 15px;
 }
 .textarea {
   margin-top: 10px !important;

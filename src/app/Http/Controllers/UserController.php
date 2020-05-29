@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\LabelFolder;
+use App\Http\Requests\UserRequest;
+
 
 
 class UserController extends Controller
 {
+    
     public function softdelete() {
         $folders = Auth::user()->label_folders()->get();
         \DB::transaction (function() use($folders) {

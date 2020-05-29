@@ -3,7 +3,7 @@
     <v-app-bar app color="indigo" dark>
       <v-container d-flex align-items-center>
         <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
-        <v-btn v-if="isLogin" text rounded class="user-icon" @click="openModal">
+        <v-btn v-if="isLogin" text rounded class="user-icon" @click="openInfoModal">
           <v-icon class="mr-2">mdi-account-circle</v-icon>
           {{ username }}
         </v-btn>
@@ -14,19 +14,22 @@
         <v-btn v-if="isLogin" text rounded @click="logout">logout</v-btn>
       </v-container>
     </v-app-bar>
-    <UserConfirmModal v-model="userConfirmModal" @do-delete="softDelete"/>
+    <UserInfoModal v-model="userInfoModal" @open-confirm-modal="openConfirmModal" />
+    <UserConfirmModal v-model="userConfirmModal" @do-delete="softDelete" />
   </div>
-
 </template>
 
 <script>
+import UserInfoModal from './UserInfoModal.vue'
 import UserConfirmModal from './UserConfirmModal.vue'
 export default {
   components: {
+    UserInfoModal,
     UserConfirmModal
   },
   data() {
     return {
+      userInfoModal: false,
       userConfirmModal: false
     }
   },
@@ -42,12 +45,15 @@ export default {
     },
     async softDelete() {
       await this.$store.dispatch('auth/softDelete')
+      this.userInfoModal = false
       this.$router.push('/')
     },
-    openModal() {
+    openInfoModal() {
+      this.userInfoModal = true
+    },
+    openConfirmModal() {
       this.userConfirmModal = true
     }
-
   },
   computed: {
     isLogin() {
@@ -62,7 +68,10 @@ export default {
 
 <style scoped>
 .user-icon {
-text-transform: none;
-font-size: 14px;
+  text-transform: none;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 300px;
 }
 </style>

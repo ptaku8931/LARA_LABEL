@@ -108,13 +108,6 @@
           <div class="text-right" v-show="isBtn && index === btnIndex">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <!-- ドラッグボタン -->
-                <v-icon class="draggable" left dark v-on="on">mdi-gesture-swipe</v-icon>
-              </template>
-              <span>Drug & Drop</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
                 <!-- snippet追加ボタン -->
                 <v-icon v-if="label.snippet === null" left dark v-on="on" @click="addSnippetModal(label.id)">mdi-text-box-outline</v-icon>
                 <!-- snippet編集ボタン -->
@@ -261,8 +254,9 @@ export default {
         { name: 'Dark', url: '/img/jez-timms-r4lM2v9M84Q-unsplash.jpg' },
         { name: 'Snow', url: '/img/chandler-cruttenden-w8hWTFpGtpY-unsplash.jpg' },
         { name: 'Galaxy', url: '/img/neven-krcmarek-3ym-ev0Pe58-unsplash.jpg' },
-        { name: 'Mountain', url: '/img/john-rodenn-castillo-eluzJSfkNCk-unsplash.jpg' },
         { name: 'Blossom', url: '/img/masaaki-komori-1hUsp3zi0rA-unsplash.jpg' },
+        { name: 'Sky', url: '/img/jason-charters-9YTghY140zA-unsplash.jpg' },
+        { name: 'Night', url: '/img/luca-bravo-a_hPPrncGlQ-unsplash.jpg' },
       ],
       // 選択されたbackground-image
       selectedImage: {
@@ -400,21 +394,32 @@ export default {
 
     async moveLabel(e, toLabelIndex) {
       const fromLabelIndex = e.dataTransfer.getData('from-label-index')
-      const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
-      if (this.page > 1) {
-        this.labels.splice(toLabelIndex + (this.page - 1) * 12, 0, labelToMove)
+      if (fromLabelIndex == toLabelIndex) {
+        return false
       } else {
-        this.labels.splice(toLabelIndex, 0, labelToMove)
+        const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
+        if (this.page > 1) {
+          this.labels.splice(toLabelIndex + (this.page - 1) * 12, 0, labelToMove)
+        } else {
+          this.labels.splice(toLabelIndex, 0, labelToMove)
+        }
+        this.$store.commit('message/SET_SUCCESS_MSG', null)
+        const response = await axios.put('api/Ldragdrop', this.labels)
+        if (response.status === OK) {
+          const response = await axios.get('api/label/' + this.getCurrentFolderId)
+          if (response.status === OK) {
+            this.labels = response.data
+            this.totalPage = Math.ceil(this.labels.length / this.perPage)
+            this.$store.commit(
+            'message/SET_SUCCESS_MSG',
+            'Success drag and drop !!'
+            )
+          } else {
+            this.$store.commit('error/SET_CODE', response.status, { root: true })
+          }
+        }
+        this.$store.commit('error/SET_CODE', response.status, { root: true })
       }
-      this.$store.commit('message/SET_SUCCESS_MSG', null)
-      const response = await axios.put('api/Ldrugdrop', this.labels)
-      if (response.status === OK) {
-        this.$store.commit(
-          'message/SET_SUCCESS_MSG',
-          'success drug and drop !!'
-          )
-      }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
     },
 
     // ラベル新規作成 post
@@ -597,7 +602,6 @@ export default {
           }
         })
         this.labels[labelsIndex].snippet = newSnippet
-        console.log(this.labels)
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The Snippet was updated successfully !!'
