@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-app-bar app clipped-left color="indigo" dark>
+      <v-app-bar-nav-icon v-if="isLogin" @click.stop="openDrawer()"></v-app-bar-nav-icon>
       <v-container d-flex align-items-center>
         <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
         <v-btn v-if="isLogin" text rounded class="user-icon" @click="openInfoModal">
@@ -30,7 +31,8 @@ export default {
   data() {
     return {
       userInfoModal: false,
-      userConfirmModal: false
+      userConfirmModal: false,
+      drawer: true
     }
   },
   mounted() {
@@ -53,7 +55,12 @@ export default {
     },
     openConfirmModal() {
       this.userConfirmModal = true
+    },
+    openDrawer() {
+      this.drawer = !this.drawer
+      this.$store.commit('label/SET_DRAWER', this.drawer)
     }
+
   },
   computed: {
     isLogin() {

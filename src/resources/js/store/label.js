@@ -6,7 +6,8 @@ const state = {
     name: 'sunset',
     url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
   },
-  currentPage: ''
+  currentPage: '',
+  drawerStatus: true
 }
 
 const mutations = {
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_CURRENT_PAGE(state, page) {
     state.currentPage = page
+  },
+  SET_DRAWER(state, status) {
+    state.drawerStatus = status
   }
 }
 

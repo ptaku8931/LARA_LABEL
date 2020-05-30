@@ -1,125 +1,127 @@
 <template>
-  <v-card dark>
-    <v-navigation-drawer 
-    permanent 
-    app
-    floating
-    clipped
-    width="270"
-    mobile-break-point="1020"
-  >
-      <!-- フォルダ追加及び編集フォーム ここから -->
-      <v-list-item>
-        <v-list-item-content>
-          <!-- フォルダ検索 -->
-          <v-text-field
-            outlined
-            label="Search Folder"
-            append-icon="mdi-folder-search"
-            v-model="keyword"
-          ></v-text-field>
-          <!-- 新規作成及び編集フォームタイトル -->
-          <v-list-item-title class="text-center">{{ formTitle }}</v-list-item-title>
-          <v-form v-model="valid" ref="form" @submit.prevent>
-            <!-- 入力エリア-->
+  <transition name="fade" mode="out-in">
+    <v-card dark v-if="drawer">
+      <v-navigation-drawer 
+      permanent 
+      app
+      floating
+      clipped
+      mobile-break-point
+      width="270"
+    >
+        <!-- フォルダ追加及び編集フォーム ここから -->
+        <v-list-item>
+          <v-list-item-content>
+            <!-- フォルダ検索 -->
             <v-text-field
-              :label="placeHolder"
-              :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-multiple'"
-              clearable
-              counter="30"
-              v-model="folderForm.title"
-              :rules="folderRules"
-            />
-            <v-alert v-if="error" type="error">{{ errorMsg.title[0] }}</v-alert>
-            <div class="text-right mt-4">
-              <!-- 編集の場合のみshowする更新ボタン-->
-              <v-btn
-                v-if="edit"
-                x-small
-                color="success"
-                :disabled="!valid"
-                @click="updateFolder()"
-              >update</v-btn>
-              <!-- 編集モードを終了して新規作成モードに戻るボタン -->
-              <v-btn v-if="edit" x-small color="light-blue" @click="cancelEdit()">cancel</v-btn>
-              <!-- 新規作成の場合のみshowする追加ボタン -->
-              <v-btn
-                v-if="!edit"
-                x-small
-                color="success"
-                :disabled="!valid"
-                @click="createFolder()"
-              >add</v-btn>
-              <!-- バリデーションクリアボタン -->
-              <v-btn x-small color="primary" @click="resetValidation">clear</v-btn>
-            </div>
-          </v-form>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider></v-divider>
-      <!-- フォルダ追加及び編集フォーム ここまで -->
-      <!-- フォルダ一覧表示 ここから -->
-      <v-list dense nav>
-        <v-list-item
-          v-for="(folder, index) in filteredLabelFolders"
-          class="folder"
-          :key="folder.id"
-          :disabled="edit"
-          @click="selectedFolder(folder.id, index)"
-          @dragover.prevent
-          @dragenter.prevent
-          @dragstart="pickupLabelFolder($event, index, folder.id)"
-          @drop="moveLabelFolder($event, index)"
-        >
-          <v-row draggable>
-            <v-col cols="2" class="folder-icon">
-              <v-list-item-icon>
-                <!-- フォルダアイコン -->
-                <v-icon v-if="folder.id === getCurrentFolderId">mdi-folder-open</v-icon>
-                <v-icon v-else>mdi-folder</v-icon>
-              </v-list-item-icon>
-            </v-col>
-            <v-col cols="6" class="folder-title">
-              <v-list-item-content>
-                <!-- フォルダタイトル -->
-                <v-list-item-title>{{ folder.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-col>
-            <v-col cols="4" class="folder-btn">
-              <v-list-item-icon v-show="isBtn && index === btnIndex">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <!-- フォルダ編集用アイコン -->
-                    <v-icon
-                      right
-                      @click="editFolder(folder.id, folder.title)"
-                      :disabled="edit"
-                      v-on="on"
-                    >mdi-pen</v-icon>
-                  </template>
-                  <span>Edit Folder</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <!-- フォルダ削除用アイコン -->
-                    <v-icon
-                      right
-                      @click="deleteConfirm(folder.id, index)"
-                      :disabled="edit"
-                      v-on="on"
-                    >mdi-delete</v-icon>
-                  </template>
-                  <span>Delete Folder</span>
-                </v-tooltip>
-              </v-list-item-icon>
-            </v-col>
-          </v-row>
+              outlined
+              label="Search Folder"
+              append-icon="mdi-folder-search"
+              v-model="keyword"
+            ></v-text-field>
+            <!-- 新規作成及び編集フォームタイトル -->
+            <v-list-item-title class="text-center">{{ formTitle }}</v-list-item-title>
+            <v-form v-model="valid" ref="form" @submit.prevent>
+              <!-- 入力エリア-->
+              <v-text-field
+                :label="placeHolder"
+                :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-multiple'"
+                clearable
+                counter="30"
+                v-model="folderForm.title"
+                :rules="folderRules"
+              />
+              <v-alert v-if="error" type="error">{{ errorMsg.title[0] }}</v-alert>
+              <div class="text-right mt-4">
+                <!-- 編集の場合のみshowする更新ボタン-->
+                <v-btn
+                  v-if="edit"
+                  x-small
+                  color="success"
+                  :disabled="!valid"
+                  @click="updateFolder()"
+                >update</v-btn>
+                <!-- 編集モードを終了して新規作成モードに戻るボタン -->
+                <v-btn v-if="edit" x-small color="light-blue" @click="cancelEdit()">cancel</v-btn>
+                <!-- 新規作成の場合のみshowする追加ボタン -->
+                <v-btn
+                  v-if="!edit"
+                  x-small
+                  color="success"
+                  :disabled="!valid"
+                  @click="createFolder()"
+                >add</v-btn>
+                <!-- バリデーションクリアボタン -->
+                <v-btn x-small color="primary" @click="resetValidation">clear</v-btn>
+              </div>
+            </v-form>
+          </v-list-item-content>
         </v-list-item>
-      </v-list>
-      <!-- フォルダ一覧表示ここまで -->
-    </v-navigation-drawer>
-    <ConfirmModal v-model="confirmModal" @do-delete="deleteFolder" />
-  </v-card>
+        <v-divider></v-divider>
+        <!-- フォルダ追加及び編集フォーム ここまで -->
+        <!-- フォルダ一覧表示 ここから -->
+        <v-list dense nav>
+          <v-list-item
+            v-for="(folder, index) in filteredLabelFolders"
+            class="folder"
+            :key="folder.id"
+            :disabled="edit"
+            @click="selectedFolder(folder.id, index)"
+            @dragover.prevent
+            @dragenter.prevent
+            @dragstart="pickupLabelFolder($event, index, folder.id)"
+            @drop="moveLabelFolder($event, index)"
+          >
+            <v-row draggable>
+              <v-col cols="2" class="folder-icon">
+                <v-list-item-icon>
+                  <!-- フォルダアイコン -->
+                  <v-icon v-if="folder.id === getCurrentFolderId">mdi-folder-open</v-icon>
+                  <v-icon v-else>mdi-folder</v-icon>
+                </v-list-item-icon>
+              </v-col>
+              <v-col cols="6" class="folder-title">
+                <v-list-item-content>
+                  <!-- フォルダタイトル -->
+                  <v-list-item-title>{{ folder.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-col>
+              <v-col cols="4" class="folder-btn">
+                <v-list-item-icon v-show="isBtn && index === btnIndex">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <!-- フォルダ編集用アイコン -->
+                      <v-icon
+                        right
+                        @click="editFolder(folder.id, folder.title)"
+                        :disabled="edit"
+                        v-on="on"
+                      >mdi-pen</v-icon>
+                    </template>
+                    <span>Edit Folder</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <!-- フォルダ削除用アイコン -->
+                      <v-icon
+                        right
+                        @click="deleteConfirm(folder.id, index)"
+                        :disabled="edit"
+                        v-on="on"
+                      >mdi-delete</v-icon>
+                    </template>
+                    <span>Delete Folder</span>
+                  </v-tooltip>
+                </v-list-item-icon>
+              </v-col>
+            </v-row>
+          </v-list-item>
+        </v-list>
+        <!-- フォルダ一覧表示ここまで -->
+      </v-navigation-drawer>
+      <ConfirmModal v-model="confirmModal" @do-delete="deleteFolder" />
+    </v-card>
+  </transition>
 </template>
 
 <script>
@@ -156,6 +158,7 @@ export default {
       keyword: '',
       // darkテーマ切り替え
       theme: false,
+      drawer: true,
       // バリデーション
       valid: true,
       error: false,
@@ -170,6 +173,11 @@ export default {
     theme: {
       handler() {
         this.$store.commit('label/SET_FOLDER_THEME', this.theme)
+      }
+    },
+    getDrawer: {
+      handler(val) {
+        this.drawer = val
       }
     }
   },
@@ -337,6 +345,10 @@ export default {
       return this.$store.state.label.folderTheme
     },
 
+    getDrawer() {
+      return this.$store.state.label.drawerStatus
+    },
+
     // フォルダー検索
     filteredLabelFolders() {
       // 空配列をもつ変数をセット
@@ -364,7 +376,7 @@ export default {
 .folder:hover {
   margin-left: 15px;
   background-color: rgb(99, 145, 245);
-  transition: all 0.9s;
+  transition: all 1.2s;
 }
 .folder-icon {
   padding: 0 14px !important;
@@ -379,5 +391,18 @@ export default {
 }
 .folder-btn {
   padding: 0 12px !important;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .8s ease;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

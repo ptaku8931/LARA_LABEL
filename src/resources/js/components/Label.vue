@@ -725,7 +725,7 @@ export default {
   height: 86px !important;
 }
 .label {
-  transition: all .9s;
+  transition: all 1.5s;
   margin-top: 10px;
 }
 .label:hover {

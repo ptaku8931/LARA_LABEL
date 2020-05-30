@@ -33,7 +33,7 @@ export default {
     return {
       notification: false,
       msg: null,
-      isSuccess: true
+      isSuccess: true,
     }
   },
   watch: {
@@ -87,7 +87,7 @@ export default {
 
 <style scoped>
 .fade-enter {
-  transform: translateX(5px);
+  transform: translateX(20px);
   opacity: 0;
 }
 
@@ -98,7 +98,7 @@ export default {
 
 .fade-leave-to {
   opacity: 0;
-  transform: translateX(-5px);
+  transform: translateX(-20px);
 }
 
 .slide-enter {

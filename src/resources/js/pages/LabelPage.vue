@@ -48,9 +48,9 @@ export default {
 .back {
   background-size: cover;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 .label {
-  width: 95%;
+  width: 94%;
 }
 </style>
