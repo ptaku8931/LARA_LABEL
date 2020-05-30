@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar app clipped-left color="indigo" dark>
       <v-container d-flex align-items-center>
         <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
         <v-btn v-if="isLogin" text rounded class="user-icon" @click="openInfoModal">

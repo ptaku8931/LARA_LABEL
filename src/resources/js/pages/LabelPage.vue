@@ -1,14 +1,10 @@
 <template>
   <v-content>
     <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
-      <v-layout wrap pt-5>
-        <v-flex md3 pt-4 class="folder">
-          <LabelFolder />
-        </v-flex>
-        <v-flex md9 pr-5>
-          <Label />
-        </v-flex>
-      </v-layout>
+      <LabelFolder />
+      <v-container class="label">
+        <Label />
+      </v-container>
     </div>
   </v-content>
 </template>
@@ -52,6 +48,9 @@ export default {
 .back {
   background-size: cover;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+}
+.label {
+  width: 95%;
 }
 </style>

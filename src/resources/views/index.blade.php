@@ -8,6 +8,9 @@
     [v-cloak] {
       display: none;
     }
+    body {
+      min-height: 100%;
+    }
   </style>
 
   <script src="{{ mix('js/app.js') }}" defer></script>

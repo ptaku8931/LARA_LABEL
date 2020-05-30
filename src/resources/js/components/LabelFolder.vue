@@ -1,6 +1,13 @@
 <template>
-  <v-card class="foldercard" :dark="!theme" outlined>
-    <v-navigation-drawer permanent>
+  <v-card dark>
+    <v-navigation-drawer 
+    permanent 
+    app
+    floating
+    clipped
+    width="270"
+    mobile-break-point="1020"
+  >
       <!-- フォルダ追加及び編集フォーム ここから -->
       <v-list-item>
         <v-list-item-content>
@@ -111,7 +118,6 @@
       </v-list>
       <!-- フォルダ一覧表示ここまで -->
     </v-navigation-drawer>
-    <v-switch v-model="theme" dark></v-switch>
     <ConfirmModal v-model="confirmModal" @do-delete="deleteFolder" />
   </v-card>
 </template>
@@ -352,27 +358,24 @@ export default {
 </script>
 
 <style scoped>
-.foldercard {
-  height: 600px;
-  width: 256px;
-  margin-left: 60px;
-  border-width: 2px !important;
-  border-style: solid !important;
-}
 .folder {
   margin-left: 0px;
 }
 .folder:hover {
-  margin-left: 10px;
+  margin-left: 15px;
+  background-color: rgb(99, 145, 245);
   transition: all 0.9s;
 }
 .folder-icon {
-  padding: 0 12px !important;
+  padding: 0 14px !important;
 }
 .folder-title {
   margin-top: 5px;
-  font-family: monospace;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   padding: 0 10px !important;
+}
+.v-list-item__title {
+  font-size: 15px !important;
 }
 .folder-btn {
   padding: 0 12px !important;

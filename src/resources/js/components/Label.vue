@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- ラベルナビバーここから -->
-    <v-bottom-navigation class="labelbar" height="70px" :dark="!theme" outlined>
+    <v-bottom-navigation class="labelbar" height="70px" dark outlined v-show="labels">
       <!-- 新規作成ボタン -->
       <v-btn :disabled="!getCurrentFolderId" @click="createModal = true">
         Create Label
@@ -38,17 +38,6 @@
       ></v-select>
     </v-bottom-navigation>
     <!-- ラベルナビバーここまで -->
-    <div class="d-flex">
-      <!-- ページネーションコンポーネント -->
-      <Pagination
-        class="mt-4"
-        v-model="page"
-        :totalPage="totalPage"
-        :afterSearchLabel="afterSearchLabel"
-      />
-      <!-- ラベルバーテーマ -->
-      <v-switch class="switch" v-model="theme" dark></v-switch>
-    </div>
     <v-row>
       <!-- ラベル一覧 ここから-->
       <v-col
@@ -163,6 +152,15 @@
         </v-card>
       </v-col>
       <!-- ラベル一覧 ここまで -->
+      <!-- ページネーションコンポーネント -->
+      <div class="pagination">
+        <Pagination
+          class="mt-4"
+          v-model="page"
+          :totalPage="totalPage"
+          :afterSearchLabel="afterSearchLabel"
+        />
+      </div>
       <!-- 新規登録モーダルコンポーネント -->
       <CreateModal :colors="colors" @create-label="createLabel" v-model="createModal" />
       <!-- カラー編集モーダルコンポーネント -->
@@ -714,27 +712,21 @@ export default {
 
 <style scoped>
 .v-content .v-card.v-sheet.theme--light {
-  background-color: rgb(49, 48, 48) !important;
+  background-color: rgb(66, 66, 66) !important;
   border-left-width: 40px !important;
   border-left-style: solid !important;
 }
 .labelbar {
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 25px;
   border-width: 2px !important;
-}
-.switch {
-  width: 50px;
-  height: 10px;
-  margin-bottom: 20px;
-  margin-left: auto;
 }
 .cardBody {
   height: 86px !important;
 }
 .label {
-  transition: all 0.9s;
-  margin-top: 5px;
+  transition: all .9s;
+  margin-top: 10px;
 }
 .label:hover {
   transform: scale(1.08, 1.08);
@@ -760,10 +752,15 @@ export default {
 .draggable {
   cursor: pointer;
 }
+.pagination {
+  position: fixed;
+  bottom: 70px;
+  right: 45px;
+}
 input {
   width: 85%;
   height: 25px;
-  color: white;
+  color: rgb(252, 252, 252);
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
