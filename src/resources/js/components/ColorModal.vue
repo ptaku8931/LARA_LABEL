@@ -47,11 +47,15 @@ export default {
       changedColor: ''
     }
   },
-  
-  created() {
-    this.changedColor = 'indigo'
+  watch: {
+    value: {
+      handler(val) {
+        if(val === true) {
+          this.changedColor = this.beforeChangeColor
+        }
+      }
+    }
   },
-
   methods: {
 
     // カラーモーダルを閉じる

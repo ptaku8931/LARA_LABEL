@@ -333,7 +333,6 @@ export default {
     editColorModal(index, id) {
       this.colorModal = true
       this.beforeChangeColor = this.$refs.labelColor[index].color
-      console.log(this.beforeChangeColor)
       this.beforeChangeLabelId = id
     },
 

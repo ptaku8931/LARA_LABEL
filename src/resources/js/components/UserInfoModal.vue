@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 44px;
+  margin-left: 43px;
 }
 .scroll {
   overflow: scroll;

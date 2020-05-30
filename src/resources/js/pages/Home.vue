@@ -26,7 +26,7 @@ p {
   padding-left: 60px;
   padding-top: 60px;
   font-size: 45px;
-  font-family:monospace
+  font-family:Arial, Helvetica, sans-serif
 }
 .back {
   background-image: url('/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg');
