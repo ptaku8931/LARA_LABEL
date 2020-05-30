@@ -61,7 +61,7 @@ export default {
     // カラーモーダルを閉じる
     closeColorModal() {
       this.$emit('input', false)
-      this.changedColor = 'indigo'
+      this.changedColor = this.beforeChangeColor
     },
 
     // 変更カラーを親にemit

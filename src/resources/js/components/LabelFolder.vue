@@ -64,6 +64,7 @@
           <v-list-item
             v-for="(folder, index) in filteredLabelFolders"
             class="folder"
+            :class="[ folder.id === getCurrentFolderId ? 'active' : '']"
             :key="folder.id"
             :disabled="edit"
             @click="selectedFolder(folder.id, index)"
@@ -377,6 +378,10 @@ export default {
   margin-left: 15px;
   background-color: rgb(99, 145, 245);
   transition: all 1.2s;
+}
+.active {
+  margin-left: 15px;
+  background-color: rgb(99, 145, 245);
 }
 .folder-icon {
   padding: 0 14px !important;
