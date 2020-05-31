@@ -1,8 +1,7 @@
 <template>
-  <!-- 新規作成モーダルここから -->
   <v-row justify="center">
-    <v-dialog v-model="value" persistent max-width="500px">
-      <v-card  outlined>
+    <v-dialog persistent max-width="500px" v-model="value">
+      <v-card outlined>
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-card-title class="title">
             <v-icon class="mr-4">mdi-card-plus-outline</v-icon>
@@ -67,14 +66,13 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="closeCreateModal()">Cancel</v-btn>
-            <v-btn color="primary" :disabled="!valid" @click="createLabel()">Create</v-btn>
+            <v-btn @click="closeCreateModal">Cancel</v-btn>
+            <v-btn color="primary" :disabled="!valid" @click="createLabel">Create</v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
   </v-row>
-  <!-- 新規作成モーダルここまで -->
 </template>
 
 <script>
@@ -88,7 +86,7 @@ export default {
   },
   data() {
     return {
-      // 新規作成用データ格納
+      // snippetは最初nullで入れておく、後から追加可
       newLabel: {
         label_folder_id: '',
         title: '',
@@ -97,9 +95,7 @@ export default {
         url: '',
         snippet: ''
       },
-      // 新規作成カラー
       createdColor: '',
-      // バリデーション
       valid: true,
       titleRules: [
         v => !!v || 'Title is required',
@@ -109,6 +105,7 @@ export default {
         v => !!v || 'Text is required',
         v => (v && v.length <= 50) || 'Too long !!'
       ],
+      // null可もしくは有効なURL可
       urlRules: [
         v =>  !v || 'ok' && /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?/.test(v) || 'URL must be valid',
       ],
@@ -129,7 +126,10 @@ export default {
   },
   methods: {
 
-    // 新規作成データリセット
+    resetValidation() {
+      this.$refs.form.resetValidation()
+    },
+
     clearCreateModal() {
       this.newLabel.title = ''
       this.newLabel.text = ''
@@ -138,18 +138,11 @@ export default {
       this.resetValidation()
     },
 
-    // バリデーションリセット
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
-
-    // 新規作成モーダル閉じる
     closeCreateModal() {
       this.$emit('input', false)
       this.resetValidation()
     },
-
-    // 新規作成データを親コンポーネントにemit
+    
     createLabel() {
       this.newLabel.color = this.createdColor
       this.$emit('create-label', this.newLabel)
@@ -157,6 +150,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .title {
   margin-left: 135px;

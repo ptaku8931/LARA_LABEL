@@ -2,16 +2,20 @@
   <v-app>
     <header>
       <transition name="slide" appear  mode="out-in">
+        <!-- notificationコンポーネント -->
         <Message v-show="notification" v-model="msg" :isSuccess="isSuccess"/>
       </transition>
+      <!-- Nav barコンポーネント -->
       <Navbar />
     </header>
     <main>
       <transition name="fade" mode="out-in">
+        <!-- view-routerによるページコンポーネント -->
         <router-view></router-view>
       </transition>
     </main>
     <footer>
+      <!-- Footerコンポーネント -->
       <Footer />
     </footer>
   </v-app>
@@ -20,8 +24,8 @@
 <script>
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
-import { INTERNAL_SERVER_ERROR } from './error_code'
 import Message from './components/Message.vue'
+import { INTERNAL_SERVER_ERROR } from './error_code'
 
 export default {
   components: {
@@ -38,14 +42,15 @@ export default {
   },
   watch: {
     errorCode: {
+      immediate: true,
       handler (val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push('/500')
         }
-      },
-      immediate: true
+      }
     },
     successMsg: {
+      immediate: true,
       handler (val) {
         if (val !== null) {
           this.notification = true
@@ -53,10 +58,10 @@ export default {
           this.isSuccess = true
         }
         this.msg = val
-      },
-      immediate: true
+      }
     },
     errorMsg: {
+      immediate: true,
       handler (val) {
         if (val !== null) {
           this.notification = true
@@ -64,8 +69,7 @@ export default {
           this.isSuccess = false
         }
         this.msg = val
-      },
-      immediate: true
+      }
     },
     $route () {
       this.$store.commit('error/SET_CODE', null)

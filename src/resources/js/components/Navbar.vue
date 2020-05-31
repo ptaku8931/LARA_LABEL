@@ -1,21 +1,25 @@
 <template>
   <div>
     <v-app-bar app clipped-left color="indigo" dark>
-      <v-app-bar-nav-icon v-if="isLogin" @click.stop="openDrawer()"></v-app-bar-nav-icon>
+      <!-- フォルダ用ハンバーガー-->
+      <v-app-bar-nav-icon v-if="isLogin" @click.stop="openDrawer"></v-app-bar-nav-icon>
       <v-container d-flex align-items-center>
         <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
+        <!-- アカウント情報 -->
         <v-btn v-if="isLogin" text rounded class="user-icon" @click="openInfoModal">
           <v-icon class="mr-2">mdi-account-circle</v-icon>
-          {{ username }}
+          {{ userName }}
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn v-if="isLogin" text rounded to="/label">Lara_label</v-btn>
-        <v-spacer></v-spacer>
+        <!-- 新規登録&ログイン -->
         <v-btn v-if="!isLogin" text rounded to="/login">Login / Register</v-btn>
         <v-btn v-if="isLogin" text rounded @click="logout">logout</v-btn>
       </v-container>
     </v-app-bar>
+    <!-- アカウント情報コンポーネント -->
     <UserInfoModal v-model="userInfoModal" @open-confirm-modal="openConfirmModal" />
+    <!-- アカウント削除コンポーネント -->
     <UserConfirmModal v-model="userConfirmModal" @do-delete="softDelete" />
   </div>
 </template>
@@ -66,8 +70,8 @@ export default {
     isLogin() {
       return this.$store.getters['auth/check']
     },
-    username() {
-      return this.$store.getters['auth/username']
+    userName() {
+      return this.$store.getters['auth/userName']
     }
   }
 }

@@ -1,14 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="value" persistent max-width="350">
-      <v-card outlined class="modal">
-        <v-card-title class="title">
-          Account Information
-        </v-card-title>
-        <v-card-text class="text">
+    <v-dialog persistent max-width="350" v-model="value">
+      <v-card outlined>
+        <v-card-title class="title">Account Information</v-card-title>
+        <v-card-text>
           <div class="mt-5 scroll">
             <span class="ml-5">Name :</span>
-            {{ username }}
+            {{ userName }}
           </div>
           <div class="mt-5 scroll">
             <span class="ml-5">E-mail :</span>
@@ -17,8 +15,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn small @click="closeModal()">Close</v-btn>
-          <v-btn small color="error" @click="openConfirm()">Delete</v-btn>
+          <v-btn small @click="closeModal">Close</v-btn>
+          <v-btn small color="error" @click="openConfirm">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -42,8 +40,8 @@ export default {
     }
   },
   computed: {
-    username() {
-      return this.$store.getters['auth/username']
+    userName() {
+      return this.$store.getters['auth/userName']
     },
     userEmail() {
       return this.$store.getters['auth/userEmail']

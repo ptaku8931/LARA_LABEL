@@ -1,4 +1,5 @@
 <template>
+  <!-- サクセスもしくはエラーメッセージ -->
   <v-snackbar v-model="snackbar" :color="isSuccess ? 'teal' : 'red' " top right :timeout="timeout">
     {{ value }}
   </v-snackbar>

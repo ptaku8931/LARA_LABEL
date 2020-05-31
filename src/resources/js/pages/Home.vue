@@ -14,6 +14,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 h1 {
   color: white;
@@ -34,5 +35,4 @@ p {
   width: 100%;
   min-height: 100vh;
 }
-
 </style>

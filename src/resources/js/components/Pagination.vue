@@ -7,9 +7,9 @@
       small
       rounded
       dark
-      @click="onPrev()"
+      @click="onPrev"
       >&laquo; prev</v-btn>
-    <!-- ページ総数が0及び1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
+    <!-- ページ総数が1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
     <span
       v-if="totalPage !== 1 && afterSearchLabel > 12"
     >Page {{ currentPage }} / {{ totalPage }}</span>
@@ -20,26 +20,23 @@
       small
       rounded
       dark
-      @click="onNext()"
+      @click="onNext"
     >next &raquo;</v-btn>
   </div>
 </template>
 
 <script>
-import CreateModalVue from './CreateModal.vue'
 export default {
   props: {
-    // v-modelの親コンポーネントのpage
     value: {
       type: Number,
       required: true
     },
-    // propのtotalPage
     totalPage: {
       type: Number,
       required: true
     },
-    // propのafterSearchLabel
+    // 検索がかかったあとのページ数
     afterSearchLabel: {
       type: Number,
       required: true
@@ -47,13 +44,13 @@ export default {
   },
   data() {
     return {
-      // プロップのvalueをcurrentPageに代入
       currentPage: this.value
     }
   },
   watch: {
     getCurrentFolderId: {
       handler(val) {
+        // フォルダが変更された場合、pageに1を代入して強制的に最初のページに戻す
         if ( val !== null) {
           this.$emit('input', 1)
           this.currentPage = 1
@@ -69,24 +66,22 @@ export default {
   },
   methods: {
     onPrev() {
-      // 引数の中で最大の値を返す、つまり、最低1が返る
+      // 引数の中で最大の値を返す、最低1が返る
       this.currentPage = Math.max(this.currentPage - 1, 1)
-      // v-modelで親にpage情報を更新してもらう
+      // 親にpage情報を更新してもらう
       this.$emit('input', this.currentPage)
     },
     onNext() {
-      // 引数の中で最小の値を返す、つまり、最大でページ総数が返る
+      // 引数の中で最小の値を返す、最大でページ総数が返る
       this.currentPage = Math.min(this.currentPage + 1, this.totalPage)
-      // v-modelで親にpage情報を更新してもらう
+      // 親にpage情報を更新してもらう
       this.$emit('input', this.currentPage)
     }
   },
   computed: {
-    // 現在のページが1に等しい
     isFirstPage() {
       return this.currentPage === 1 || this.currentPage === ''
     },
-    // 現在のページがページ総数に等しい
     isLastPage() {
       return this.currentPage === this.totalPage
     },

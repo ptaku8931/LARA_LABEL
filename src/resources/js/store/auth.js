@@ -114,7 +114,7 @@ const actions = {
 
 const getters = {
   check: state => !!state.user,
-  username: state => (state.user ? state.user.name : ''),
+  userName: state => (state.user ? state.user.name : ''),
   userEmail: state => (state.user ? state.user.email : '')
 }
 

@@ -10,6 +10,7 @@ import NotFound from './pages/errors/NotFound.vue'
 
 Vue.use(VueRouter)
 
+// 認証のナビゲーションガードをそれぞれのルートで設定
 const routes = [
   {
     path: '/',

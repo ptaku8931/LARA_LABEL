@@ -1,8 +1,10 @@
 <template>
   <v-content>
     <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
+      <!-- ラベルフォルダコンポーネント -->
       <LabelFolder />
       <v-container class="label">
+        <!-- ラベルコンポーネント -->
         <Label />
       </v-container>
     </div>
@@ -22,19 +24,16 @@ export default {
   },
   data() {
     return {
-      // 背景画像
       img: ''
     }
   },
   watch: {
     getBackgroundImg: {
+      immediate: true,
       handler() {
         this.img = this.getBackgroundImg.url
       }
     }
-  },
-  created() {
-    this.img = this.getBackgroundImg.url
   },
   computed: {
     getBackgroundImg() {

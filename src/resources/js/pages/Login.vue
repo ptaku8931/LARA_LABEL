@@ -2,14 +2,14 @@
   <v-content>
     <div class="back">
       <v-container>
-        <!-- tab start -->
+        <!-- タブここから -->
         <v-tabs NOT dark background-color="transparent" class="tabs">
           <v-tab @click="tab = 1">LOGIN</v-tab>
           <v-tab @click="tab = 2">REGISTER</v-tab>
         </v-tabs>
-        <!-- tab end -->
+        <!-- タブここまで -->
 
-        <!-- login start -->
+        <!-- ログインフォームここから -->
         <v-card v-show="tab === 1" class="form" dark>
           <v-card-title>
             <h1 class="display-1">LOGIN</h1>
@@ -45,6 +45,7 @@
                 v-model="loginForm.password"
               />
               <v-divider></v-divider>
+              <!-- ソーシャルログインここから -->
               <v-card-actions>
                 <a href="/api/login/google"> 
                   <v-btn class="mt-4 mr-3" fab small dark color="red">
@@ -61,15 +62,16 @@
                     <v-icon dark>mdi-facebook</v-icon>
                   </v-btn>
                 </a>
+                <!-- ソーシャルログインここまで -->
                 <v-spacer></v-spacer>
                 <v-btn text type="submit" :disabled="!valid">Login</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
         </v-card>
-        <!-- login end -->
+        <!-- ログインフォームここまで -->
 
-        <!-- register start -->
+        <!-- 新規登録フォームここから -->
         <v-card v-show="tab === 2" class="form" dark>
           <v-card-title>
             <h1 class="display-1">REGISTER</h1>
@@ -133,7 +135,7 @@
             </v-form>
           </v-card-text>
         </v-card>
-        <!-- register end -->
+        <!-- 新規登録フォームここまで -->
       </v-container>
     </div>
   </v-content>
@@ -149,7 +151,6 @@ export default {
       showPassword: false,
       showPasswordConfirmation: false,
       tab: 1,
-      valid: false,
       loginForm: {
         email: '',
         password: ''
@@ -160,6 +161,7 @@ export default {
         password: '',
         password_confirmation: ''
       },
+      valid: false,
       nameRules: [
         v => !!v || 'Name is required',
       ],
