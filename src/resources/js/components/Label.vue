@@ -162,15 +162,36 @@
         />
       </div>
       <!-- 新規登録モーダルコンポーネント -->
-      <CreateModal :colors="colors" @create-label="createLabel" v-model="createModal" />
+      <CreateModal 
+        :colors="colors" 
+        @create-label="createLabel" 
+        v-model="createModal" 
+      />
       <!-- カラー編集モーダルコンポーネント -->
-      <ColorModal :colors="colors" :beforeChangeColor="beforeChangeColor" @edit-label-color="editLabelColor" v-model="colorModal" />
-      <!-- URL追加及び編集モーダル -->
-      <UrlModal :editUrl="editUrl" @edit-label-url="editLabelUrl" v-model="urlModal" />
-      <!-- 削除確認モーダル -->
-      <ConfirmModal @do-delete="deleteLabel" v-model="confirmModal" />
-
-      <SnippetModal :snippetValue="snippetValue" :addSnippet="addSnippet" @edit-snippet="editSnippet" v-model="snippetModal" />
+      <ColorModal 
+        :colors="colors" 
+        :beforeChangeColor="beforeChangeColor" 
+        @edit-label-color="editLabelColor" 
+        v-model="colorModal" 
+      />
+      <!-- URL追加及び編集モーダルコンポーネント -->
+      <UrlModal 
+        :editUrl="editUrl" 
+        @edit-label-url="editLabelUrl"
+        v-model="urlModal" 
+      />
+      <!-- 削除確認モーダルコンポーネント -->
+      <ConfirmModal 
+        @do-delete="deleteLabel" 
+        v-model="confirmModal" 
+      />
+      <!-- Snippetモーダルコンポーネント -->
+      <SnippetModal 
+        :snippetValue="snippetValue" 
+        :addSnippet="addSnippet" 
+        @edit-snippet="editSnippet" 
+        v-model="snippetModal" 
+      />
     </v-row>
   </v-container>
 </template>
@@ -232,8 +253,6 @@ export default {
       keyword: '',
       // カラー検索用
       selectedColor: '',
-      // darkテーマ切り替え
-      theme: false,
       // 現在のページ番号
       page: 1,
       // 1ページあたりのラベル数
@@ -256,7 +275,7 @@ export default {
         { name: 'Sky', url: '/img/jason-charters-9YTghY140zA-unsplash.jpg' },
         { name: 'Night', url: '/img/luca-bravo-a_hPPrncGlQ-unsplash.jpg' },
       ],
-      // 選択されたbackground-image
+      // 選択されたbackground-image defaultはsunset
       selectedImage: {
         name: 'Sunset',
         url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
@@ -265,25 +284,21 @@ export default {
   },
   // stateのcurrentFolderIdを監視
   watch: {
+    immediate: true,
     getCurrentFolderId: async function(folder_id) {
       // folder_idがnullでなければapiを叩いてデータをリクエスト
       if (folder_id !== null) {
         const response = await axios.get('api/label/' + folder_id)
         if (response.status === OK) {
           this.labels = response.data
+          // ページ総数は、ラベルの配列個数をperPage(12)で割った数を切り上げ
           this.totalPage = Math.ceil(this.labels.length / this.perPage)
         }
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       } else {
         // folder_idがnullならばlabelsをリセット
         this.labels = ''
         this.totalPage = 1
-      }
-    },
-    // themeの変更を監視する
-    theme: {
-      handler() {
-        this.$store.commit('label/SET_LABEL_THEME', this.theme)
       }
     },
     // background-imgの変更を監視する
@@ -292,27 +307,8 @@ export default {
         if (val.name !== '' && val.url !== '') {
           this.$store.commit('label/SET_BACKGROUND_IMG', this.selectedImage)
         }
-      },
-      immediate: true
-    }
-  },
-
-  async created() {
-    // 現在のフォルダidがnullでなければ
-    if (this.getCurrentFolderId !== null) {
-      const response = await axios.get('api/label/' + this.getCurrentFolderId)
-      if (response.status === OK) {
-        this.labels = response.data
-        this.totalPage = Math.ceil(this.labels.length / this.perPage)
       }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
-    } else {
-      // folder_idがnullならばlabelsをリセット
-      this.labels = ''
-      this.totalPage = 1
     }
-    // テーマとイメージをstateからget
-    this.theme = this.getLabelTheme
   },
 
   methods: {
@@ -355,6 +351,7 @@ export default {
       this.deleteIndex = index
     },
 
+    // snippetモーダル開く(add)
     addSnippetModal(id) {
       this.snippetModal = true
       this.snippetId = id
@@ -362,6 +359,7 @@ export default {
       this.addSnippet = true
     },
 
+    // snippetモーダル開く(edit)
     editSnippetModal(id, snippet) {
       this.snippetModal = true
       this.snippetId = id
@@ -380,9 +378,11 @@ export default {
       )
     },
 
+    // ラベル drag
     pickupLabel(e, index) {
       e.dataTransfer.effectAllowed = 'move'
       e.dataTransfer.dropEffect = 'move'
+      // もしページが1より大きいならindex番号にページ数*12 で合わせる
       if (this.page > 1) {
         e.dataTransfer.setData('from-label-index', index + (this.page - 1) * 12)
       } else {
@@ -390,12 +390,18 @@ export default {
       }
     },
 
+    // ラベル drop
     async moveLabel(e, toLabelIndex) {
+      // drag開始のindex番号をget
       const fromLabelIndex = e.dataTransfer.getData('from-label-index')
+      // もし出発点と終着点が同じならば強制終了
       if (fromLabelIndex == toLabelIndex) {
         return false
       } else {
+        // 出発点のラベルをspliceで切り取る
         const labelToMove = this.labels.splice(fromLabelIndex, 1)[0]
+        // もしページが1より大きいならindex番号にページ数*12 で合わせる
+        // 終着点のindex番号にspliceで追加する
         if (this.page > 1) {
           this.labels.splice(toLabelIndex + (this.page - 1) * 12, 0, labelToMove)
         } else {
@@ -404,8 +410,10 @@ export default {
         this.$store.commit('message/SET_SUCCESS_MSG', null)
         const response = await axios.put('api/Ldragdrop', this.labels)
         if (response.status === OK) {
+          // 更新が終わったら新しい配列を再びfetch
           const response = await axios.get('api/label/' + this.getCurrentFolderId)
           if (response.status === OK) {
+            // 新しい配列をget
             this.labels = response.data
             this.totalPage = Math.ceil(this.labels.length / this.perPage)
             this.$store.commit(
@@ -413,38 +421,43 @@ export default {
             'Success drag and drop !!'
             )
           } else {
-            this.$store.commit('error/SET_CODE', response.status, { root: true })
+            this.$store.commit('error/SET_CODE', response.status)
           }
         }
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
     },
 
     // ラベル新規作成 post
     async createLabel(newLabel) {
       this.$store.commit('message/SET_SUCCESS_MSG', null)
-      // 現在開いているフォルダidを代入
+      // 現在開いているフォルダidを代入してコントローラーに渡す
       newLabel.label_folder_id = this.getCurrentFolderId
       const response = await axios.post('api/label', newLabel)
       if (response.status === CREATED) {
         this.labels.push(response.data)
+        // モーダルを閉じる
         this.createModal = false
+        // もし新ページにはみ出る場合は
         if (this.labels.length % 12 === 1 && this.labels.length !== 1) {
+          // 新データをfetch
           const response = await axios.get('api/label/' + this.getCurrentFolderId)
           if(response.status === OK) {
             this.labels = response.data
+            // ページを追加
             this.page++
+            // トータルページを更新
             this.totalPage = Math.ceil(this.labels.length / this.perPage)
             this.$store.commit('label/SET_CURRENT_PAGE', this.page)
           }
-          this.$store.commit('error/SET_CODE', response.status, { root: true })
+          this.$store.commit('error/SET_CODE', response.status)
         }
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The new label was created successfully !!'
         )
       }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
+      this.$store.commit('error/SET_CODE', response.status)
     },
 
     // ラベルタイトル更新 patch
@@ -476,13 +489,14 @@ export default {
             'The label was updated successfully !!'
           )
         }
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
-      // タイトルに変更がなければfalseを返して終了
+      // nullの場合はバリデーションエラー表示
       if (changedTitle === '') {
         await this.$store.commit('message/SET_ERROR_MSG', null)
         this.$store.commit('message/SET_ERROR_MSG', 'The title is required !!')
       }
+      // 31字以上の場合はバリデーションエラー表示
       if (changedTitle.length > 30) {
         await this.$store.commit('message/SET_ERROR_MSG', null)
         this.$store.commit(
@@ -490,6 +504,7 @@ export default {
           'The title must be less than 30 characters !!'
         )
       }
+      // タイトルに変更がなければfalseを返して終了
       return false
     },
 
@@ -522,13 +537,14 @@ export default {
             'The label was updated successfully !!'
           )
         }
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
-      // テキストに変更がなければfalseを返して終了
+      // nullの場合はバリデーションエラー表示
       if (changedText === '') {
         await this.$store.commit('message/SET_ERROR_MSG', null)
         this.$store.commit('message/SET_ERROR_MSG', 'The text is required !!')
       }
+      // 51字以上の場合はバリデーションエラー表示
       if (changedText.length > 50) {
         await this.$store.commit('message/SET_ERROR_MSG', null)
         this.$store.commit(
@@ -536,11 +552,13 @@ export default {
           'The text must be less than 50 characters !!'
         )
       }
+      // テキストに変更がなければfalseを返して終了
       return false
     },
 
     // ラベルカラー更新 patch
     async editLabelColor(newColor) {
+      // もしカラーに変更があれば
       if (newColor !== this.beforeChangeLabelColor) {
         this.$store.commit('message/SET_SUCCESS_MSG', null)
         const response = await axios.patch(
@@ -554,7 +572,9 @@ export default {
               labelsIndex = index
             }
           })
+          // idが一致するものを見つけて更新
           this.labels[labelsIndex].color = newColor
+          // 変更する前のカラーデータをリセット
           this.beforeChangeLabelColor = ''
           this.beforeChangeLabelId = ''
           this.$store.commit(
@@ -562,8 +582,9 @@ export default {
             'The label was updated successfully !!'
           )
         }
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
+      // 変更がなければfalse
       this.colorModal = false
     },
 
@@ -580,13 +601,14 @@ export default {
             labelsIndex = index
           }
         })
+        // idが一致するものを見つけて更新
         this.labels[labelsIndex].url = newUrl
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The label was updated successfully !!'
         )
       }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
+      this.$store.commit('error/SET_CODE', response.status)
     },
      
      //  snippet追加及び編集
@@ -601,13 +623,14 @@ export default {
             labelsIndex = index
           }
         })
+        // idが一致するものを見つけて更新
         this.labels[labelsIndex].snippet = newSnippet
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The Snippet was updated successfully !!'
         )
       }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
+      this.$store.commit('error/SET_CODE', response.status)
     },
 
     // ラベル削除 delete
@@ -615,6 +638,7 @@ export default {
       this.$store.commit('message/SET_SUCCESS_MSG', null)
       const response = await axios.delete('api/label/' + this.deleteId)
       if (response.status === OK) {
+        // もしページが1より大きいならindex番号にページ数-1 * 12 で合わせる
         if (this.page > 1) {
           this.labels.splice(this.deleteIndex + (this.page - 1) * 12, 1)
           const response = await axios.get('api/label/' + this.getCurrentFolderId)
@@ -622,39 +646,39 @@ export default {
             this.labels = response.data
           }
         } else {
+          // ラベルからspliceで削除
           this.labels.splice(this.deleteIndex, 1)
         }
+        // もし新ページの最後の一つだった場合
         if (this.labels.length % 12 === 0 && this.labels.length !== 0) {
+          // 新データfetch
           const response = await axios.get('api/label/' + this.getCurrentFolderId)
           if(response.status === OK) {
             this.labels = response.data
+            // ページ数が1より大きかったらpage--
             if (this.page > 1) {
               this.page--
             } else {
               this.page = 1
             }
+            // 総ページ数更新
             this.totalPage = Math.ceil(this.labels.length / this.perPage)
             this.$store.commit('label/SET_CURRENT_PAGE', this.page)
           }
-          this.$store.commit('error/SET_CODE', response.status, { root: true })
+          this.$store.commit('error/SET_CODE', response.status)
         }
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
           'The label was deleted successfully !!'
         )
       }
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
+      this.$store.commit('error/SET_CODE', response.status)
     }
   },
   computed: {
     // stateから現在のフォルダidをget
     getCurrentFolderId() {
       return this.$store.state.label.currentFolderId
-    },
-
-    // stateからlabelテーマget
-    getLabelTheme() {
-      return this.$store.state.label.labelTheme
     },
 
     // stateから背景画像get
@@ -686,10 +710,10 @@ export default {
           label.title.toLowerCase().indexOf(searchWord) !== -1 ||
           label.text.toLowerCase().indexOf(searchWord) !== -1
         ) {
-          // electedColorがfalseならばfilteredLabelsにpush
+          // selectedColorがfalseならばfilteredLabelsにpush
           if (!this.selectedColor) {
             filteredLabels.push(label)
-            // selectedColorがtrueならば一致した場合のみpush
+            // selectedColorがtrueならば一致した場合のみfilteredLabelsにpush
           } else {
             if (label.color === this.selectedColor) {
               filteredLabels.push(label)

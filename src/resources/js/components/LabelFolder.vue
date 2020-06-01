@@ -31,6 +31,7 @@
                 v-model="folderForm.title"
                 :rules="folderRules"
               />
+              <!-- バリデーションエラーバックエンド -->
               <v-alert v-if="error" type="error">{{ errorMsg.title[0] }}</v-alert>
               <div class="text-right mt-4">
                 <!-- 編集の場合のみshowする更新ボタン-->
@@ -39,17 +40,17 @@
                   x-small
                   color="success"
                   :disabled="!valid"
-                  @click="updateFolder()"
+                  @click="updateFolder"
                 >update</v-btn>
                 <!-- 編集モードを終了して新規作成モードに戻るボタン -->
-                <v-btn v-if="edit" x-small color="light-blue" @click="cancelEdit()">cancel</v-btn>
+                <v-btn v-if="edit" x-small color="light-blue" @click="cancelEdit">cancel</v-btn>
                 <!-- 新規作成の場合のみshowする追加ボタン -->
                 <v-btn
                   v-if="!edit"
                   x-small
                   color="success"
                   :disabled="!valid"
-                  @click="createFolder()"
+                  @click="createFolder"
                 >add</v-btn>
                 <!-- バリデーションクリアボタン -->
                 <v-btn x-small color="primary" @click="resetValidation">clear</v-btn>
@@ -68,12 +69,8 @@
             :key="folder.id"
             :disabled="edit"
             @click="selectedFolder(folder.id, index)"
-            @dragover.prevent
-            @dragenter.prevent
-            @dragstart="pickupLabelFolder($event, index, folder.id)"
-            @drop="moveLabelFolder($event, index)"
           >
-            <v-row draggable>
+            <v-row>
               <v-col cols="2" class="folder-icon">
                 <v-list-item-icon>
                   <!-- フォルダアイコン -->
@@ -120,6 +117,7 @@
         </v-list>
         <!-- フォルダ一覧表示ここまで -->
       </v-navigation-drawer>
+      <!-- 削除確認用モーダルコンポーネント -->
       <ConfirmModal v-model="confirmModal" @do-delete="deleteFolder" />
     </v-card>
   </transition>
@@ -134,12 +132,10 @@ export default {
   },
   data() {
     return {
-      // データ格納用
       labelFolders: '',
       folderForm: {
         title: ''
       },
-      // 新規作成及び編集フォーム用
       formTitle: 'Create Folder',
       placeHolder: 'New Folder',
       // editがtrueなら編集フォームに変更
@@ -157,10 +153,8 @@ export default {
       btnIndex: null,
       // 検索ワード
       keyword: '',
-      // darkテーマ切り替え
-      theme: false,
+      // フォルダドロワー開閉
       drawer: true,
-      // バリデーション
       valid: true,
       error: false,
       errorMsg: '',
@@ -171,11 +165,6 @@ export default {
     }
   },
   watch: {
-    theme: {
-      handler() {
-        this.$store.commit('label/SET_FOLDER_THEME', this.theme)
-      }
-    },
     getDrawer: {
       handler(val) {
         this.drawer = val
@@ -188,14 +177,11 @@ export default {
     // responseのstatusが200ならば
     if (response.status === OK) {
       this.labelFolders = response.data
-      // stateからテーマをgetして反映させる
-      this.theme = this.getFolderTheme
     }
     // responseのstatusがその他ならば
-    this.$store.commit('error/SET_CODE', response.status, { root: true })
+    this.$store.commit('error/SET_CODE', response.status)
   },
   methods: {
-    // バリデーションクリア
     resetValidation() {
       this.$refs.form.resetValidation()
       this.folderForm.title = ''
@@ -225,32 +211,15 @@ export default {
       this.showBtn(index)
     },
 
-    // クリックでボタン出現
     showBtn(index) {
       this.isBtn = true
       this.btnIndex = index
     },
 
-    // 削除用モーダル
     deleteConfirm(id, index) {
       this.confirmModal = true
       this.deleteId = id
       this.deleteIndex = index
-    },
-
-    pickupLabelFolder(e, index) {
-      e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.dropEffect = 'move'
-      e.dataTransfer.setData('from-label-folder-index', index)
-    },
-
-    async moveLabelFolder(e, toLabelFolderIndex) {
-      const fromLabelFolderIndex = e.dataTransfer.getData(
-        'from-label-folder-index'
-      )
-      const labelFolderToMove = this.labelFolders.splice(fromLabelFolderIndex, 1)[0]
-      this.labelFolders.splice(toLabelFolderIndex, 0, labelFolderToMove)
-      const response = await axios.put('api/Fdragdrop', this.labelFolders)
     },
 
     // フォルダ新規作成 POST
@@ -273,7 +242,7 @@ export default {
         this.errorMsg = response.data.errors
         this.error = true
       } else {
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
     },
 
@@ -296,9 +265,9 @@ export default {
         })
         // editIdと一致したフォルダのタイトルに変更したタイトルを代入
         this.labelFolders[foldersIndex].title = this.folderForm.title
-        // 編集モードをリセットする
+        // 編集モードをリセット
         this.cancelEdit()
-        // バリデーションをクリアする
+        // バリデーションをクリア
         this.resetValidation()
         this.$store.commit(
           'message/SET_SUCCESS_MSG',
@@ -312,7 +281,7 @@ export default {
         this.errorMsg = response.data.errors
         this.error = true
       } else {
-        this.$store.commit('error/SET_CODE', response.status, { root: true })
+        this.$store.commit('error/SET_CODE', response.status)
       }
     },
 
@@ -332,18 +301,12 @@ export default {
         )
       }
       // responseのstatusがその他ならば
-      this.$store.commit('error/SET_CODE', response.status, { root: true })
+      this.$store.commit('error/SET_CODE', response.status)
     }
   },
   computed: {
-    // stateから現在のidをget
     getCurrentFolderId() {
       return this.$store.state.label.currentFolderId
-    },
-
-    // stateからテーマをget
-    getFolderTheme() {
-      return this.$store.state.label.folderTheme
     },
 
     getDrawer() {
@@ -354,11 +317,12 @@ export default {
     filteredLabelFolders() {
       // 空配列をもつ変数をセット
       var filteredLabelFolders = []
+      // 変数にキーワードとキーワードを小文字に変換したものを代入
       var searchWord = this.keyword && this.keyword.toLowerCase()
       for (var i in this.labelFolders) {
         // apiでgetしたlabelFoldersをfor文で一つずつ変数に代入していく
         var labelFolder = this.labelFolders[i]
-        // titleの中でkeywordの文字列(大文字小文字の区別はなし)が存在すれば、filterdFoldersにpush
+        // titleの中でkeywordの文字列(大文字小文字の区別はなし)が存在すれば、filteredFoldersにpush
         if (labelFolder.title.toLowerCase().indexOf(searchWord) !== -1) {
           filteredLabelFolders.push(labelFolder)
         }

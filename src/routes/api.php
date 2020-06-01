@@ -25,14 +25,14 @@ Route::get('/user', function() {
     return Auth::user();
 })->name('user');
 // ラベルフォルダ api
-Route::resource('label_folder', 'LabelFolderController');
+Route::resource('label_folder', 'LabelFolderController', ['except' => ['create', 'show', 'edit']]);
 // ラベル api
-Route::resource('label', 'LabelController');
+Route::resource('label', 'LabelController', ['except' => ['index', 'create', 'edit']]);
 // アカウント削除
 Route::delete('/user/softdelete', 'UserController@softdelete');
-
-Route::put('/Fdragdrop', 'LabelFolderController@dragdrop');
+// ラベルdrag and drop
 Route::put('/Ldragdrop', 'LabelController@dragdrop');
-
+// ソーシャルログイン リダイレクト
 Route::get('/login/{provider}', 'Auth\OAuthController@socialOAuth');
+// ソーシャルログインコールバック
 Route::get('/login/{provider}/callback', 'Auth\OAuthController@handleProviderCallback');

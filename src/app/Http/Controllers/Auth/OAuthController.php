@@ -29,15 +29,20 @@ class OAuthController extends Controller
     {
         $socialUser = Socialite::driver($provider)->user();
         $user = User::firstOrNew(['email' => $socialUser->email]);
+        // ユーザーが存在していなかったら
         if (!$user->exists) {
+            // name及びprovider id provider nameをget
             $user->name = $socialUser->getNickname() ?? $socialUser->getName() ?? $socialUser->getNick();
             $user->provider_id = $socialUser->getId();
             $user->provider_name = $provider;
+            // パスワードは適当に作成
             $user->password = \Hash::make(uniqid());
             $user->save();
+            // 上記情報にてログイン
             Auth::login($user);
             return redirect('/label');  
         }
+        // すでに存在していたらそのままログイン
         Auth::login($user);
         return redirect('/label');
     }

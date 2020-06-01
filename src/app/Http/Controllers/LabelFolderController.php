@@ -10,7 +10,7 @@ use App\Http\Requests\LabelFolderRequest;
 
 class LabelFolderController extends Controller
 {
-
+    // 認証を適用
     public function __construct()
     {
         $this->middleware('auth');
@@ -20,20 +20,11 @@ class LabelFolderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // ユーザーに紐づいたフォルダをget
     public function index()
     {
         $folders = Auth::user()->label_folders()->get();
         return $folders;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -42,35 +33,13 @@ class LabelFolderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // ユーザーに紐づけてフォルダを作成
     public function store(LabelFolderRequest $request)
     {
         $form = $request->all();
         $folder = Auth::user()->label_folders()->create($form);
         return $folder;
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -78,6 +47,7 @@ class LabelFolderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // フォルダ更新
     public function update(LabelFolderRequest $request, LabelFolder $label_folder)
     {
         $form = $request->all();
@@ -91,24 +61,10 @@ class LabelFolderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // フォルダ削除
     public function destroy(LabelFolder $label_folder)
     {
         $label_folder->delete();
-        return response('', 200);
-    }
-
-    public function dragdrop(Request $request) 
-    {
-
-        $folders = Auth::user()->label_folders()->get();
-        $i = 0;
-
-        foreach ($folders as $folder) {
-            $new_folder = $request[$i];
-            $folder->fill($new_folder)->save();
-            $i++;
-        }
-
         return response('', 200);
     }
 }

@@ -9,37 +9,18 @@ use App\LabelFolder;
 
 class LabelController extends Controller
 {
-
+    // 認証を適用
     public function __construct()
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // ラベル新規作成
     public function store(Request $request)
     {
         $form = $request->all();
@@ -54,6 +35,7 @@ class LabelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // フォルダーに紐づいたラベルがnullでなければget
     public function show($id)
     {
         $folder = LabelFolder::find($id);
@@ -66,23 +48,13 @@ class LabelController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // ラベル更新
     public function update(Request $request, Label $label)
     {
         $form = $request->all();
@@ -96,26 +68,27 @@ class LabelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // ラベル削除
     public function destroy(Label $label)
     {
         $label->delete();
         return response('', 200);
     }
-
+    // ドラッグアンドドロップ
     public function dragdrop(Request $request)
     {
+        // ドラッグされたラベルに紐づいたフォルダをfind
         $label = $request[0];
         $id = $label['label_folder_id'];
         $folder = LabelFolder::find($id);
+        // そのフォルダのラベルを全てget
         $labels = $folder->labels()->get();
         $i = 0;
-
+        // foreachで回して、新しい並び順に更新
         foreach($labels as $label) {
             $label->fill($request[$i])->save();
             $i++;
         }
-
         return response ('', 200);
-;
     }
 }
