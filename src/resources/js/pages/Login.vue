@@ -57,11 +57,11 @@
                     <v-icon dark>mdi-github</v-icon>
                   </v-btn>
                 </a>
-                <a href="/api/login/facebook"> 
+                <!-- <a href="/api/login/facebook"> 
                   <v-btn class="mt-4 mr-3" fab small dark color="indigo">
                     <v-icon dark>mdi-facebook</v-icon>
                   </v-btn>
-                </a>
+                </a> -->
                 <!-- ソーシャルログインここまで -->
                 <v-spacer></v-spacer>
                 <v-btn text type="submit" :disabled="!valid">Login</v-btn>
