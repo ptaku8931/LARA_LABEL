@@ -69,8 +69,6 @@ const actions = {
     if (response.status === OK) {
       commit('SET_API_STATUS', true)
       commit('SET_USER', null)
-      commit('label/SET_FOLDER_THEME', false, { root: true })
-      commit('label/SET_LABEL_THEME', false, { root: true })
       commit('label/SET_BACKGROUND_IMG', {name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg'}, { root: true })
       commit('label/SET_CURRENT_FOLDER_ID', '', { root: true })
       commit('message/SET_SUCCESS_MSG', 'Thanks! See you later !!',  { root: true })

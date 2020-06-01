@@ -302,11 +302,11 @@ export default {
       }
     },
     // background-imgの変更を監視する
+
     selectedImage: {
-      handler(val) {
-        if (val.name !== '' && val.url !== '') {
-          this.$store.commit('label/SET_BACKGROUND_IMG', this.selectedImage)
-        }
+      immediate: true,
+      handler() {
+        this.$store.commit('label/SET_BACKGROUND_IMG', this.selectedImage)
       }
     }
   },
