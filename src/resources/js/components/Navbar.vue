@@ -2,14 +2,14 @@
   <div>
     <v-app-bar app clipped-left color="indigo" dark>
       <!-- フォルダ用ハンバーガー-->
-      <v-app-bar-nav-icon v-if="isLogin" @click.stop="openDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon class="ml-2" v-if="isLogin" @click.stop="openDrawer"></v-app-bar-nav-icon>
+      <!-- アカウント情報 -->
+      <v-btn v-if="isLogin" text rounded class="user-icon ml-2" @click="openInfoModal">
+        <v-icon class="mr-2">mdi-account-circle</v-icon>
+        {{ userName }}
+      </v-btn>
       <v-container d-flex align-items-center>
         <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
-        <!-- アカウント情報 -->
-        <v-btn v-if="isLogin" text rounded class="user-icon" @click="openInfoModal">
-          <v-icon class="mr-2">mdi-account-circle</v-icon>
-          {{ userName }}
-        </v-btn>
         <v-spacer></v-spacer>
         <v-btn v-if="isLogin" text rounded to="/label">Lara_label</v-btn>
         <!-- 新規登録&ログイン -->

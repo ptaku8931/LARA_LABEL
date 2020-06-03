@@ -4,7 +4,7 @@
       class="text-center"
       cols="12"
     >
-      {{ new Date().getFullYear() }} — <strong>Copy right</strong>  — <strong>LARA_LABEL</strong>
+      {{ new Date().getFullYear() }} — <strong>Copyright</strong>  — <strong>LARA_LABEL</strong>
     </v-col>
   </v-footer>
 </template>

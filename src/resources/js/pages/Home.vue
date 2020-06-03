@@ -32,7 +32,7 @@ p {
 .back {
   background-image: url('/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg');
   background-size: cover;
-  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
 }
 </style>
