@@ -20,7 +20,7 @@
               v-model="keyword"
             ></v-text-field>
             <!-- 新規作成及び編集フォームタイトル -->
-            <v-list-item-title class="text-center">{{ formTitle }}</v-list-item-title>
+            <v-list-item-title class="form-title">{{ formTitle }}</v-list-item-title>
             <v-form v-model="valid" ref="form" @submit.prevent>
               <!-- 入力エリア-->
               <v-text-field
@@ -81,7 +81,7 @@
               <v-col cols="6" class="folder-title">
                 <v-list-item-content>
                   <!-- フォルダタイトル -->
-                  <v-list-item-title>{{ folder.title }}</v-list-item-title>
+                  <v-list-item-title class=folder-name>{{ folder.title }}</v-list-item-title>
                 </v-list-item-content>
               </v-col>
               <v-col cols="4" class="folder-btn">
@@ -338,6 +338,10 @@ export default {
 .folder {
   margin-left: 0px;
 }
+.form-title {
+  text-align: center;
+  font-size: 22px !important;
+}
 .folder:hover {
   margin-left: 15px;
   background-color: rgb(99, 145, 245);
@@ -348,20 +352,22 @@ export default {
   background-color: rgb(99, 145, 245);
 }
 .folder-icon {
-  padding: 0 14px !important;
+  padding: 0 10px !important;
 }
 .folder-title {
   margin-top: 5px;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  padding: 0 10px !important;
+  padding: 0 1px !important;
+  width: 30px;
 }
-.v-list-item__title {
-  font-size: 15px !important;
+.folder-name {
+  font-size: 17px !important;
 }
 .folder-btn {
   padding: 0 12px !important;
 }
-
+span {
+  font-size: 15px;
+}
 .fade-enter {
   opacity: 0;
 }

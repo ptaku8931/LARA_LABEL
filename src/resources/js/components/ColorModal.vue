@@ -3,7 +3,8 @@
     <v-dialog scrollable persistent max-width="300px" v-model="value">
       <v-card outlined>
         <v-card-title class="title">
-          <v-icon class="mr-3">mdi-pencil</v-icon>Edit Label Color
+          <v-icon class="mr-2">mdi-pencil</v-icon>
+          <span class="lato">Edit Label Color</span>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 200px;">
@@ -70,7 +71,7 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 </style>
 

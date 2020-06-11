@@ -1,14 +1,16 @@
 <template>
   <v-content>
-    <div class="back">
-      <h1>Not Found...</h1>
-    </div>
+    <transition name="delay" appear mode="out-in">
+      <div class="back">
+        <h1>Not Found...</h1>
+      </div>
+    </transition>
   </v-content>
 </template>
 
 <style scoped>
 .back {
-  background-image: url(/img/romson-preechawit-Vy2cHqm0mCs-unsplash.jpg);
+  background-image: url(/img/404.jpg);
   background-size: cover;
   width: 100%;
   height: 100vh;
@@ -17,8 +19,8 @@
   color: white;
 }
 h1 {
-  padding-left: 140px;
+  padding-left: 30px;
   padding-bottom: 130px;
-  font-size: 70px;
+  font-size: 90px;
 }
 </style>

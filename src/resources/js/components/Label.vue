@@ -63,6 +63,7 @@
                   :value="label.title"
                   @change="editLabelTitle($event, index, label.id)"
                   v-on="on"
+                  class="lato head"
                 />
               </template>
               <span>Please press enter key if you change title</span>
@@ -89,6 +90,7 @@
                   ref="labelText"
                   @change="editLabelText($event, index, label.id)"
                   v-on="on"
+                  class="lato text"
                 />
               </template>
               <span>Please press enter key if you change text</span>
@@ -265,20 +267,20 @@ export default {
       colors: ['indigo', 'blue', 'cyan', 'green', 'teal', 'yellow', 'orange', 'pink', 'red', 'purple', 'grey', 'white'],
       // background-image用
       images: [
-        { name: 'White', url: '/img/the-phope-9X1rJClbnmg-unsplash.jpg' },
-        { name: 'Sunset', url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg' },
-        { name: 'Sunrise', url: '/img/frank-mckenna-OD9EOzfSOh0-unsplash.jpg' },
-        { name: 'Dark', url: '/img/jez-timms-r4lM2v9M84Q-unsplash.jpg' },
-        { name: 'Snow', url: '/img/chandler-cruttenden-w8hWTFpGtpY-unsplash.jpg' },
-        { name: 'Galaxy', url: '/img/neven-krcmarek-3ym-ev0Pe58-unsplash.jpg' },
-        { name: 'Blossom', url: '/img/masaaki-komori-1hUsp3zi0rA-unsplash.jpg' },
-        { name: 'Sky', url: '/img/jason-charters-9YTghY140zA-unsplash.jpg' },
-        { name: 'Night', url: '/img/luca-bravo-a_hPPrncGlQ-unsplash.jpg' },
+        { name: 'white', url: '/img/white.jpg' },
+        { name: 'sunset', url: '/img/sunset.jpg' },
+        { name: 'sunrise', url: '/img/sunrise.jpg' },
+        { name: 'dark', url: '/img/dark.jpg' },
+        { name: 'snow', url: '/img/snow.jpg' },
+        { name: 'galaxy', url: '/img/galaxy.jpg' },
+        { name: 'blossom', url: '/img/blossom.jpg' },
+        { name: 'sky', url: '/img/sky.jpg' },
+        { name: 'night', url: '/img/night.jpg' },
       ],
       // 選択されたbackground-image defaultはsunset
       selectedImage: {
-        name: 'Sunset',
-        url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
+        name: 'white',
+        url: '/img/white.jpg'
       }
     }
   },
@@ -374,7 +376,7 @@ export default {
       navigator.clipboard.writeText(copyText)
       this.$store.commit(
         'message/SET_SUCCESS_MSG',
-        'The text is successfully copied to the clipboard !!'
+        'The text was copied successfully !!'
       )
     },
 
@@ -418,7 +420,7 @@ export default {
             this.totalPage = Math.ceil(this.labels.length / this.perPage)
             this.$store.commit(
             'message/SET_SUCCESS_MSG',
-            'Success drag and drop !!'
+            'Labels have been sorted successfully !!'
             )
           } else {
             this.$store.commit('error/SET_CODE', response.status)
@@ -756,22 +758,16 @@ export default {
   transform: scale(1.08, 1.08);
 }
 .title {
-  padding-left: 14px;
-  padding-right: 0;
-  padding-top: 5px;
-  padding-bottom: 20px;
+  padding: 5px 0px 20px 14px;
   height: 50px;
 }
 .subtitle {
   font-size: 15px;
-  padding-left: 10px;
-  padding-right: 0;
-  padding-bottom: 0;
-  padding-top: 5px;
+  padding: 5px 0px 0px 10px;
   height: 25px;
 }
 .copy-btn {
-  margin-right: 0;
+  margin-right: 3px;
 }
 .draggable {
   cursor: pointer;
@@ -781,14 +777,21 @@ export default {
   bottom: 70px;
   right: 45px;
 }
+.head {
+  font-size: 22px;
+}
+.text {
+  font-size: 18px;
+}
 input {
   width: 85%;
   height: 25px;
   color: rgb(252, 252, 252);
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 a {
   text-decoration: none;
+}
+span {
+  font-size: 16px;
 }
 </style>

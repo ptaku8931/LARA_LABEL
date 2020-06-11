@@ -2,7 +2,9 @@
   <v-row justify="center">
     <v-dialog persistent max-width="350" v-model="value">
       <v-card outlined>
-        <v-card-title class="title">Are you sure?</v-card-title>
+        <v-card-title class="title">
+          <span class="lato">Are you sure?</span>
+        </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn small @click="closeModal">Cancel</v-btn>
@@ -35,6 +37,10 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 75px;
+  margin-left: 78px;
+  margin-bottom: 6px;
+}
+.lato {
+  font-size: 24px;
 }
 </style>

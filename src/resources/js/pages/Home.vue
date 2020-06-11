@@ -1,9 +1,11 @@
 <template>
-  <v-content>
+  <v-content class="lato">
+    <transition name="delay" appear mode="out-in">
     <div class="back">
       <h1>LARA_LABEL</h1>
       <p>Memo + Bookmark + Color + Snippet</p>
     </div>
+    </transition>
   </v-content>
 </template>
 
@@ -20,17 +22,16 @@ h1 {
   color: white;
   padding-left: 60px;
   padding-top: 120px;
-  font-size: 70px;
+  font-size: 80px;
 }
 p {
   color: white;
   padding-left: 60px;
   padding-top: 60px;
   font-size: 45px;
-  font-family:Arial, Helvetica, sans-serif
 }
 .back {
-  background-image: url('/img/markus-spiske-zJDqiEGUCHY-unsplash.jpg');
+  background-image: url('/img/home.jpg');
   background-size: cover;
   max-width: 100%;
   min-height: 100vh;

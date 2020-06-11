@@ -1,18 +1,15 @@
 <template>
-  <v-app>
+  <v-app class="lato">
     <header>
-      <transition name="slide" appear  mode="out-in">
         <!-- notificationコンポーネント -->
-        <Message v-show="notification" v-model="msg" :isSuccess="isSuccess"/>
+        <Message v-show="notification" v-model="msg" :isSuccess="isSuccess" />
       </transition>
       <!-- Nav barコンポーネント -->
       <Navbar />
     </header>
     <main>
-      <transition name="fade" mode="out-in">
-        <!-- view-routerによるページコンポーネント -->
-        <router-view></router-view>
-      </transition>
+      <!-- view-routerによるページコンポーネント -->
+      <router-view></router-view>
     </main>
     <footer>
       <!-- Footerコンポーネント -->
@@ -37,13 +34,13 @@ export default {
     return {
       notification: false,
       msg: null,
-      isSuccess: true,
+      isSuccess: true
     }
   },
   watch: {
     errorCode: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push('/500')
         }
@@ -51,10 +48,10 @@ export default {
     },
     successMsg: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val !== null) {
           this.notification = true
-          this.msg = val  
+          this.msg = val
           this.isSuccess = true
         }
         this.msg = val
@@ -62,16 +59,16 @@ export default {
     },
     errorMsg: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (val !== null) {
           this.notification = true
-          this.msg = val 
+          this.msg = val
           this.isSuccess = false
         }
         this.msg = val
       }
     },
-    $route () {
+    $route() {
       this.$store.commit('error/SET_CODE', null)
     }
   },
@@ -84,39 +81,30 @@ export default {
     },
     errorMsg() {
       return this.$store.state.message.errorMsg
-    },
+    }
   }
 }
 </script>
 
-<style scoped>
-.fade-enter {
-  transform: translateX(20px);
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
+.lato {
+  font-family: 'Lato', 'Noto Sans JP', sans-serif !important;
+  font-style: italic;
+}
+
+.delay-enter {
   opacity: 0;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
+.delay-enter-active,
+.delay-leave-active {
+  transition: all 2.5s ease;
 }
 
-.fade-leave-to {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-.slide-enter {
-  transform: translateX(500px);
+.delay-leave-to {
   opacity: 0;
 }
 
-.slide-enter-active,
-.slide-leave-active {
-  transition: all .9s ease;
-}
-
-.slide-leave-to {
-  transform: translateX(500px);
-  opacity: 0;
-}
 </style>

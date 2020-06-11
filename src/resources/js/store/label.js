@@ -1,8 +1,8 @@
 const state = {
   currentFolderId: '',
   backgroundImg: {
-    name: 'sunset',
-    url: '/img/frank-mckenna-4V8JxijgZ_c-unsplash.jpg'
+    name: 'white',
+    url: '/img/white.jpg'
   },
   currentPage: '',
   drawerStatus: true

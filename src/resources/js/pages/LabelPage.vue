@@ -1,13 +1,15 @@
 <template>
   <v-content>
-    <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
-      <!-- ラベルフォルダコンポーネント -->
-      <LabelFolder />
-      <v-container class="label">
-        <!-- ラベルコンポーネント -->
-        <Label />
-      </v-container>
-    </div>
+    <transition name="delay" appear mode="out-in">
+      <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
+        <!-- ラベルフォルダコンポーネント -->
+        <LabelFolder />
+        <v-container class="label">
+          <!-- ラベルコンポーネント -->
+          <Label />
+        </v-container>
+      </div>
+    </transition>
   </v-content>
 </template>
 

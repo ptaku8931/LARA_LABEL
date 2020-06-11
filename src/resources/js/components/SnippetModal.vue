@@ -5,9 +5,9 @@
         <v-form @submit.prevent>
           <v-card-title class="title">
             <!-- snippetが登録されるとアイコンにチェックが入る -->
-            <v-icon v-if="addSnippet" class="mr-2">mdi-text-box-outline</v-icon>
-            <v-icon v-else class="mr-2">mdi-text-box-check-outline</v-icon>
-            <span>Snippet</span>
+            <v-icon v-if="addSnippet" class="mr-1">mdi-text-box-outline</v-icon>
+            <v-icon v-else class="mr-1">mdi-text-box-check-outline</v-icon>
+            <span class="lato">Snippet</span>
           </v-card-title>
           <!-- 編集モーダルかつnullでない場合はコピー用アイコン表示 -->
           <v-card-subtitle
@@ -28,7 +28,7 @@
               v-model="newSnippet"
             ></v-textarea>
             <small
-              class="pl-1"
+              class="pl-1 small"
               v-if="!addSnippet"
             >Please click X button ( top and right ) and update if you wanna delete your snippet</small>
           </v-card-text>
@@ -110,7 +110,7 @@ export default {
       navigator.clipboard.writeText(copyText)
       this.$store.commit(
         'message/SET_SUCCESS_MSG',
-        'The Snippet is successfully copied to the clipboard !!'
+        'The snippet was copied successfully !!'
       )
     }
   }
@@ -119,14 +119,22 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 218px;
+  margin-left: 224px;
 }
 .subtitle {
   padding-bottom: 0px;
   padding-top: 15px;
+  font-size: 17px;
 }
 .textarea {
   margin-top: 10px !important;
   padding-bottom: 0 !important;
+  font-size: 20px !important;
+}
+.lato {
+  font-size: 24px;
+}
+.small {
+  font-size: 16px;
 }
 </style>

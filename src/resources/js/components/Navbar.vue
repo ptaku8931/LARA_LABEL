@@ -9,12 +9,12 @@
         {{ userName }}
       </v-btn>
       <v-container d-flex align-items-center>
-        <v-btn v-if="!isLogin" text rounded to="/">Lara_label</v-btn>
+        <v-btn v-if="!isLogin" text rounded to="/" class="btn">Lara_label</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-if="isLogin" text rounded to="/label">Lara_label</v-btn>
+        <v-btn v-if="isLogin" text rounded to="/label" class="btn">Lara_label</v-btn>
         <!-- 新規登録&ログイン -->
-        <v-btn v-if="!isLogin" text rounded to="/login">Login / Register</v-btn>
-        <v-btn v-if="isLogin" text rounded @click="logout">logout</v-btn>
+        <v-btn v-if="!isLogin" text rounded to="/login" class="btn">Login / Register</v-btn>
+        <v-btn v-if="isLogin" text rounded @click="logout" class="btn">logout</v-btn>
       </v-container>
     </v-app-bar>
     <!-- アカウント情報コンポーネント -->
@@ -50,8 +50,8 @@ export default {
       this.$router.push('/')
     },
     async softDelete() {
-      await this.$store.dispatch('auth/softDelete')
       this.userInfoModal = false
+      await this.$store.dispatch('auth/softDelete')
       this.$router.push('/')
     },
     openInfoModal() {
@@ -80,9 +80,12 @@ export default {
 <style scoped>
 .user-icon {
   text-transform: none;
-  font-size: 14px;
+  font-size: 17px !important;
   overflow: hidden;
   white-space: nowrap;
   max-width: 300px;
+}
+.btn {
+  font-size: 15px !important;
 }
 </style>

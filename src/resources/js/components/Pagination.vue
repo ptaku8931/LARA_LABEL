@@ -8,6 +8,7 @@
       rounded
       dark
       @click="onPrev"
+      class="btn"
       >&laquo; prev</v-btn>
     <!-- ページ総数が1でないかつ、検索で絞ったあとのラベル数が12より大きいならば -->
     <span
@@ -21,6 +22,7 @@
       rounded
       dark
       @click="onNext"
+      class="btn"
     >next &raquo;</v-btn>
   </div>
 </template>
@@ -96,10 +98,11 @@ export default {
 </script>
 
 <style scoped>
+.btn {
+  margin: 0px 4px 4px 4px;
+}
 span {
-  font-size: 12px;
-  padding: 2px;
+  font-size: 16px;
   color: rgb(11, 211, 151);
-  font-weight: bold;
 }
 </style>

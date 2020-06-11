@@ -4,8 +4,8 @@
       <v-card outlined>
         <v-form ref="form" v-model="valid" @submit.prevent>
           <v-card-title class="title">
-            <v-icon class="mr-4">mdi-card-plus-outline</v-icon>
-            <span class="headliner">Create Label</span>
+            <v-icon class="mr-2">mdi-card-plus-outline</v-icon>
+            <span class="lato">Create Label</span>
           </v-card-title>
           <v-card-text>
             <v-container d-flex>
@@ -153,6 +153,9 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 135px;
+  margin-left: 150px;
+}
+.lato {
+  font-size: 24px;
 }
 </style>

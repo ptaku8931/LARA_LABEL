@@ -6,9 +6,9 @@
           <v-card-title class="title">
             <v-icon class="mr-2">mdi-microsoft-windows</v-icon>
             <!-- editUrlが真なら編集モーダル -->
-            <span v-if="editUrl">Edit URL</span>
+            <span class="lato" v-if="editUrl">Edit URL</span>
             <!-- 偽なら追加モーダル -->
-            <span v-else>Add URL</span>
+            <span class="lato" v-else>Add URL</span>
           </v-card-title>
           <v-form ref="form" v-model="valid" @submit.prevent>
             <!-- 編集モーダルの場合はnullで送信可能 -->
@@ -21,7 +21,7 @@
               :rules="urlRules"
               v-model="newUrl"
             ></v-text-field>
-            <v-card-actions>
+            <v-card-actions class="mt-2">
               <v-spacer></v-spacer>
               <v-btn small @click="closeUrlModal">Cancel</v-btn>
               <!-- 追加モーダルの場合、nullもしくは空文字の場合は送信できない -->
@@ -83,5 +83,8 @@ export default {
 <style scoped>
 .title {
   margin-left: 108px;
+}
+.lato {
+  font-size: 22px;
 }
 </style>

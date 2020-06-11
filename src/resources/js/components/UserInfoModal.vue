@@ -2,13 +2,15 @@
   <v-row justify="center">
     <v-dialog persistent max-width="350" v-model="value">
       <v-card outlined>
-        <v-card-title class="title">Account Information</v-card-title>
+        <v-card-title class="title">
+          <span class="lato account">Account Information</span>
+        </v-card-title>
         <v-card-text>
-          <div class="mt-5 scroll">
+          <div class="mt-5 scroll lato">
             <span class="ml-5">Name :</span>
             {{ userName }}
           </div>
-          <div class="mt-5 scroll">
+          <div class="mt-5 scroll lato">
             <span class="ml-5">E-mail :</span>
             {{ userEmail }}
           </div>
@@ -52,12 +54,16 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 43px;
+  margin-left: 44px;
+}
+.account {
+  font-size: 24px;
 }
 .scroll {
   overflow: scroll;
   white-space: nowrap;
   width: 90%;
-  height: 20px;
+  height: 30px;
+  font-size: 20px;
 }
 </style>

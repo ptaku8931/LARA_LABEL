@@ -1,11 +1,12 @@
 <template>
   <v-content>
+    <transition name="delay" appear mode="out-in">
     <div class="back">
       <v-container>
         <!-- タブここから -->
         <v-tabs NOT dark background-color="transparent" class="tabs">
-          <v-tab @click="tab = 1">LOGIN</v-tab>
-          <v-tab @click="tab = 2">REGISTER</v-tab>
+          <v-tab class="tab" @click="tab = 1">LOGIN</v-tab>
+          <v-tab  class="tab" @click="tab = 2">REGISTER</v-tab>
         </v-tabs>
         <!-- タブここまで -->
 
@@ -138,6 +139,7 @@
         <!-- 新規登録フォームここまで -->
       </v-container>
     </div>
+    </transition>
   </v-content>
 </template>
 
@@ -226,13 +228,16 @@ a {
   width: 500px;
   margin: 20px auto;
 }
+.tab {
+  font-size: 18px;
+}
 .form {
   width: 500px;
   margin: 0 auto;
   opacity: 0.7;
 }
 .back {
-  background-image: url(/img/sean-o-KMn4VEeEPR8-unsplash.jpg);
+  background-image: url(/img/login.jpg);
   background-size: cover;
   width: 100%;
   height: 100vh;

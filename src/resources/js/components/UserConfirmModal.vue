@@ -2,8 +2,12 @@
   <v-row justify="center">
     <v-dialog persistent max-width="350" v-model="value">
       <v-card outlined>
-        <v-card-title class="title">Delete Account</v-card-title>
-        <v-card-text class="text">Are you sure?</v-card-text>
+        <v-card-title class="title">
+          <span class="lato delete">Delete Account</span>
+        </v-card-title>
+        <v-card-text class="text">
+          <span class="lato">Are you sure?</span>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn small @click="closeModal">Cancel</v-btn>
@@ -36,9 +40,14 @@ export default {
 
 <style scoped>
 .title {
-  margin-left: 70px;
+  margin-left: 62px;
+}
+.delete {
+  font-size: 26px;
 }
 .text {
-  margin-left: 100px;
+  margin-left: 90px;
+  margin-top: 10px;
+  font-size: 20px;
 }
 </style>
