@@ -4,7 +4,7 @@
     <v-bottom-navigation class="labelbar" height="70px" dark outlined v-show="labels">
       <!-- 新規作成ボタン -->
       <v-btn :disabled="!getCurrentFolderId" @click="createModal = true">
-        Create Label
+        <span>Create Label</span>
         <v-icon>mdi-card-plus-outline</v-icon>
       </v-btn>
       <!-- 検索エリア -->
@@ -272,7 +272,6 @@ export default {
         { name: 'sunrise', url: '/img/sunrise.jpg' },
         { name: 'dark', url: '/img/dark.jpg' },
         { name: 'snow', url: '/img/snow.jpg' },
-        { name: 'galaxy', url: '/img/galaxy.jpg' },
         { name: 'blossom', url: '/img/blossom.jpg' },
         { name: 'sky', url: '/img/sky.jpg' },
         { name: 'night', url: '/img/night.jpg' },
@@ -741,21 +740,19 @@ export default {
   background-color: rgb(66, 66, 66) !important;
   border-left-width: 40px !important;
   border-left-style: solid !important;
+  box-shadow: 14px 14px 14px rgba(1, 1, 1, 1) !important;
 }
 .labelbar {
   margin-top: 5px;
   margin-bottom: 25px;
   border-width: 2px !important;
+  box-shadow: 14px 14px 14px rgba(1, 1, 1, 1) !important;
 }
 .cardBody {
   height: 86px !important;
 }
 .label {
-  transition: all 1.5s;
   margin-top: 10px;
-}
-.label:hover {
-  transform: scale(1.08, 1.08);
 }
 .title {
   padding: 5px 0px 20px 14px;
@@ -786,7 +783,7 @@ export default {
 input {
   width: 85%;
   height: 25px;
-  color: rgb(252, 252, 252);
+  color: white;
 }
 a {
   text-decoration: none;

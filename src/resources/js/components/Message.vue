@@ -44,12 +44,10 @@ export default {
 .slide-enter {
   transform: translateX(500px);
 }
-
 .slide-enter-active,
 .slide-leave-active {
   transition: all 1.2s ease;
 }
-
 .slide-leave-to {
   transform: translateX(-500px);
 }

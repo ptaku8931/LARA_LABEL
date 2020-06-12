@@ -235,6 +235,7 @@ a {
   width: 500px;
   margin: 0 auto;
   opacity: 0.7;
+  box-shadow: 20px 20px 20px rgba(1, 1, 1, 1);
 }
 .back {
   background-image: url(/img/login.jpg);

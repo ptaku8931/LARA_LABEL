@@ -371,12 +371,10 @@ span {
 .fade-enter {
   opacity: 0;
 }
-
 .fade-enter-active,
 .fade-leave-active {
   transition: all .8s ease;
 }
-
 .fade-leave-to {
   opacity: 0;
 }

@@ -93,18 +93,14 @@ export default {
   font-family: 'Lato', 'Noto Sans JP', sans-serif !important;
   font-style: italic;
 }
-
 .delay-enter {
   opacity: 0;
 }
-
 .delay-enter-active,
 .delay-leave-active {
   transition: all 2.5s ease;
 }
-
 .delay-leave-to {
   opacity: 0;
 }
-
 </style>

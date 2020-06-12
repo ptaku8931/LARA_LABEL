@@ -1,5 +1,5 @@
 <template>
-  <v-footer app padless dark color="indigo">
+  <v-footer app dark padless color="indigo">
     <v-col
       class="footer"
       cols="12"
@@ -13,5 +13,7 @@
 .footer {
   font-size: 18px;
   text-align: center;
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>
