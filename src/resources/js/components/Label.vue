@@ -740,13 +740,13 @@ export default {
   background-color: rgb(66, 66, 66) !important;
   border-left-width: 40px !important;
   border-left-style: solid !important;
-  box-shadow: 14px 14px 14px rgba(1, 1, 1, 1) !important;
+  box-shadow: 6px 12px 10px rgba(1, 1, 1, 1) !important;
 }
 .labelbar {
   margin-top: 5px;
   margin-bottom: 25px;
   border-width: 2px !important;
-  box-shadow: 14px 14px 14px rgba(1, 1, 1, 1) !important;
+  box-shadow: 6px 12px 10px rgba(1, 1, 1, 1) !important;
 }
 .cardBody {
   height: 86px !important;

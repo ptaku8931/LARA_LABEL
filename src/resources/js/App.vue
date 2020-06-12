@@ -1,9 +1,8 @@
 <template>
   <v-app class="lato">
     <header>
-        <!-- notificationコンポーネント -->
-        <Message v-show="notification" v-model="msg" :isSuccess="isSuccess" />
-      </transition>
+      <!-- notificationコンポーネント -->
+      <Message v-show="notification" v-model="msg" :isSuccess="isSuccess" />
       <!-- Nav barコンポーネント -->
       <Navbar />
     </header>
@@ -87,11 +86,28 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&family=Noto+Sans+JP&display=swap');
 .lato {
   font-family: 'Lato', 'Noto Sans JP', sans-serif !important;
   font-style: italic;
+}
+.v-text-field input {
+  font-size: 17px;
+}
+.v-text-field label {
+  font-size: 19px;
+}
+.v-text-field .v-messages {
+  font-size: 16px !important;
+}
+.v-list-item__title {
+  font-size: 18px !important;
+}
+.theme--dark.v-select .v-select__selection--comma {
+  font-size: 17px !important;
+}
+.theme--light.v-label {
+  font-size: 18px !important;
 }
 .delay-enter {
   opacity: 0;

@@ -37,13 +37,16 @@ p {
 img {
   margin-left: 60px;
   margin-top: 60px;
-  box-shadow: 10px 10px 10px rgba(1, 1, 1, 1);
+  box-shadow: 6px 12px 10px rgba(1, 1, 1, 1);
 }
 img:hover {
   cursor: pointer;
+  opacity: 0.7;
 }
 img:active {
   box-shadow: none;
+  position: relative;
+  top: 12px;
 }
 .back {
   background-image: url('/img/home.jpg');

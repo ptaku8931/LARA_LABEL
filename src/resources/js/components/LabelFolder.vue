@@ -36,6 +36,7 @@
               <div class="text-right mt-4">
                 <!-- 編集の場合のみshowする更新ボタン-->
                 <v-btn
+                  class="btn"
                   v-if="edit"
                   x-small
                   color="success"
@@ -46,6 +47,7 @@
                 <v-btn v-if="edit" x-small color="light-blue" @click="cancelEdit">cancel</v-btn>
                 <!-- 新規作成の場合のみshowする追加ボタン -->
                 <v-btn
+                  class="btn"
                   v-if="!edit"
                   x-small
                   color="success"
@@ -53,7 +55,7 @@
                   @click="createFolder"
                 >add</v-btn>
                 <!-- バリデーションクリアボタン -->
-                <v-btn x-small color="primary" @click="resetValidation">clear</v-btn>
+                <v-btn class="btn" x-small color="primary" @click="resetValidation">clear</v-btn>
               </div>
             </v-form>
           </v-list-item-content>
@@ -337,6 +339,9 @@ export default {
 <style scoped>
 .folder {
   margin-left: 0px;
+}
+.btn {
+  font-size: 12px !important;
 }
 .form-title {
   text-align: center;
