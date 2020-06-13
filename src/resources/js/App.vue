@@ -82,7 +82,7 @@ export default {
   created() {
     setTimeout(() => {
       this.topPage = false
-    }, 4000)
+    }, 3000)
   },
   computed: {
     errorCode() {
@@ -135,25 +135,25 @@ export default {
   color: white;
   text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em yellow, 0 0 0.5em yellow,
     0 0 0.1em yellow;
-  font-size: 100px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 110px;
   position: fixed;
   text-align: center;
-  left: 32%;
+  left: 31%;
   top: 35%;
 }
 .top-leave-active {
-  transition: all 2.2s ease;
+  transition: all 1.8s ease;
 }
 .top-leave-to {
-  transform: translateY(-1400px);
-  opacity: 0.2;
+  opacity: 0;
 }
 .header-enter {
   opacity: 0;
 }
 .header-enter-active,
-.header-enter-active {
-  transition: all 9.5s ease;
+.header-leave-active {
+  transition: all 4.5s ease;
 }
 .header-leave-to {
   opacity: 0;

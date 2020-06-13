@@ -1,5 +1,10 @@
 <template>
   <v-content>
+    <transition name="page" appear mode="out-in">
+      <div v-if="page" class="top">
+        <p>Now Loading ...</p>
+      </div>
+    </transition>
     <transition name="delay" appear mode="out-in">
       <div class="back" :style="{ backgroundImage: 'url(' + img + ')' }">
         <!-- ラベルフォルダコンポーネント -->
@@ -26,14 +31,19 @@ export default {
   },
   data() {
     return {
+      page: false,
       img: ''
     }
   },
   watch: {
     getBackgroundImg: {
       immediate: true,
-      handler() {
-        this.img = this.getBackgroundImg.url
+      handler(val) {
+        this.img = val.url
+        if (this.img !== '/img/white.jpg') this.page = true
+        setTimeout(() => {
+          this.page = false
+        }, 1800)
       }
     }
   },
@@ -46,6 +56,14 @@ export default {
 </script>
 
 <style scoped>
+.page {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 100vh;
+}
 .back {
   background-size: cover;
   width: 100%;
@@ -53,5 +71,11 @@ export default {
 }
 .label {
   width: 94%;
+}
+.page-leave-active {
+  transition: all 1.8s ease;
+}
+.page-leave-to {
+  opacity: 0;
 }
 </style>
