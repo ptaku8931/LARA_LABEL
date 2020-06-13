@@ -1,5 +1,12 @@
 <template>
   <v-app class="lato">
+    <transition name="top" appear mode="out-in">
+      <div v-if="topPage" class="top">
+        <transition name="header" appear mode="out-in">
+          <p>LARA_LABEL</p>
+        </transition>
+      </div>
+    </transition>
     <header>
       <!-- notificationコンポーネント -->
       <Message v-show="notification" v-model="msg" :isSuccess="isSuccess" />
@@ -31,6 +38,7 @@ export default {
   },
   data() {
     return {
+      topPage: true,
       notification: false,
       msg: null,
       isSuccess: true
@@ -71,6 +79,11 @@ export default {
       this.$store.commit('error/SET_CODE', null)
     }
   },
+  created() {
+    setTimeout(() => {
+      this.topPage = false
+    }, 4000)
+  },
   computed: {
     errorCode() {
       return this.$store.state.error.code
@@ -108,6 +121,42 @@ export default {
 }
 .theme--light.v-label {
   font-size: 18px !important;
+}
+.top {
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 9000;
+}
+.top p {
+  color: white;
+  text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em yellow, 0 0 0.5em yellow,
+    0 0 0.1em yellow;
+  font-size: 100px;
+  position: fixed;
+  text-align: center;
+  left: 32%;
+  top: 35%;
+}
+.top-leave-active {
+  transition: all 2.2s ease;
+}
+.top-leave-to {
+  transform: translateY(-1400px);
+  opacity: 0.2;
+}
+.header-enter {
+  opacity: 0;
+}
+.header-enter-active,
+.header-enter-active {
+  transition: all 9.5s ease;
+}
+.header-leave-to {
+  opacity: 0;
 }
 .delay-enter {
   opacity: 0;

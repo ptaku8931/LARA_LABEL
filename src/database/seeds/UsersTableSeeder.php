@@ -13,27 +13,11 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'name' => 'naruto',
-            'email' => 'naruto@gmail.com',
-            'password' => bcrypt('naruto1234')
+            'name' => 'Guest User',
+            'email' => 'guest@gmail.com',
+            'password' => bcrypt('guest1234')
         ];
         
-        User::create($param);
-
-        $param = [
-            'name' => 'sasuke',
-            'email' => 'sasuke@gmail.com',
-            'password' => bcrypt('sasuke1234')
-        ];
-
-        User::create($param);
-
-        $param = [
-            'name' => 'sakura',
-            'email' => 'sakura@gmail.com',
-            'password' => bcrypt('sakura1234')
-        ];
-
         User::create($param);
 
     }

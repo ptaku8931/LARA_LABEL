@@ -21,7 +21,7 @@
 h1 {
   font-size: 70px;
   padding-top: 60px;
-  padding-right: 50px;
+  padding-left: 50px;
 }
 </style>
 

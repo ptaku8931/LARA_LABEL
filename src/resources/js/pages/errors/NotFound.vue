@@ -19,7 +19,7 @@
   color: white;
 }
 h1 {
-  padding-left: 30px;
+  padding-left: 40px;
   padding-bottom: 130px;
   font-size: 90px;
 }

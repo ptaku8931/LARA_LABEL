@@ -18,7 +18,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn small @click="closeModal">Close</v-btn>
-          <v-btn small color="error" @click="openConfirm">Delete</v-btn>
+          <v-btn small color="error" @click="openConfirm" :disabled="guest">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -31,6 +31,23 @@ export default {
     value: {
       type: Boolean,
       required: true
+    }
+  },
+  data() {
+    return {
+      guest: false
+    }
+  },
+  watch: {
+    userEmail: {
+      immedate: true,
+      handler() {
+        if(this.userEmail === 'guest@gmail.com') {
+          this.guest = true
+        } else {
+          guest: false
+        }
+      }
     }
   },
   methods: {

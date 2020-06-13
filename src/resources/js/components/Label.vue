@@ -100,9 +100,21 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <!-- snippet追加ボタン -->
-                <v-icon v-if="label.snippet === null" left dark v-on="on" @click="addSnippetModal(label.id)">mdi-text-box-outline</v-icon>
+                <v-icon
+                  v-if="label.snippet === null"
+                  left
+                  dark
+                  v-on="on"
+                  @click="addSnippetModal(label.id)"
+                >mdi-text-box-outline</v-icon>
                 <!-- snippet編集ボタン -->
-                <v-icon v-else left dark v-on="on" @click="editSnippetModal(label.id, label.snippet)">mdi-text-box-check-outline</v-icon>
+                <v-icon
+                  v-else
+                  left
+                  dark
+                  v-on="on"
+                  @click="editSnippetModal(label.id, label.snippet)"
+                >mdi-text-box-check-outline</v-icon>
               </template>
               <span>Snippet</span>
             </v-tooltip>
@@ -164,35 +176,24 @@
         />
       </div>
       <!-- 新規登録モーダルコンポーネント -->
-      <CreateModal 
-        :colors="colors" 
-        @create-label="createLabel" 
-        v-model="createModal" 
-      />
+      <CreateModal :colors="colors" @create-label="createLabel" v-model="createModal" />
       <!-- カラー編集モーダルコンポーネント -->
-      <ColorModal 
-        :colors="colors" 
-        :beforeChangeColor="beforeChangeColor" 
-        @edit-label-color="editLabelColor" 
-        v-model="colorModal" 
+      <ColorModal
+        :colors="colors"
+        :beforeChangeColor="beforeChangeColor"
+        @edit-label-color="editLabelColor"
+        v-model="colorModal"
       />
       <!-- URL追加及び編集モーダルコンポーネント -->
-      <UrlModal 
-        :editUrl="editUrl" 
-        @edit-label-url="editLabelUrl"
-        v-model="urlModal" 
-      />
+      <UrlModal :editUrl="editUrl" @edit-label-url="editLabelUrl" v-model="urlModal" />
       <!-- 削除確認モーダルコンポーネント -->
-      <ConfirmModal 
-        @do-delete="deleteLabel" 
-        v-model="confirmModal" 
-      />
+      <ConfirmModal @do-delete="deleteLabel" v-model="confirmModal" />
       <!-- Snippetモーダルコンポーネント -->
-      <SnippetModal 
-        :snippetValue="snippetValue" 
-        :addSnippet="addSnippet" 
-        @edit-snippet="editSnippet" 
-        v-model="snippetModal" 
+      <SnippetModal
+        :snippetValue="snippetValue"
+        :addSnippet="addSnippet"
+        @edit-snippet="editSnippet"
+        v-model="snippetModal"
       />
     </v-row>
   </v-container>
@@ -264,7 +265,20 @@ export default {
       // 検索で絞ったあとのラベル数
       afterSearchLabel: 1,
       // colors新規作成、編集用
-      colors: ['indigo', 'blue', 'cyan', 'green', 'teal', 'yellow', 'orange', 'pink', 'red', 'purple', 'grey', 'white'],
+      colors: [
+        'indigo',
+        'blue',
+        'cyan',
+        'green',
+        'teal',
+        'yellow',
+        'orange',
+        'pink',
+        'red',
+        'purple',
+        'grey',
+        'white'
+      ],
       // background-image用
       images: [
         { name: 'white', url: '/img/white.jpg' },
@@ -274,7 +288,7 @@ export default {
         { name: 'snow', url: '/img/snow.jpg' },
         { name: 'blossom', url: '/img/blossom.jpg' },
         { name: 'sky', url: '/img/sky.jpg' },
-        { name: 'night', url: '/img/night.jpg' },
+        { name: 'night', url: '/img/night.jpg' }
       ],
       // 選択されたbackground-image defaultはsunset
       selectedImage: {
@@ -404,7 +418,11 @@ export default {
         // もしページが1より大きいならindex番号にページ数*12 で合わせる
         // 終着点のindex番号にspliceで追加する
         if (this.page > 1) {
-          this.labels.splice(toLabelIndex + (this.page - 1) * 12, 0, labelToMove)
+          this.labels.splice(
+            toLabelIndex + (this.page - 1) * 12,
+            0,
+            labelToMove
+          )
         } else {
           this.labels.splice(toLabelIndex, 0, labelToMove)
         }
@@ -412,14 +430,16 @@ export default {
         const response = await axios.put('api/Ldragdrop', this.labels)
         if (response.status === OK) {
           // 更新が終わったら新しい配列を再びfetch
-          const response = await axios.get('api/label/' + this.getCurrentFolderId)
+          const response = await axios.get(
+            'api/label/' + this.getCurrentFolderId
+          )
           if (response.status === OK) {
             // 新しい配列をget
             this.labels = response.data
             this.totalPage = Math.ceil(this.labels.length / this.perPage)
             this.$store.commit(
-            'message/SET_SUCCESS_MSG',
-            'Labels have been sorted successfully !!'
+              'message/SET_SUCCESS_MSG',
+              'Labels have been sorted successfully !!'
             )
           } else {
             this.$store.commit('error/SET_CODE', response.status)
@@ -442,8 +462,10 @@ export default {
         // もし新ページにはみ出る場合は
         if (this.labels.length % 12 === 1 && this.labels.length !== 1) {
           // 新データをfetch
-          const response = await axios.get('api/label/' + this.getCurrentFolderId)
-          if(response.status === OK) {
+          const response = await axios.get(
+            'api/label/' + this.getCurrentFolderId
+          )
+          if (response.status === OK) {
             this.labels = response.data
             // ページを追加
             this.page++
@@ -611,12 +633,13 @@ export default {
       }
       this.$store.commit('error/SET_CODE', response.status)
     },
-     
-     //  snippet追加及び編集
-     async editSnippet(newSnippet) {
+
+    //  snippet追加及び編集
+    async editSnippet(newSnippet) {
       this.$store.commit('message/SET_SUCCESS_MSG', null)
       const response = await axios.patch('api/label/' + this.snippetId, {
-        snippet: newSnippet })
+        snippet: newSnippet
+      })
       if (response.status === OK) {
         let labelsIndex = ''
         this.labels.map((label, index) => {
@@ -642,8 +665,10 @@ export default {
         // もしページが1より大きいならindex番号にページ数-1 * 12 で合わせる
         if (this.page > 1) {
           this.labels.splice(this.deleteIndex + (this.page - 1) * 12, 1)
-          const response = await axios.get('api/label/' + this.getCurrentFolderId)
-          if(response.status === OK) {
+          const response = await axios.get(
+            'api/label/' + this.getCurrentFolderId
+          )
+          if (response.status === OK) {
             this.labels = response.data
           }
         } else {
@@ -653,8 +678,10 @@ export default {
         // もし新ページの最後の一つだった場合
         if (this.labels.length % 12 === 0 && this.labels.length !== 0) {
           // 新データfetch
-          const response = await axios.get('api/label/' + this.getCurrentFolderId)
-          if(response.status === OK) {
+          const response = await axios.get(
+            'api/label/' + this.getCurrentFolderId
+          )
+          if (response.status === OK) {
             this.labels = response.data
             // ページ数が1より大きかったらpage--
             if (this.page > 1) {

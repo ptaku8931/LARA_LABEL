@@ -37,7 +37,7 @@ p {
 img {
   margin-left: 60px;
   margin-top: 60px;
-  box-shadow: 6px 12px 10px rgba(1, 1, 1, 1);
+  box-shadow: 6px 6px 6px rgba(1, 1, 1, 1);
 }
 img:hover {
   cursor: pointer;
@@ -46,7 +46,7 @@ img:hover {
 img:active {
   box-shadow: none;
   position: relative;
-  top: 12px;
+  top: 6px;
 }
 .back {
   background-image: url('/img/home.jpg');

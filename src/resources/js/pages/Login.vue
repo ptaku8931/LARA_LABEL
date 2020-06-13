@@ -3,6 +3,8 @@
     <transition name="delay" appear mode="out-in">
     <div class="back">
       <v-container>
+        <!-- 簡単ログイン -->
+         <img src="/img/guest-login.png" width="360px" @click="guestLogin"/>
         <!-- タブここから -->
         <v-tabs NOT dark background-color="transparent" class="tabs">
           <v-tab class="tab" @click="tab = 1">LOGIN</v-tab>
@@ -185,6 +187,15 @@ export default {
         this.$router.push('/label')
       }
     },
+    async guestLogin() {
+      this.loginForm.email = 'guest@gmail.com'
+      this.loginForm.password = 'guest1234'
+      await this.$store.dispatch('auth/login', this.loginForm)
+
+      if (this.apiStatus) {
+        this.$router.push('/label')
+      }
+    },
     async register() {
       await this.$store.dispatch('auth/register', this.registerForm)
 
@@ -220,6 +231,20 @@ ul {
 }
 a {
   text-decoration: none;
+}
+img {
+  position: fixed;
+  text-align: center;
+  right: 4%;
+  top: 49%;
+  box-shadow: 6px 6px 6px rgba(1, 1, 1, 1);
+}
+img:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+img:active {
+  box-shadow: none;
 }
 .container {
   padding-top: 25px;

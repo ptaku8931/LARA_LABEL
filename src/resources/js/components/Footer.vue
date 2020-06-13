@@ -4,7 +4,7 @@
       class="footer"
       cols="12"
     >
-      {{ new Date().getFullYear() }} — <strong>Copyright</strong>  — <strong>LARA_LABEL</strong>
+      {{ new Date().getFullYear() }} — <strong>Copyright</strong>  — <strong>ptaku</strong>
     </v-col>
   </v-footer>
 </template>
