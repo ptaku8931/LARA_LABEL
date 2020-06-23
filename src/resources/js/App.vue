@@ -82,7 +82,7 @@ export default {
   created() {
     setTimeout(() => {
       this.topPage = false
-    }, 3000)
+    }, 3500)
   },
   computed: {
     errorCode() {
@@ -99,9 +99,11 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&family=Noto+Sans+JP&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Source+Sans+Pro&display=swap');
 .lato {
-  font-family: 'Lato', 'Noto Sans JP', sans-serif !important;
+  font-family: 'Lato', 'Source Sans Pro', 'Noto Sans JP', sans-serif !important;
   font-style: italic;
 }
 .v-text-field input {
@@ -130,17 +132,18 @@ export default {
   width: 100%;
   height: 100vh;
   z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .top p {
   color: white;
   text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em yellow, 0 0 0.5em yellow,
     0 0 0.1em yellow;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 110px;
+  font-size: 100px;
   position: fixed;
   text-align: center;
-  left: 31%;
-  top: 35%;
 }
 .top-leave-active {
   transition: all 1.8s ease;
@@ -153,7 +156,7 @@ export default {
 }
 .header-enter-active,
 .header-leave-active {
-  transition: all 4.5s ease;
+  transition: all 2.5s ease;
 }
 .header-leave-to {
   opacity: 0;

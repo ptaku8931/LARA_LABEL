@@ -3,7 +3,7 @@
     <v-dialog persistent max-width="500px" v-model="value">
       <v-card outlined>
         <v-form ref="form" v-model="valid" @submit.prevent>
-          <v-card-title class="title">
+          <v-card-title class="form-title">
             <v-icon class="mr-2">mdi-card-plus-outline</v-icon>
             <span class="lato">Create Label</span>
           </v-card-title>
@@ -13,6 +13,7 @@
                 <!-- ラベルタイトル入力フォーム -->
                 <v-col cols="10">
                   <v-text-field
+                    class="label-title"
                     label="Title"
                     prepend-icon="mdi-file-check-outline"
                     hint="Title is required"
@@ -26,6 +27,7 @@
                 <!-- ラベルテキスト入力フォーム -->
                 <v-col cols="10">
                   <v-text-field
+                    class="label-text"
                     label="Text"
                     prepend-icon="mdi-file-document-outline"
                     hint="Text is required"
@@ -152,10 +154,16 @@ export default {
 </script>
 
 <style scoped>
-.title {
+/* .lato {
+  font-size: 24px;
+} */
+.form-title {
   margin-left: 150px;
 }
-.lato {
-  font-size: 24px;
+.label-title {
+  font-style: normal;
+}
+.label-text {
+  font-style: normal;
 }
 </style>

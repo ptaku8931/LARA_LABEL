@@ -9,7 +9,7 @@
       </v-btn>
       <!-- 検索エリア -->
       <v-text-field
-        class="mt-2"
+        class="mt-2 search"
         outlined
         label="Search Label"
         append-icon="mdi-magnify"
@@ -775,6 +775,9 @@ export default {
   border-width: 2px !important;
   box-shadow: 6px 12px 10px rgba(1, 1, 1, 1) !important;
 }
+.search {
+  font-style: normal;
+}
 .cardBody {
   height: 86px !important;
 }
@@ -802,7 +805,7 @@ export default {
   right: 45px;
 }
 .head {
-  font-size: 22px;
+  font-size: 20px;
 }
 .text {
   font-size: 18px;
@@ -811,6 +814,7 @@ input {
   width: 85%;
   height: 25px;
   color: white;
+  font-style: normal;
 }
 a {
   text-decoration: none;

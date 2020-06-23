@@ -14,6 +14,7 @@
           <v-list-item-content>
             <!-- フォルダ検索 -->
             <v-text-field
+              class="search"
               outlined
               label="Search Folder"
               append-icon="mdi-folder-search"
@@ -24,6 +25,7 @@
             <v-form v-model="valid" ref="form" @submit.prevent>
               <!-- 入力エリア-->
               <v-text-field
+                class="form"
                 :label="placeHolder"
                 :prepend-icon="edit ? 'mdi-folder-edit' : 'mdi-folder-multiple'"
                 clearable
@@ -340,12 +342,18 @@ export default {
 .folder {
   margin-left: 0px;
 }
+.search {
+  font-style: normal;
+}
 .btn {
   font-size: 12px !important;
 }
 .form-title {
   text-align: center;
   font-size: 22px !important;
+}
+.form {
+  font-style: normal;
 }
 .folder:hover {
   margin-left: 15px;
@@ -366,6 +374,7 @@ export default {
 }
 .folder-name {
   font-size: 17px !important;
+  font-style: normal;
 }
 .folder-btn {
   padding: 0 12px !important;

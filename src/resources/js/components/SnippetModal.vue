@@ -129,7 +129,8 @@ export default {
 .textarea {
   margin-top: 10px !important;
   padding-bottom: 0 !important;
-  font-size: 20px !important;
+  font-size: 18px !important;
+  font-style: normal;
 }
 .lato {
   font-size: 24px;
